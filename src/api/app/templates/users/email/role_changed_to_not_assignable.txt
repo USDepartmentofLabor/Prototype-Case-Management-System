@@ -1,0 +1,14 @@
+{{ user.name or user.username }},
+
+User "{{ changed_role_user.name or changed_role_user.username }}" role was
+changed from a role with the "ASSIGNABLE_TO_CASE" permission  to a role
+without the permission. Therefore all cases that were assigned to this
+user have been unassigned. The cases affected include:
+
+{% for case in cases %}
+* {{ case.name }} - {{ web_app_url }}/cases/{{ case.id }}
+{% endfor %}
+
+Sincerely,
+The CMS Team
+Note: replies to this email address are not monitored.

@@ -1,0 +1,33 @@
+<div class="animated fadeIn eps-container">
+    <app-header></app-header>
+    <div class="row">
+        <div class="col-12">
+            <div class="card cases-card">
+                <div class="card-body">
+                    <h3>Dashboards</h3>
+                    <p>Select the dashboard that should be the dashboard on the landing page from the list below.
+                     The dashboard with the green star (<i fa name="star" size="1" style="color: green;"></i>) is the current landing page dashboard.</p>
+                    <table class="animated fadeIn table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let dashboard of dashboards">
+                            <td>{{ dashboard.name }} <i *ngIf="dashboard.isDefault" fa name="star" size="1" style="color: green;"></i></td>
+                            <td>{{ dashboard.description}}</td>
+                            <td><button *ngIf="!dashboard.isDefault" type="button" class="btn btn-link"
+                                        placement="top" ngbTooltip="Click to set '{{dashboard.name}}' as the default dashboard."
+                                        (click)="setDefaultDashboard(dashboard.id)">Set as default</button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

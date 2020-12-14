@@ -1,0 +1,223 @@
+<app-header></app-header>
+<div *ngIf="isProfileLoaded; else skeleton" class="animated fadeIn container eps-container">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title mb-3 ml-3">
+            <div class="d-flex justify-content-start">
+              <div class="image-container">
+                <!-- <img
+                  src="../../../assets/profile_placeholder.png"
+                  id="imgProfile"
+                  style="width: 150px; height: 150px"
+                  class="img-thumbnail"
+                /> -->
+                <span
+                  class="p-large user-inital-avatar circle"
+                  data-container="body"
+                  placement="top"
+                  [ngClass]="user.avatarBgColor"
+                  >{{ user.firstInitial }}
+                </span>
+              </div>
+              <div class="userData ml-3">
+                <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">
+                  <span>{{ user.username }}</span>
+                </h2>
+                <h6 class="d-block">
+                  <strong>Email:</strong> <span class="ml-2 profile-data">{{ user.email }}</span>
+                </h6>
+                <h6 class="d-block">
+                  <strong>Member since:</strong>
+                  <span class="ml-2 profile-data">{{
+                    setMemberSinceDisplayDate(user.created_at)
+                  }}</span>
+                </h6>
+              </div>
+              <div class="userData ml-3"></div>
+            </div>
+          </div>
+          <div class="row">
+            <hr />
+            <div class="col-2">
+              <div
+                class="nav flex-column nav-pills"
+                id="v-pills-tab"
+                role="tablist"
+                aria-orientation="vertical"
+              >
+                <a
+                  class="nav-link active"
+                  id="v-pills-home-tab"
+                  data-toggle="pill"
+                  href="#v-pills-home"
+                  role="tab"
+                  aria-controls="v-pills-home"
+                  aria-selected="true"
+                  >Profile</a
+                >
+                <a
+                  class="nav-link"
+                  [ngClass]="{ disabled: editProfileMode }"
+                  id="v-pills-settings-tab"
+                  data-toggle="pill"
+                  href="#v-pills-settings"
+                  role="tab"
+                  aria-controls="v-pills-settings"
+                  aria-selected="false"
+                  >Settings</a
+                >
+              </div>
+            </div>
+            <div class="col-10">
+              <div class="tab-content" id="v-pills-tabContent">
+                <div
+                  class="tab-pane fade show active"
+                  id="v-pills-home"
+                  role="tabpanel"
+                  aria-labelledby="v-pills-home-tab"
+                >
+                  <div *ngIf="!editProfileMode">
+                    <button
+                      (click)="setEditProfileMode()"
+                      class="btn btn-primary btn-sm pull-right mb-2"
+                    >
+                      Edit Profile
+                    </button>
+                    <div class="profile-information-content">
+                      <hr />
+                      <h6 class="d-block">
+                        <strong>Name:</strong>
+                        <span class="ml-2 profile-data">{{ user.name }}</span>
+                      </h6>
+                      <hr />
+                      <h6 class="d-block">
+                        <strong>Role:</strong>
+                        <span class="ml-2 profile-data">{{ user.role.name }}</span>
+                      </h6>
+                      <hr />
+                      <h6 class="d-block">
+                        <strong>Loaction:</strong>
+                        <span class="ml-2 profile-data">{{ user.location }}</span>
+                      </h6>
+                    </div>
+                  </div>
+                  <div *ngIf="editProfileMode">
+                    <div class="add-user-content">
+                      <form [formGroup]="userForm" (submit)="save()">
+                        <div class="form-label-group">
+                          <input
+                            type="email"
+                            formControlName="email"
+                            class="form-control"
+                            placeholder="Email address"
+                            required
+                            autofocus
+                            [ngClass]="{ 'is-invalid': submitted && form.email.errors }"
+                          />
+                          <label for="email">Email address</label>
+                          <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
+                            <div *ngIf="form.email.errors.required">Email is required</div>
+                            <div *ngIf="form.email.errors.email">
+                              Email must be a valid email address
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-label-group">
+                          <input
+                            type="text"
+                            formControlName="username"
+                            class="form-control"
+                            placeholder="username"
+                            [ngClass]="{ 'is-invalid': submitted && form.username.errors }"
+                          />
+                          <label for="username">Username</label>
+                          <div *ngIf="submitted && form.username.errors" class="invalid-feedback">
+                            <div *ngIf="form.username.errors.required">Username is required</div>
+                          </div>
+                        </div>
+                        <div class="form-label-group">
+                          <input
+                            type="text"
+                            formControlName="name"
+                            class="form-control"
+                            placeholder="name"
+                            [ngClass]="{ 'is-invalid': submitted && form.name.errors }"
+                          />
+                          <label for="name">Name</label>
+                          <div *ngIf="submitted && form.name.errors" class="invalid-feedback">
+                            <div *ngIf="form.name.errors.required">Name is required</div>
+                          </div>
+                        </div>
+                        <div class="form-label-group">
+                          <input
+                            type="text"
+                            formControlName="location"
+                            class="form-control"
+                            placeholder="location"
+                          />
+                          <label for="location">Location</label>
+                        </div>
+                        <div class="mt-4 pull-right">
+                          <button
+                            (click)="setEditProfileMode()"
+                            [ngClass]="{ disabled: savingProfileData }"
+                            class="btn btn-link btn-sm"
+                            type="button"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            *ngIf="!savingProfileData"
+                            class="btn btn-lg btn-primary btn-sm"
+                            type="submit"
+                          >
+                            Save
+                          </button>
+                          <button
+                            *ngIf="savingProfileData"
+                            (click)="saveProfile()"
+                            class="btn btn-lg btn-primary btn-sm disabled"
+                            type="button"
+                          >
+                            <fa class="empty-data-icon" name="fas fa-spinner fa-spin"></fa>
+                            Saving...
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="tab-pane fade"
+                  id="v-pills-settings"
+                  role="tabpanel"
+                  aria-labelledby="v-pills-profile-tab"
+                >
+                  <hr />
+                  <h6 class="d-block">
+                    Change Password:
+                    <span
+                      ><button
+                        (click)="openChangePasswordModal()"
+                        class="btn btn-link btn-sm profile-btn"
+                      >
+                        *********
+                      </button>
+                    </span>
+                  </h6>
+                  <hr />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #skeleton>
+  <profile-skeleton></profile-skeleton>
+</ng-template>

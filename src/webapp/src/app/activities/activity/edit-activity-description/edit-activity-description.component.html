@@ -1,0 +1,52 @@
+<h6>Description</h6>
+<div class="editable">
+  <div
+    *ngIf="!amEditing"
+    (click)="changeEditing(true)"
+    class="editable-view-mode"
+    ngbTooltip="Click to edit activity description"
+  >
+    {{ activityDescription || "Add a description..." }}
+    <div class="edit-icon pull-right">
+      <fa name="fas fa-pencil"></fa>
+    </div>
+  </div>
+  <div *ngIf="amEditing" class="editable-edit-mode">
+    <form
+      [formGroup]="descriptionForm"
+      (ngSubmit)="onSaveDescription()"
+      class="animated fadeIn form-wrapper mt4"
+    >
+      <div class="form-label-group">
+        <textarea
+          id="inputDescription"
+          class="form-control"
+          formControlName="description"
+          autofocus
+        ></textarea>
+        <div class="btn-tools-wrapper pull-right">
+          <button
+            class="btn btn-primary"
+            [disabled]="descriptionForm.pristine && descriptionForm.dirty"
+            [ngClass]="{ disabled: isSavingDescription }"
+          >
+            <fa *ngIf="!isSavingDescription" name="fas fa-check"></fa>
+            <fa
+              *ngIf="isSavingDescription"
+              class="empty-data-icon"
+              name="fas fa-spinner fa-spin"
+            ></fa>
+          </button>
+          <button
+            class="btn btn-light"
+            [disabled]="isSavingDescription || descriptionForm.invalid"
+            (click)="changeEditing(false)"
+          >
+            <fa name="fas fa-times"></fa>
+          </button>
+        </div>
+        <small class="pl-2 form-text text-muted"> Optional</small>
+      </div>
+    </form>
+  </div>
+</div>

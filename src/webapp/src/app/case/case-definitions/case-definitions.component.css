@@ -1,0 +1,11 @@
+.case-def-header {
+  font-weight: 200 !important;
+}
+
+table td {
+  cursor: pointer;
+}
+
+.case-definition-card {
+  height: 95vh;
+}

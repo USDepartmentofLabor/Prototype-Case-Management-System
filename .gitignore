@@ -1,0 +1,26 @@
+# .vagrant folder
+.vagrant
+
+# .log files
+*.log
+
+# misc
+*.DS_Store
+
+# pytest cache
+.pytest_cache/
+
+# Visual Studio Code
+.vscode
+
+.env
+*.swp
+
+.idea
+
+# Keys and certificates
+*.pem
+*.key
+*.crt
+
+docker-compose.override.yml

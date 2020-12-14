@@ -1,0 +1,21 @@
+<div class="form-group">
+  <label for="{{ fieldName }}" class="font-weight-bold">{{ field.name }}</label>
+  <select
+    class="form-control"
+    name="{{ field.name }}"
+    [(ngModel)]="selectedObject"
+    (change)="onValueChange()"
+    id="{{ fieldName }}"
+  >
+    <option
+      [ngValue]="opt"
+      *ngFor="let opt of field.selections"
+    >
+      {{ opt.value }}
+    </option>
+  </select>
+  <small *ngIf="field.help_text" class="form-text text-muted"
+    ><i class="fa fa-info-circle" aria-hidden="true"></i>
+    {{ field.help_text }}
+  </small>
+</div>

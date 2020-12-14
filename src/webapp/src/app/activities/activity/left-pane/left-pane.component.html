@@ -1,0 +1,176 @@
+<div class="card">
+  <div class="card-body">
+    <app-edit-activity-name
+      [activityID]="activity.id"
+      [activityName]="activity.name"
+      (nameChanged)="onActivityNameChanged($event)"
+    ></app-edit-activity-name>
+
+    <div
+      class="btn-group btn-group-sm mb-2"
+      role="group"
+      aria-label="Add Document Button"
+    >
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="openFileUploadModal(null, 'attachment')"
+      >
+        Add Document
+      </button>
+    </div>
+
+    <app-edit-activity-description
+      [activityID]="activity.id"
+      [activityDescription]="activity.description"
+      (descriptionChanged)="onActivityDescriptionChanged($event)"
+    ></app-edit-activity-description>
+
+    <!-- #region Surveys -->
+    <div *ngIf="activity.surveys.length > 0" class="mb-3">
+      <h5>Forms</h5>
+      <div class="list-group">
+        <a
+          class="list-group-item list-group-item-action"
+          ngbTooltip="Click to view form"
+          *ngFor="let survey of activity.surveys"
+          [routerLink]="['/activities', activity.id, 'forms', survey.id]"
+        >
+          {{ survey.name }}
+          <a
+            href="#"
+            class="badge badge-info badge-pill pull-right"
+            ngbTooltip="Click to view responses"
+            [routerLink]="['/activities', activity.id, 'form-responses', survey.id]"
+            >{{ survey.responses_count || 0 }}</a
+          >
+        </a>
+      </div>
+    </div>
+    <!-- endregion -->
+
+    <!-- #region Documents -->
+
+    <div *ngIf="activity.documents.length > 0" class="mb-2 mt-2">
+      <h5>Documents</h5>
+
+      <div class="case-surveys">
+        <div
+          class="media"
+          *ngFor="let doc of activity.documents; let i = index"
+        >
+          <div class="media-body mb-2 mt-3 ml-3">
+            <div class="mt-0 mb-1">
+              <fa
+                *ngIf="doc.document_id"
+                class="uploaded-checkmark mr-1"
+                [ngClass]="{ green: doc.url }"
+                name="fas fa-check-circle"
+              ></fa>
+              <fa
+                *ngIf="doc.name === null"
+                class="black"
+                name="fas fa-paperclip"
+              ></fa>
+              {{ doc.name || doc.original_filename
+              }}<small>{{
+                generateDocumentRequiredTxt(doc.is_required)
+              }}</small>
+            </div>
+            <button
+              class="btn btn-link download-file-link ml-2"
+              data-container="body"
+              ngbTooltip="Download File"
+              (click)="downloadDocument(doc.id)"
+            >
+              <small>{{ doc.original_filename }}</small>
+            </button>
+          </div>
+          <div class="doc-actions">
+            <fa
+              *ngIf="!doc.url"
+              (click)="openFileUploadModal(doc.document_id, 'document')"
+              data-container="body"
+              ngbTooltip="Upload Document"
+              class="upload-document-icon-md"
+              name="fas fa-upload"
+            ></fa>
+            <fa
+              *ngIf="doc.url"
+              (click)="deleteDocument(doc.id)"
+              data-container="body"
+              data-container="body"
+              ngbTooltip="Delete Document"
+              class="delete-document-md"
+              name="fas fa-trash"
+            ></fa>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- end display if the activity has documents -->
+
+    <!-- endregion -->
+
+    <!-- NOTES/HISTORY START -->
+    <ul
+      class="nav nav-tabs"
+      id="notesHistoryTab"
+      role="tablist"
+      style="margin-top: 20px"
+    >
+      <li class="nav-item">
+        <a
+          class="nav-link active"
+          id="notes-tab"
+          data-toggle="tab"
+          href="#notes"
+          role="tab"
+          aria-controls="home"
+          aria-selected="true"
+          >Notes</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="history-tab"
+          data-toggle="tab"
+          href="#history"
+          role="tab"
+          aria-controls="profile"
+          aria-selected="false"
+          >History</a
+        >
+      </li>
+    </ul>
+    <div class="tab-content" id="notesHistoryTabContent">
+      <div
+        class="tab-pane fade show active"
+        id="notes"
+        role="tabpanel"
+        aria-labelledby="notes-tab"
+      >
+        <app-notes
+          [notes]="activity.notes"
+          (noteAdded)="onActivityNoteAdded($event)"
+        ></app-notes>
+      </div>
+      <div
+        class="tab-pane fade"
+        id="history"
+        role="tabpanel"
+        aria-labelledby="history-tab"
+      >
+        <div class="row">
+          <div class="col-12 mt-3">
+            <app-history [history]="activity.history" history-on="Activity"></app-history>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- NOTES/HISTORY END -->
+  </div>
+</div>
+<!-- TODO: Extract parts into components -->

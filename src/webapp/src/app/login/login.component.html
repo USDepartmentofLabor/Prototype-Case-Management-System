@@ -1,0 +1,139 @@
+<div class="row login-container">
+  <div class="pic-bg col-4">
+    <div class="app-logo">
+      CMS
+      <span class="app-name">Case Management</span>
+    </div>
+    <div class="area">
+      <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+      <div class="software-dev-info">
+        <p>Powered by <strong>ASCEND</strong> &copy;{{ getCurrentYear() }} - {{currentVersion}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-8 login-content">
+    <form *ngIf="!forgotPassword"
+      [formGroup]="loginForm"
+      (ngSubmit)="login()"
+      class="animated fadeIn form-signin"
+    >
+      <div class=" mb-4">
+        <h1 class="mb-3 font-weight-normal">Welcome</h1>
+        <p>Log in to CMS by entering the information below</p>
+      </div>
+      <div *ngIf="errorMsg" class="alert alert-danger" role="alert">
+          {{errorMsg}}
+    </div>
+      <div class="form-label-group">
+        <input
+          type="email"
+          id="inputEmail"
+          class="form-control"
+          formControlName="email"
+          [ngClass]="{ 'is-invalid': submitted && form.email.errors }"
+          placeholder="Email address"
+          required
+          autofocus
+        />
+        <label for="inputEmail">Email address</label>
+        <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
+          <div *ngIf="form.email.errors.required">Email is required</div>
+          <div *ngIf="form.email.errors.email">
+            Email must be a valid email address
+          </div>
+        </div>
+      </div>
+      <div class="form-label-group">
+        <input
+          type="password"
+          id="inputPassword"
+          class="form-control"
+          formControlName="password"
+          [ngClass]="{ 'is-invalid': submitted && form.password.errors }"
+          placeholder="Password"
+          required
+        />
+        <label for="inputPassword">Password</label>
+        <div *ngIf="submitted && form.password.errors" class="invalid-feedback">
+          <div *ngIf="form.password.errors.required">Password is required</div>
+          <div *ngIf="form.password.errors.minlength">
+            Password must be at least 10 characters
+          </div>
+        </div>
+      </div>
+      <div class="checkbox mb-3">
+        <label>
+          <input type="checkbox" value="remember-me" /> Remember me
+        </label>
+      </div>
+      <button
+        class="btn btn-lg btn-primary btn-block"
+        [ngClass]="{ disabled: isLoggingIn }"
+        type="submit"
+      >
+        <fa
+          *ngIf="!isLoggingIn"
+          class="empty-data-icon"
+          name="fas fa-unlock-alt"
+        ></fa>
+        <fa
+          *ngIf="isLoggingIn"
+          class="empty-data-icon"
+          name="fas fa-spinner fa-spin"
+        ></fa>
+        {{ generateSignBtnTxt() }}
+      </button>
+      <button (click)="displayForgotPasswordForm()"class="mt-2 nm-l btn btn-link">Forgot your password?</button>
+    </form>
+    <form *ngIf="forgotPassword"
+      [formGroup]="loginForm"
+      (ngSubmit)="sendResetPassword()"
+      class="animated fadeIn form-signin"
+    >
+      <div class=" mb-4">
+        <h2 class="mb-3 font-weight-normal">Reset Password</h2>
+        <p>Enter your email you're using for your account.</p>
+      </div>
+      <div class="form-label-group">
+        <input
+          type="email"
+          id="inputEmail"
+          class="form-control"
+          formControlName="email"
+          [ngClass]="{ 'is-invalid': submitted && passForm.email.errors }"
+          placeholder="Email address"
+          required
+          autofocus
+        />
+        <label for="inputEmail">Email address</label>
+        <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
+          <div *ngIf="passForm.email.errors.required">Email is required</div>
+          <div *ngIf="passForm.email.errors.email">
+            Email must be a valid email address
+          </div>
+        </div>
+      </div>
+      <button
+        class="btn btn-lg btn-primary btn-block"
+        [ngClass]="{ disabled: isLoggingIn }"
+        type="submit"
+      >
+        Request Reset Link
+      </button>
+      <button (click)="displayForgotPasswordForm()"class="mt-2 nm-l btn btn-link">Back to Log in</button>
+    </form>
+  </div>
+</div>

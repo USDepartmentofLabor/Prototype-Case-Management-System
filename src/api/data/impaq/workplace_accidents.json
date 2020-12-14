@@ -1,0 +1,92 @@
+{
+ "title": "Workplace Accidents",
+ "pages": [
+  {
+   "name": "page1",
+   "elements": [
+    {
+     "type": "text",
+     "name": "date_occured",
+     "title": "When did the accident occur?",
+     "isRequired": true,
+     "inputType": "date"
+    },
+    {
+     "type": "comment",
+     "name": "location",
+     "title": "Where did it occur?",
+     "isRequired": true
+    },
+    {
+     "type": "comment",
+     "name": "what_happened",
+     "title": "What happened (cause and effect)?",
+     "isRequired": true
+    },
+    {
+     "type": "comment",
+     "name": "who_injured",
+     "title": "Who was injured?",
+     "isRequired": true
+    },
+    {
+     "type": "comment",
+     "name": "contributory_factors",
+     "title": "What were the contributory factors? and",
+     "isRequired": true
+    },
+    {
+     "type": "comment",
+     "name": "prevention",
+     "title": "How can similar accidents be prevented?",
+     "isRequired": true
+    },
+    {
+     "type": "html",
+     "name": "question1",
+     "html": "<strong>7. Based on the answers to the above questions (entered in date or text boxes):</strong>"
+    },
+    {
+     "type": "boolean",
+     "name": "was_breach_of_law",
+     "title": "a. Was the accident a clear breach of the law?",
+     "hideNumber": true,
+     "isRequired": true
+    },
+    {
+     "type": "html",
+     "name": "was_breach_of_law_prompt",
+     "visible": false,
+     "visibleIf": "{was_breach_of_law} = true",
+     "html": "If the accident was due to a clear breach of the law, the inspector will bring legal charges against those responsible, or issue an improvement or prohibition notice, or both."
+    },
+    {
+     "type": "boolean",
+     "name": "due_to_ignorance_or_carelessness",
+     "title": "b. Was the accident due to the employer’s or worker’s ignorance or carelessness?",
+     "hideNumber": true,
+     "isRequired": true
+    },
+    {
+     "type": "html",
+     "name": "due_to_ignorance_or_carelessness_prompt",
+     "visibleIf": "{due_to_ignorance_or_carelessness} = true",
+     "html": "If the accident was due to the employer’s or the worker’s ignorance or carelessness, the inspector may advise on safety precautions and improved training. Even if the accident was due to a hazard not (yet) covered by regulations, the inspector may ban using the dangerous machinery or process with immediate effect (prohibition notice, or stop-notice)"
+    },
+    {
+     "type": "boolean",
+     "name": "due_to_physical_or_mental_state",
+     "title": "c. Was the accident due to the worker's physical or mental state? ",
+     "hideNumber": true,
+     "isRequired": true
+    },
+    {
+     "type": "html",
+     "name": "due_to_physical_or_mental_state_prompt",
+     "visibleIf": "{due_to_physical_or_mental_state} = true",
+     "html": "If the accident was due to the worker's physical or mental state (fatigue, alcohol, drug abuse), the inspector may advise on improved organization to prevent fatigue due to work or improved supervision at the worksite."
+    }
+   ]
+  }
+ ]
+}

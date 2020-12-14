@@ -1,0 +1,52 @@
+.file-drop-zone {
+    padding: 25px;
+    background-color: #f1f1f1;
+    border: 3px dotted #c7c7c7;
+    border-radius: 6px;
+}
+
+.file-drop-done-wrapper {
+    width: 250px;
+    margin: 0 auto;
+    text-align: center;
+
+}
+
+.file-drop-done-wrapper p {
+    margin: 10px;
+}
+
+.button-footer {
+    text-align: right;
+    margin-top: 25px
+}
+
+.document-icon-sm {
+    color: rgb(174, 174, 174);
+}
+
+.document-icon-lg{
+    font-size: 7rem;
+    text-align: center;
+    color: gainsboro;
+}
+
+.btn-file {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+  }

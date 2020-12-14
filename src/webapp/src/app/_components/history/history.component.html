@@ -1,0 +1,11 @@
+<div *ngFor="let historyItem of historyItems" class="mb-2">
+  <span
+    class="w-40 user-inital-avatar circle"
+    data-container="body"
+    placement="top"
+    [ngClass]="historyItem.performedBy.color"
+    >{{ historyItem.performedBy.name.charAt(0).toUpperCase() }}
+  </span>
+  {{ historyItem.performedBy.name || historyItem.performedBy.username }} {{ historyItem.description }}
+  {{ formatDate(historyItem.dateChanged) }}
+</div>

@@ -1,0 +1,41 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  before_script:
+    - docker info
+
+  script:
+    - docker-compose build --force-rm --no-cache
+
+test:
+  stage: test
+  script:
+    - docker-compose run eps pytest -p no:cacheprovider --junitxml pytest_report.xml --cov-report html --cov=app tests/
+  artifacts:
+    paths:
+      - pytest_report.xml
+      - htmlcov/
+    reports:
+      junit: pytest_report.xml
+
+pages:
+  stage: deploy
+  dependencies:
+    - test
+  script:
+    - mv htmlcov/ public/
+  artifacts:
+    paths:
+      - public
+    expire_in: 30 days
+
+#deploy_testing:
+#  stage: deploy
+#  script:
+#    - eb deploy
+#  only:
+#    - development

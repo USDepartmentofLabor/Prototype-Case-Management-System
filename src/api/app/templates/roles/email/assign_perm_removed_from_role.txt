@@ -1,0 +1,13 @@
+{{ user.name or user.username }},
+
+The "ASSIGNABLE_TO_CASE" permission was removed from the role
+"{{ role.name }}". Therefore all cases that were assigned to users
+that had the role were unassigned. The cases affected include:
+
+{% for case in cases %}
+* {{ case.name }} - {{ web_app_url }}/cases/{{ case.id }}
+{% endfor %}
+
+Sincerely,
+The CMS Team
+Note: replies to this email address are not monitored.

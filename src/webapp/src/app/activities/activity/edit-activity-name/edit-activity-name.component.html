@@ -1,0 +1,81 @@
+<div class="editable">
+  <div
+    *ngIf="!amEditing"
+    (click)="changeEditing(true)"
+    class="editable-view-mode"
+    ngbTooltip="Click to edit activity name"
+  >
+    <strong>{{ activityName }}</strong>
+    <div class="edit-icon pull-right">
+      <fa name="fas fa-pencil"></fa>
+    </div>
+  </div>
+  <div *ngIf="amEditing" class="editable-edit-mode">
+    <form
+      [formGroup]="nameForm"
+      (ngSubmit)="onSaveName()"
+      class="animated fadeIn form-wrapper mt4"
+    >
+      <div class="form-label-group">
+        <input
+          type="text"
+          id="inputName"
+          class="form-control capitalize-input"
+          formControlName="name"
+          [ngClass]="{
+            'is-invalid': submitted && form.name.errors
+          }"
+          placeholder="Activity Name"
+          (change)="
+            nameForm.patchValue({
+              name: capitalizeInput($event.target.value)
+            })
+          "
+          maxlength="35"
+          required
+          autofocus
+        />
+        <label for="inputName">Name</label>
+        <div
+          *ngIf="submitted && form.name.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="form.name.errors.required">
+            Activity Name is required
+          </div>
+          <div *ngIf="form.name.errors.minlength">
+            Activity Name must contain 6 characters.
+          </div>
+        </div>
+        <div class="btn-tools-wrapper pull-right">
+          <button
+            [disabled]="
+              isSavingName || !nameForm.dirty
+            "
+            class="btn btn-primary"
+            [ngClass]="{ disabled: isSavingName }"
+          >
+            <fa
+              *ngIf="!isSavingName"
+              name="fas fa-check"
+            ></fa>
+            <fa
+              *ngIf="isSavingName"
+              class="empty-data-icon"
+              name="fas fa-spinner fa-spin"
+            ></fa>
+          </button>
+          <button
+            class="btn btn-light"
+            [disabled]="
+              isSavingName || this.nameForm.invalid
+            "
+            (click)="changeEditing(false)"
+          >
+            <fa name="fas fa-times"></fa>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

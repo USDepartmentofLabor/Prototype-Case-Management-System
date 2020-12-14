@@ -1,0 +1,39 @@
+image: node:10
+
+stages:
+  - build
+  - deploy
+
+build-dev:
+  stage: 'build'
+  script:
+    - apt update
+    - apt-get install -y nodejs
+    - npm install -y npm@6.11.0
+    - nodejs -v
+    - npm -v
+    - ls -la -F
+    - npm install
+    - npx ng build --configuration=development
+  cache:
+    paths:
+      - node_modules/
+  artifacts:
+    when: on_success
+    name: '$CI_JOB_NAME-$CI_COMMIT_REF_NAME'
+    paths:
+      - dist/
+  only:
+    - development
+
+deploy-dev:
+  image: python:latest
+  stage: deploy
+  dependencies:
+    - build-dev
+  script:
+    - pip install awscli
+    - aws s3 sync dist/ s3://eps-dev.dbmspilot.org --delete
+  only:
+    - development
+

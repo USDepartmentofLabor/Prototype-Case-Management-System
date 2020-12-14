@@ -1,0 +1,53 @@
+<div>
+  <div class="modal-header">
+    <h4>{{ this.modalOptions.dialogHeaderTxt }}</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-danger" *ngIf="errorMsg">{{errorMsg}}</div>
+    <div class="file-drop-zone" *ngIf="uploader?.queue?.length == 0">
+      <div class="file-drop-done-wrapper">
+      <div ng2FileDrop (fileOver)="fileOverBase($event)" [uploader]="uploader">
+     <fa class="document-icon-lg" name="fas fa-file"></fa>
+     <p>Drag & Drop a file here or</p>
+  </div>
+  <div>
+      <span class="btn btn-outline-primary btn-file">
+          Browse...<input title="Click to add file" type="file" ng2FileSelect [uploader]="uploader">
+      </span>
+    </div>
+  </div>
+    </div>
+
+    <div class="col-12" style="margin-bottom: 40px">
+      <div *ngIf="uploader?.queue?.length > 0">
+        <div *ngFor="let item of uploader.queue">
+          <div>
+              <p>Are you sure you want to upload?</p>
+              <fa class="document-icon-sm" name="fas fa-file"></fa>  {{ item?.file?.name }}
+          </div>
+          <div class="button-footer">
+            <button type="button" class=" mr-3  btn btn-outline-secondary btn-xs" (click)="item.remove(); cancelUpload()">
+              <span class="glyphicon glyphicon-trash"></span> Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-xs"
+              (click)="upload(item)"
+              [disabled]="isUploading"
+            >
+              <span class="glyphicon glyphicon-upload"></span> {{generateUploadText()}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

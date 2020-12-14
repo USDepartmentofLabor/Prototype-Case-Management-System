@@ -1,0 +1,25 @@
+.edit-icon {
+    color: #b1b1b1;
+    margin-right: 5px;  
+    display: none;
+}
+
+.edit-icon:hover {
+    color: #007bff;
+}
+
+.editable-view-mode {
+    padding: 8px 2px;
+    line-height: 20px;
+}
+
+.editable-view-mode:hover {
+    /* background-color: rgb(228, 228, 228); */
+    border: 1px solid  rgb(228, 228, 228);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.editable:hover .edit-icon {
+	display: block;
+}

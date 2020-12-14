@@ -1,0 +1,56 @@
+<app-header></app-header>
+<router-outlet></router-outlet>
+<div *ngIf="isLoading">
+  <app-animated-loader></app-animated-loader>
+</div>
+<div
+  *ngIf="route.children.length === 0 && !isLoading"
+  class="animated fadeIn eps-container"
+>
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a
+              [routerLink]="['/cases']"
+              [queryParams]="{ case_defn_id: activity.case.definition.id }"
+            >
+              {{ activity.case.definition.name }}
+            </a>
+          </li>
+          <li class="breadcrumb-item">
+            <a [routerLink]="['/cases', activity.case.id]">
+              {{ activity.case.key }}</a
+            >
+          </li>
+          <li class="breadcrumb-item">Activities</li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ activity.id }}
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <app-left-pane
+        [activity]="activity"
+        (activityNameChanged)="onActivityNameChanged($event)"
+        (activityDescriptionChanged)="onActivityDescriptionChanged($event)"
+        (activityNoteAdded)="onActivityNoteAdded($event)"
+        (documentUploaded)="onActivityDocumentUpload($event)"
+        (documentDeleted)="onActivityDocumentDeleted($event)"
+      ></app-left-pane>
+    </div>
+    <div class="col-4">
+      <app-right-pane
+        [activityID]="activity.id"
+        [createdBy]="activity.created_by"
+        [customFields]="activity.custom_fields"
+        [isComplete]="activity.is_complete"
+        (isCompleteChanged)="onActivityIsCompleteChanged($event)"
+      ></app-right-pane>
+    </div>
+  </div>
+</div>

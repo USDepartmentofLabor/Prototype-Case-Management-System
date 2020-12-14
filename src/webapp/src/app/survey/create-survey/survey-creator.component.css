@@ -1,0 +1,9 @@
+.survey-container {
+  margin-top: 50px;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,.125);
+}
+
+.error-msg{
+  margin-bottom:10px;
+}

@@ -1,0 +1,74 @@
+{
+    "title": "Standard Household Intake Form",
+    "pages": [
+     {
+      "name": "page1",
+      "elements": [
+       {
+        "type": "text",
+        "name": "intake_date",
+        "title": "Intake Date",
+        "isRequired": true,
+        "inputType": "date"
+       },
+       {
+        "type": "text",
+        "name": "household_id",
+        "title": "ID",
+        "isRequired": true
+       },
+       {
+        "type": "text",
+        "name": "name",
+        "title": "Name",
+        "isRequired": true
+       },
+       {
+        "type": "text",
+        "name": "address_line_1",
+        "title": "Address Line 1"
+       },
+       {
+        "type": "text",
+        "name": "address_line_2",
+        "title": "Address Line 2"
+       },
+       {
+        "type": "text",
+        "name": "dependent_locality",
+        "title": "Neighborhood"
+       },
+       {
+        "type": "text",
+        "name": "locality",
+        "title": "City"
+       },
+       {
+        "type": "text",
+        "name": "dependent_adminv_area",
+        "title": "County"
+       },
+       {
+        "type": "text",
+        "name": "adminv_area",
+        "title": "State (Province)"
+       },
+       {
+        "type": "text",
+        "name": "postal_code",
+        "title": "Postal Code"
+       },
+       {
+        "type": "text",
+        "name": "country",
+        "title": "Country"
+       },
+       {
+        "type": "comment",
+        "name": "address_info",
+        "title": "Additional Address Information"
+       }
+      ]
+     }
+    ]
+   }

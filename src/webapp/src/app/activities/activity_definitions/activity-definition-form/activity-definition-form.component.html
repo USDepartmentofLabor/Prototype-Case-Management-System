@@ -1,0 +1,142 @@
+<h5>{{ headerLabel }}</h5>
+<form
+  [formGroup]="activityDefinitonForm"
+  (ngSubmit)="onSaveActivityDefinition()"
+  class="animated fadeIn form-wrapper mt-4"
+>
+  <div class="form-label-group">
+    <input
+      type="text"
+      id="inputName"
+      class="form-control capitalize-input"
+      formControlName="name"
+      [ngClass]="{ 'is-invalid': submitted && form.name.errors }"
+      placeholder="Activity Definition Name"
+      (change)="
+        activityDefinitonForm.patchValue({
+          name: $event.target.value
+        })
+      "
+      maxlength="35"
+      required
+      autofocus
+    />
+    <label for="inputName">Name</label>
+    <div *ngIf="submitted && form.name.errors" class="invalid-feedback">
+      <div *ngIf="form.name.errors.required">
+        Activity Definition Name is required
+      </div>
+      <div *ngIf="form.name.errors.minlength">
+        Activity Definition Name must contain 6 characters.
+      </div>
+    </div>
+  </div>
+
+  <div class="form-label-group">
+    <input
+      type="text"
+      id="inputDescription"
+      class="form-control"
+      formControlName="description"
+      placeholder="Activity Definition Description"
+    />
+    <label for="inputDescription">Description</label>
+    <small class="pl-2 form-text text-muted"> Optional</small>
+  </div>
+
+  <!-- CUSTOM FIELDS START -->
+  <div class="mt-5">
+    <custom-fields-creator
+      [customFieldsData]="activityDefinition.custom_fields"
+      (customFieldListChanged)="onCustomFieldsChanged($event)"
+    ></custom-fields-creator>
+  </div>
+  <!-- CUSTOM FIELDS END -->
+
+  <!-- SURVEYS START -->
+  <div>
+    <div class="row mt-5 mb-2">
+      <div class="col-6 pl-0">
+        <h5>Forms</h5>
+      </div>
+      <div class="col-6">
+        <!-- <button type="button" class="btn btn-primary pull-right">+ Create New Survey</button> -->
+      </div>
+    </div>
+  </div>
+  <p>
+    <fa name="fas fa-info-circle"></fa> Select one or more pre-created
+    forms to add to your Activity Definition.
+  </p>
+  <div
+    class="form-error-msg"
+    *ngIf="submitted && !form.surveyOptionsCheckBoxes.valid"
+  >
+    Must Select at least one form.
+  </div>
+  <div class="form-survey-group mt-3">
+    <label
+      class="survey-label mb-0"
+      formArrayName="surveyOptionsCheckBoxes"
+      *ngFor="
+        let survey of surveyOptionCheckBoxControls();
+        let i = index
+      "
+    >
+      <input type="checkbox" [formControlName]="i" />
+      {{ surveyOptions[i].name }}
+    </label>
+  </div>
+  <!-- SURVEYS END -->
+
+  <!-- DOCUMENTS START -->
+  <div>
+    <div class="row mt-5 mb-4">
+      <div class="col-6 pl-0">
+        <h5>Documents</h5>
+      </div>
+      <div class="col-6">
+        <button
+          (click)="openAddDocumentsModal()"
+          type="button"
+          class="btn btn-primary pull-right"
+        >
+          + New Documents
+        </button>
+      </div>
+    </div>
+  </div>
+  <p>
+    <fa name="fas fa-info-circle"></fa> Click New Documents to add
+    Documents to your Case Type.
+  </p>
+  <div *ngIf="!documentsAdded()" class="form-survey-group mt-3">
+    <label
+      class="documents-label mb-0"
+      *ngFor="let document of activityDefinition.documents"
+    >
+      {{ document.name }}
+      <small>{{
+        generateDocumentRequiredTxt(document.is_required)
+      }}</small>
+      <span
+        (click)="removeDocumentFromDocumentsList(document)"
+        type="button"
+        data-container="body"
+        placement="bottom"
+        ngbTooltip="Remove Document"
+        class="remove-doc-icon pull-right mr-2"
+      >
+        <fa name="fas fa-trash"></fa>
+      </span>
+    </label>
+  </div>
+  <!-- DOCUMENTS END -->
+
+  <div class="pull-right mt-5">
+    <button (click)="onCancel()" class="btn btn-link" type="button">
+      Cancel
+    </button>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </div>
+</form>

@@ -1,0 +1,26 @@
+.survey-content {
+  background-color: #FFF;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: 3px;
+}
+.list-survey-header,
+.list-survey-header-btn-container {
+  font-weight: 200;
+  display: inline-block;
+}
+
+.list-survey-header-btn-container {
+  vertical-align: super;
+  padding-left: 10px;
+}
+
+.view-survey{
+  cursor: default;
+}
+.meta-txt {
+  color: #f5f5f5;
+}
+
+.actions-btn{
+  padding: 0 !important;
+}

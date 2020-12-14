@@ -1,0 +1,90 @@
+<div class="row">
+  <div class="col-12 mt-3">
+    <div class="mb-4" *ngFor="let note of notes">
+      <div class="row">
+        <div class="col-1">
+          <span
+            class="w-40 user-inital-avatar circle"
+            data-container="body"
+            placement="top"
+            [ngClass]="note.created_by.color"
+            >{{ note.created_by.first_initial }}
+          </span>
+        </div>
+        <div class="col-11">
+          <div>{{ note.note }}</div>
+          <div>
+            <small class="text-muted"
+              ><strong>{{ note.created_by.name }}</strong> -
+              {{ formatNoteCreatedAtDate(note.created_at) }}
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top: 20px;">
+      <div class="col-1">
+        <span
+          class="w-40 user-inital-avatar circle"
+          data-container="body"
+          placement="top"
+          [ngClass]="currentUser.color"
+          >{{ currentUser.first_initial }}
+        </span>
+      </div>
+      <div class="col-11">
+        <div *ngIf="!inNoteEditMode">
+          <div class="form-label-group" class="editable-view-mode">
+            <input
+              type="text"
+              placeholder="Add Note..."
+              class="form-control"
+              (click)="onChangeMode()"
+            />
+          </div>
+        </div>
+        <div *ngIf="inNoteEditMode" class="editable-edit-mode">
+          <form
+            [formGroup]="noteForm"
+            (ngSubmit)="onSaveNote()"
+            class="animated fadeIn form-wrapper mt4"
+          >
+            <div class="form-label-group">
+              <textarea
+                class="form-control"
+                formControlName="note"
+                name="note"
+                id="note"
+                rows="6"
+                placeholder="Add Note..."
+                autofocus
+              ></textarea>
+              <div class="btn-tools-wrapper pull-right">
+                <button
+                  class="btn btn-primary"
+                  [disabled]="isSavingCaseNote"
+                  [ngClass]="{ disabled: isSavingCaseNote }"
+                >
+                  <fa *ngIf="!isSavingCaseNote" name="fas fa-check"></fa>
+                  <fa
+                    *ngIf="isSavingCaseNote"
+                    class="empty-data-icon"
+                    name="fas fa-spinner fa-spin"
+                  ></fa>
+                </button>
+                <button
+                  class="btn btn-light"
+                  [disabled]="isSavingCaseNote"
+                  (click)="onChangeMode()"
+                >
+                  <fa name="fas fa-times"></fa>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

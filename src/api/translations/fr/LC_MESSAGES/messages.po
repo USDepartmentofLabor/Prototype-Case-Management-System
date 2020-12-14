@@ -1,0 +1,870 @@
+# French translations for PROJECT.
+# Copyright (C) 2020 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2020-10-15 03:25+0000\n"
+"PO-Revision-Date: 2020-03-19 22:48-0400\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.8.0\n"
+
+#: app/helpers.py:35
+msgid "Invalid token"
+msgstr "Jeton invalide"
+
+#: app/helpers.py:51
+msgid "You are not authorized to access this endpoint"
+msgstr "Vous n'êtes pas autorisé à accéder à ce point de terminaison"
+
+#: app/models.py:27
+msgid "Administrator"
+msgstr "Administrateur"
+
+#: app/models.py:29
+msgid "System Installation"
+msgstr "Installation du système"
+
+#: app/models.py:31
+msgid "System Configuration"
+msgstr "Configuration du système"
+
+#: app/models.py:32
+msgid "You do not have permission to configure the system."
+msgstr "Vous n'êtes pas autorisé à configurer le système."
+
+#: app/models.py:34
+msgid "Create Account"
+msgstr "Créer un compte"
+
+#: app/models.py:36
+msgid "View Account"
+msgstr "Afficher le compte"
+
+#: app/models.py:38
+msgid "Change Account"
+msgstr "Changer de compte"
+
+#: app/models.py:40
+msgid "Delete Account"
+msgstr "Supprimer le compte"
+
+#: app/models.py:42
+msgid "Create Role"
+msgstr "Créer un rôle"
+
+#: app/models.py:44
+msgid "View Role"
+msgstr "Afficher le rôle"
+
+#: app/models.py:46
+msgid "Change Role"
+msgstr "Changer de rôle"
+
+#: app/models.py:48
+msgid "Delete Role"
+msgstr "Supprimer le rôle"
+
+#: app/models.py:50
+msgid "Create Data Collection Form"
+msgstr "Créer un formulaire de collecte de données"
+
+#: app/models.py:52
+msgid "View Data Collection Form"
+msgstr "Afficher le formulaire de collecte de données"
+
+#: app/models.py:54
+msgid "Change Data Collection Form"
+msgstr "Modifier le formulaire de collecte de données"
+
+#: app/models.py:56
+msgid "Delete Data Collection Form"
+msgstr "Supprimer le formulaire de collecte de données"
+
+#: app/models.py:58
+msgid "Submit Data Collection Form"
+msgstr "Soumettre le formulaire de collecte de données"
+
+#: app/models.py:60
+msgid "Archive Data Collection Form"
+msgstr "Formulaire de collecte de données d'archives"
+
+#: app/models.py:62
+msgid "View Report"
+msgstr "Voir le rapport"
+
+#: app/models.py:64
+msgid "Create Case Definition"
+msgstr "Créer une définition de cas"
+
+#: app/models.py:66
+msgid "View Case Definition"
+msgstr "Afficher la définition de cas"
+
+#: app/models.py:68
+msgid "Change Case Definition"
+msgstr "Modifier la définition de cas"
+
+#: app/models.py:70
+msgid "Delete Case Definition"
+msgstr "Supprimer la définition de cas"
+
+#: app/models.py:72
+msgid "Create Case"
+msgstr "Créer un cas"
+
+#: app/models.py:74
+msgid "Read Case"
+msgstr "Lire le cas"
+
+#: app/models.py:76
+msgid "Change Case"
+msgstr "Changer de cas"
+
+#: app/models.py:78
+msgid "Delete Case"
+msgstr "Supprimer le cas"
+
+#: app/models.py:80
+msgid "Assign to a Case"
+msgstr "Attribuer à un cas"
+
+#: app/models.py:82
+msgid "Assignable to a Case"
+msgstr "Affectable à un cas"
+
+#: app/models.py:84
+msgid "Reset Reporting Database"
+msgstr "Réinitialiser la base de données de rapports"
+
+#: app/models.py:86
+msgid "Create Project Information"
+msgstr "Créer des informations sur le projet"
+
+#: app/models.py:88
+msgid "View Project Information"
+msgstr "Afficher les informations sur le projet"
+
+#: app/models.py:90
+msgid "Change Project Information"
+msgstr "Modifier les informations sur le projet"
+
+#: app/models.py:92
+msgid "Delete Project Information"
+msgstr "Supprimer les informations sur le projet"
+
+#: app/models.py:94
+msgid "Create Activity Definition"
+msgstr "Créer une définition d'activité"
+
+#: app/models.py:96
+msgid "View Activity Definition"
+msgstr "Afficher la définition d'activité"
+
+#: app/models.py:98
+msgid "Change Activity Definition"
+msgstr "Modifier la définition de l'activité"
+
+#: app/models.py:100
+msgid "Delete Activity Definition"
+msgstr "Supprimer la définition d'activité"
+
+#: app/models.py:102
+msgid "Create Activity"
+msgstr "Créer une activité"
+
+#: app/models.py:104
+msgid "View Activity"
+msgstr "Voir l'activité"
+
+#: app/models.py:106
+msgid "Change Activity"
+msgstr "Changer d'activité"
+
+#: app/models.py:108
+msgid "Delete Activity"
+msgstr "Supprimer l'activité"
+
+#: app/models.py:110
+msgid "You do not have permission to add a user to the system."
+msgstr "Vous n'êtes pas autorisé à ajouter un utilisateur au système"
+
+#: app/models.py:111
+msgid "You do not have permission to read users."
+msgstr "Vous n'êtes pas autorisé à lire les utilisateurs"
+
+#: app/models.py:112
+msgid "You do not have permission to update users."
+msgstr "Vous n'êtes pas autorisé à mettre à jour les utilisateurs"
+
+#: app/models.py:113
+msgid "You do not have permission to delete users."
+msgstr "Vous n'êtes pas autorisé à supprimer des utilisateurs"
+
+#: app/models.py:115
+msgid "You do not have permission to add a role."
+msgstr "Vous n'êtes pas autorisé à ajouter un rôle."
+
+#: app/models.py:116
+msgid "You do not have permission to view roles."
+msgstr "Vous n'êtes pas autorisé à afficher les rôles."
+
+#: app/models.py:117
+msgid "You do not have permission to update a role."
+msgstr "Vous n'êtes pas autorisé à mettre à jour un rôle."
+
+#: app/models.py:118
+msgid "You do not have permission to delete a role."
+msgstr "Vous n'êtes pas autorisé à supprimer un rôle."
+
+#: app/models.py:120
+msgid "You do not have permission to create a case definition."
+msgstr "Vous n'êtes pas autorisé à créer une définition de cas"
+
+#: app/models.py:121
+msgid "You do not have permission to read case definitions."
+msgstr "Vous n'êtes pas autorisé à lire les définitions de cas"
+
+#: app/models.py:122
+msgid "You do not have permission to update case definitions."
+msgstr "Vous n'êtes pas autorisé à mettre à jour les définitions de cas"
+
+#: app/models.py:123
+msgid "You do not have permission to delete case definitions."
+msgstr "Vous n'êtes pas autorisé à supprimer les définitions de cas"
+
+#: app/models.py:124
+msgid "You do not have permission to create a case."
+msgstr "Vous n'êtes pas autorisé à créer un cas"
+
+#: app/models.py:125
+msgid "You do not have permission to read cases."
+msgstr "Vous n'êtes pas autorisé à lire les cas"
+
+#: app/models.py:126
+msgid "You do not have permission to update cases."
+msgstr "Vous n'êtes pas autorisé à mettre à jour les cas"
+
+#: app/models.py:127
+msgid "You do not have permission to delete cases."
+msgstr "Vous n'êtes pas autorisé à supprimer des cas"
+
+#: app/models.py:128
+msgid "You do not have permission to create a survey."
+msgstr "Vous n'êtes pas autorisé à créer une enquête"
+
+#: app/models.py:129
+msgid "You do not have permission to read surveys."
+msgstr "Vous n'êtes pas autorisé à lire les sondages"
+
+#: app/models.py:130
+msgid "You do not have permission to update surveys."
+msgstr "Vous n'êtes pas autorisé à mettre à jour les sondages"
+
+#: app/models.py:131
+msgid "You do not have permission to delete surveys."
+msgstr "Vous n'êtes pas autorisé à supprimer les enquêtes"
+
+#: app/models.py:132
+msgid "You do not have permission to submit a survey."
+msgstr "Vous n'êtes pas autorisé à soumettre une enquête"
+
+#: app/models.py:134
+msgid "You do not have permission to reset mongo."
+msgstr "Vous n'êtes pas autorisé à réinitialiser Mongo"
+
+#: app/models.py:136
+msgid "You do not have permission to create a project."
+msgstr "Vous n'êtes pas autorisé à créer un projet"
+
+#: app/models.py:137
+msgid "You do not have permission to read a project."
+msgstr "Vous n'êtes pas autorisé à lire un projet"
+
+#: app/models.py:138
+msgid "You do not have permission to update a project."
+msgstr "Vous n'êtes pas autorisé à mettre à jour un projet"
+
+#: app/models.py:139
+msgid "You do not have permission to delete a project."
+msgstr "Vous n'êtes pas autorisé à supprimer un projet"
+
+#: app/models.py:141
+msgid "You do not have permission to create an activity definition."
+msgstr "Vous n'êtes pas autorisé à créer une définition d'activité."
+
+#: app/models.py:143
+msgid "You do not have permission to read an activity definition."
+msgstr "Vous n'êtes pas autorisé à lire une définition d'activité."
+
+#: app/models.py:145
+msgid "You do not have permission to update an activity definition."
+msgstr "Vous n'êtes pas autorisé à mettre à jour une définition d'activité."
+
+#: app/models.py:147
+msgid "You do not have permission to delete an activity definition."
+msgstr "Vous n'êtes pas autorisé à supprimer une définition d'activité."
+
+#: app/models.py:150
+msgid "You do not have permission to create an activity."
+msgstr "Vous n'êtes pas autorisé à créer une activité."
+
+#: app/models.py:152
+msgid "You do not have permission to read an activity."
+msgstr "Vous n'êtes pas autorisé à lire une activité."
+
+#: app/models.py:154
+msgid "You do not have permission to update an activity."
+msgstr "Vous n'êtes pas autorisé à mettre à jour une activité."
+
+#: app/models.py:156
+msgid "You do not have permission to delete an activity."
+msgstr "Vous n'êtes pas autorisé à supprimer une activité."
+
+#: app/activities/activities_service.py:19
+msgid "A name is required for a activity."
+msgstr "Un nom est requis pour une activité."
+
+#: app/activities/activities_service.py:23
+#: app/activities/activities_service.py:155
+msgid "Activity names must be at least 8 characters long."
+msgstr "Les noms d'activité doivent comporter au moins 8 caractères."
+
+#: app/activities/activities_service.py:27
+#: app/activities/activities_service.py:159
+msgid "Activity names cannot be longer than 50 characters."
+msgstr "Les noms d'activités ne peuvent pas comporter plus de 50 caractères."
+
+#: app/activities/activities_service.py:33
+#: app/activities/activities_service.py:165
+msgid "Activity names must be unique."
+msgstr "Les noms d'activité doivent être uniques."
+
+#: app/activities/activities_service.py:66 app/cases/cases_service.py:96
+msgid "IDs cannot not be empty for custom fields"
+msgstr "Les ID ne peuvent pas être vides pour les champs personnalisés"
+
+#: app/activities/activities_service.py:97 app/cases/cases_service.py:126
+msgid "Submitted custom field IDs must be unique"
+msgstr "Les ID de champ personnalisé soumis doivent être uniques"
+
+#: app/activities/activities_service.py:100 app/cases/cases_service.py:129
+msgid "Invalid custom field"
+msgstr "Champ personnalisé non valide"
+
+#: app/activities/activities_service.py:103
+msgid "Unknown activity definition custom field ID"
+msgstr "ID de champ personnalisé de définition d'activité inconnue"
+
+#: app/activities/activities_service.py:109 app/cases/cases_service.py:138
+msgid "custom_fields property must be a list"
+msgstr "La propriété custom_fields doit être une liste"
+
+#: app/activities/activities_service.py:147
+#: app/activities/activities_service.py:151
+msgid "A name is required for an activity."
+msgstr "Un nom est requis pour une activité."
+
+#: app/activities/views.py:86
+msgid "Activity successfully deleted."
+msgstr "Activité supprimée avec succès."
+
+#: app/activities/views.py:89
+msgid "There was an issue deleting the activity."
+msgstr "Un problème est survenu lors de la suppression de l'activité."
+
+#: app/activities/views.py:134
+msgid "The activity's custom field was not found"
+msgstr "Le champ personnalisé de l'activité est introuvable"
+
+#: app/activities/views.py:154 app/cases/views.py:321
+msgid "No file uploaded"
+msgstr "Aucun fichier téléchargé"
+
+#: app/activities/views.py:161 app/cases/views.py:327
+msgid "Invalid file extension for upload"
+msgstr "Extension de fichier non valide pour l'importation"
+
+#: app/activities/views.py:305 app/cases/views.py:477
+msgid "File successfully deleted"
+msgstr "Fichier supprimé avec succès"
+
+#: app/activities/views.py:393
+msgid "Activity note successfully deleted."
+msgstr "La note d'activité a bien été supprimée."
+
+#: app/activities/views.py:396
+msgid "There was an issue deleting the activity note."
+msgstr "Un problème est survenu lors de la suppression de la note d'activité."
+
+#: app/activity_definitions/activity_definitions_service.py:23
+msgid "A name is required for an activity definition."
+msgstr "Un nom est requis pour une définition d'activité."
+
+#: app/activity_definitions/activity_definitions_service.py:27
+msgid "Activity Definition names must be unique."
+msgstr "Les noms de définition d'activité doivent être uniques."
+
+#: app/activity_definitions/activity_definitions_service.py:48
+#: app/activity_definitions/activity_definitions_service.py:147
+#: app/case_definitions/case_definitions_service.py:97
+#: app/case_definitions/case_definitions_service.py:195
+msgid "Invalid survey ID submitted."
+msgstr "ID d'enquête non valide soumis."
+
+#: app/activity_definitions/activity_definitions_service.py:56
+#: app/case_definitions/case_definitions_service.py:105
+#: app/case_definitions/case_definitions_service.py:204
+msgid "A name is required for each case definition document."
+msgstr "Un nom est requis pour chaque document de définition de cas."
+
+#: app/activity_definitions/activity_definitions_service.py:78
+#: app/case_definitions/case_definitions_service.py:40
+#: app/case_definitions/case_definitions_service.py:121
+msgid "A name is required for each custom field."
+msgstr "Un nom est requis pour chaque champ personnalisé."
+
+#: app/activity_definitions/activity_definitions_service.py:82
+#: app/case_definitions/case_definitions_service.py:43
+#: app/case_definitions/case_definitions_service.py:126
+msgid "A field type is required for each custom field."
+msgstr "Un type de champ est requis pour chaque champ personnalisé."
+
+#: app/activity_definitions/activity_definitions_service.py:87
+msgid "The custom field refers to an invalid field type."
+msgstr "Le champ personnalisé fait référence à un type de champ non valide."
+
+#: app/activity_definitions/activity_definitions_service.py:94
+#: app/case_definitions/case_definitions_service.py:48
+#: app/case_definitions/case_definitions_service.py:135
+msgid "An id property is required for custom field selections."
+msgstr "Une propriété id est requise pour les sélections de champs personnalisés."
+
+#: app/activity_definitions/activity_definitions_service.py:113
+msgid "Custom field IDs must be unique."
+msgstr "Les ID de champ personnalisés doivent être uniques."
+
+#: app/activity_definitions/activity_definitions_service.py:117
+msgid "The custom_fields property must be a list."
+msgstr "La propriété custom_fields doit être une liste."
+
+#: app/activity_definitions/activity_definitions_service.py:156
+msgid "A name is required for each activity definition document."
+msgstr "Un nom est requis pour chaque document de définition d'activité."
+
+#: app/activity_definitions/activity_definitions_service.py:212
+#: app/activity_definitions/activity_definitions_service.py:233
+msgid "Activity definition successfully deleted."
+msgstr "La définition d'activité a bien été supprimée."
+
+#: app/auth/views.py:19 app/auth/views.py:111 app/auth/views.py:141
+#: app/case_definitions/views.py:76 app/cases/views.py:227
+#: app/cases/views.py:266 app/main/views.py:92 app/project/views.py:63
+#: app/project/views.py:116 app/surveys/views.py:69 app/surveys/views.py:172
+#: app/surveys/views.py:232 app/surveys/views.py:311 app/users/views.py:20
+#: app/users/views.py:135 app/users/views.py:217
+msgid "Missing JSON in request"
+msgstr "JSON manquant dans la demande"
+
+#: app/auth/views.py:26
+msgid "Missing login parameter"
+msgstr "Paramètre de connexion manquant"
+
+#: app/auth/views.py:29
+msgid "Missing password parameter"
+msgstr "Paramètre de mot de passe manquant"
+
+#: app/auth/views.py:36
+msgid "unknown user"
+msgstr "Utilisateur inconnu"
+
+#: app/auth/views.py:42
+msgid "User is inactive"
+msgstr "L'utilisateur est inactif"
+
+#: app/auth/views.py:46
+msgid "Bad login or password"
+msgstr "Identifiant ou mot de passe incorrect"
+
+#: app/auth/views.py:101
+msgid "Successfully logged out"
+msgstr "Déconnexion réussie"
+
+#: app/auth/views.py:118 app/users/views.py:245
+msgid "User's email addresses cannot be null or empty."
+msgstr "Les adresses e-mail de l'utilisateur ne peuvent pas être nulles ou vides"
+
+#: app/auth/views.py:131
+msgid "An email with instructions to reset your password has been sent to you."
+msgstr ""
+"Un e-mail contenant des instructions pour réinitialiser votre mot de "
+"passe vous a été envoyé."
+
+#: app/auth/views.py:148
+msgid "New password is missing."
+msgstr "Un nouveau mot de passe est manquant"
+
+#: app/auth/views.py:151
+msgid "Confirmation password is missing."
+msgstr "Le mot de passe de confirmation est manquant."
+
+#: app/auth/views.py:154 app/users/views.py:36
+msgid "Passwords must match."
+msgstr "Les mots de passe doivent correspondre"
+
+#: app/auth/views.py:157 app/users/views.py:39
+msgid "Password must be at least 10 characters long."
+msgstr "Le mot de passe doit contenir au moins 10 caractères"
+
+#: app/auth/views.py:160 app/users/views.py:42
+msgid "Password must be less than 64 characters long."
+msgstr "Le mot de passe doit comporter moins de 64 caractères"
+
+#: app/auth/views.py:165
+msgid "Your password was successfully reset."
+msgstr "Votre mot de passe n'a pas été réinitialisé avec succès"
+
+#: app/auth/views.py:168
+msgid "Your password was not successfully reset."
+msgstr "Votre mot de passe a été réinitialisé avec succès"
+
+#: app/case_definitions/case_definitions_service.py:65
+msgid "A key is required for a case definition."
+msgstr "Une clé est requise pour une définition de cas."
+
+#: app/case_definitions/case_definitions_service.py:69
+msgid "Case Definition keys must be unique."
+msgstr "Les clés de définition de cas doivent être uniques."
+
+#: app/case_definitions/case_definitions_service.py:75
+msgid "A name is required for a case definition."
+msgstr "Un nom est requis pour une définition de cas."
+
+#: app/case_definitions/case_definitions_service.py:79
+msgid "Case Definition names must be unique."
+msgstr "Les noms de définition de cas doivent être uniques."
+
+#: app/case_definitions/case_definitions_service.py:255
+msgid "Custom Field ID is required"
+msgstr "L'ID de champ personnalisé est requis"
+
+#: app/case_definitions/case_definitions_service.py:315
+#: app/case_definitions/views.py:126
+msgid "Case definition successfully deleted."
+msgstr "La définition de cas a bien été supprimée."
+
+#: app/cases/cases_service.py:20 app/cases/views.py:65 app/cases/views.py:69
+msgid "A name is required for a case."
+msgstr "Un nom est requis pour un cas."
+
+#: app/cases/cases_service.py:24 app/cases/views.py:73
+msgid "Case names must be at least 8 characters long."
+msgstr "Les noms de cas doivent comporter au moins 8 caractères."
+
+#: app/cases/cases_service.py:28 app/cases/views.py:77
+msgid "Case names cannot be longer than 50 characters."
+msgstr "Les noms de cas ne peuvent pas dépasser 50 caractères."
+
+#: app/cases/cases_service.py:34 app/cases/views.py:83
+msgid "Case names must be unique."
+msgstr "Les noms de cas doivent être uniques."
+
+#: app/cases/cases_service.py:44 app/cases/views.py:114
+msgid "Cannot assigned case to unknown user id."
+msgstr "Impossible d'attribuer la casse à l'ID utilisateur inconnu."
+
+#: app/cases/cases_service.py:48 app/cases/views.py:118
+msgid "User does not have permission to be assigned to a case."
+msgstr "L'utilisateur n'a pas l'autorisation d'être affecté à un cas."
+
+#: app/cases/cases_service.py:51 app/cases/views.py:121
+msgid "Cannot assigned case to invalid user."
+msgstr "Impossible d'attribuer la casse à l'utilisateur non valide."
+
+#: app/cases/cases_service.py:132
+msgid "Unknown case definition custom field ID"
+msgstr "ID de champ personnalisé de définition de cas inconnu"
+
+#: app/cases/views.py:92
+#, python-format
+msgid "Invalid case status_id: %(status_id)s"
+msgstr "Cas non valide status_id:% (status_id)s"
+
+#: app/cases/views.py:98
+msgid "All required case documents have not been uploaded."
+msgstr "Tous les documents de cas requis n'ont pas été téléchargés."
+
+#: app/cases/views.py:171
+msgid "Case successfully deleted."
+msgstr "Le cas a bien été supprimé."
+
+#: app/cases/views.py:234
+msgid "A case is required for notes"
+msgstr "Un étui est requis pour les notes"
+
+#: app/cases/views.py:238
+msgid "A note is required"
+msgstr "Une note est requise"
+
+#: app/cases/views.py:301
+msgid "Case Note successfully deleted."
+msgstr "La note de cas a bien été supprimée."
+
+#: app/cases/views.py:490 app/cases/views.py:508 app/cases/views.py:526
+msgid "Case ID was not found"
+msgstr "L'ID de cas est introuvable"
+
+#: app/cases/views.py:492 app/cases/views.py:510
+msgid "The case's custom field was not found"
+msgstr "Le champ personnalisé du cas est introuvable"
+
+#: app/main/views.py:20
+msgid "I'm here"
+msgstr "Je suis ici"
+
+#: app/main/views.py:29
+#, python-format
+msgid "Hi %(email)s"
+msgstr "Salut %(email)s"
+
+#: app/project/views.py:19 app/project/views.py:128
+msgid "A name is required for a project."
+msgstr "Un nom est requis pour un projet."
+
+#: app/project/views.py:22 app/project/views.py:132
+msgid "Project names cannot be longer than 64 characters."
+msgstr "Les noms de projet ne peuvent pas dépasser 64 caractères."
+
+#: app/project/views.py:28 app/project/views.py:144
+msgid "Project organizations cannot be longer than 64 characters."
+msgstr "Les organisations de projet ne peuvent pas dépasser 64 caractères."
+
+#: app/project/views.py:33 app/project/views.py:153
+msgid "Project agreement numbers cannot be longer than 30 characters."
+msgstr "Les numéros d'accord de projet ne peuvent pas dépasser 30 caractères."
+
+#: app/project/views.py:67
+msgid "The system already has a project setup."
+msgstr "Le système a déjà une configuration de projet."
+
+#: app/project/views.py:97 app/project/views.py:120 app/project/views.py:188
+msgid "A project has not been setup."
+msgstr "Un projet n'a pas été configuré."
+
+#: app/project/views.py:197
+msgid "Project successfully deleted."
+msgstr "Projet supprimé avec succès."
+
+#: app/roles/views.py:25
+msgid "Roles are required to have a name."
+msgstr "Les rôles doivent avoir un nom."
+
+#: app/roles/views.py:29 app/roles/views.py:86
+msgid "Role names can not be longer than 64 characters."
+msgstr "Les noms de rôle ne peuvent pas dépasser 64 caractères."
+
+#: app/roles/views.py:35 app/roles/views.py:98
+msgid "A default role already exists."
+msgstr "Un rôle par défaut existe déjà."
+
+#: app/roles/views.py:136
+msgid "Cannot delete the admin role."
+msgstr "Impossible de supprimer le rôle d'administrateur."
+
+#: app/roles/views.py:140
+msgid "Cannot delete the default role."
+msgstr "Impossible de supprimer le rôle par défaut."
+
+#: app/roles/views.py:160
+msgid "The role has been successfully deleted."
+msgstr "Le rôle a été supprimé avec succès."
+
+#: app/surveys/views.py:28 app/surveys/views.py:124
+#, python-format
+msgid "Unsupported archived filter : %(archived)s"
+msgstr "Filtre archivé non pris en charge: %(archived)s"
+
+#: app/surveys/views.py:76
+msgid "You must provide a survey id in your put object."
+msgstr "Vous devez fournir un identifiant d'enquête dans votre objet put"
+
+#: app/surveys/views.py:79
+msgid "The survey id in the URL does not match the survey id in your put object."
+msgstr ""
+"L'ID d'enquête dans l'URL ne correspond pas à l'ID d'enquête dans votre "
+"objet put"
+
+#: app/surveys/views.py:84 app/surveys/views.py:188
+msgid "Unable to figure out the name of your survey."
+msgstr "Impossible de déterminer le nom de votre enquête."
+
+#: app/surveys/views.py:88 app/surveys/views.py:192
+msgid "The survey's name must start with a character."
+msgstr "Le nom de l'enquête doit commencer par un caractère."
+
+#: app/surveys/views.py:95 app/surveys/views.py:199
+msgid ""
+"You have submitted a survey that has the same name as another survey. "
+"Survey names must be unique. Please change the survey name and resubmit."
+msgstr ""
+"Vous avez soumis une enquête portant le même nom qu'une autre enquête. "
+"Les noms de l'enquête doivent être uniques. Veuillez modifier le nom de "
+"l'enquête et soumettre à nouveau."
+
+#: app/surveys/views.py:180
+msgid "The structure for your survey is missing."
+msgstr "La structure de votre enquête est manquante."
+
+#: app/surveys/views.py:183
+msgid "The name for your survey is missing."
+msgstr "Le nom de votre enquête est manquant."
+
+#: app/surveys/views.py:240 app/surveys/views.py:245 app/surveys/views.py:319
+msgid "The structure for your survey response is missing."
+msgstr "La structure de votre réponse à l'enquête est manquante."
+
+#: app/surveys/views.py:250 app/surveys/views.py:324
+msgid "The survey response status you provided is invalid."
+msgstr "Le statut de réponse à l'enquête que vous avez fourni n'est pas valide."
+
+#: app/surveys/views.py:255 app/surveys/views.py:332
+msgid "The survey response source value you provided is invalid."
+msgstr ""
+"La valeur de la source de réponse à l'enquête que vous avez fournie n'est"
+" pas valide."
+
+#: app/surveys/views.py:378
+msgid "Survey successfully deleted."
+msgstr "L'enquête a bien été supprimée"
+
+#: app/surveys/views.py:399
+msgid "Survey response successfully deleted."
+msgstr "Réponse au sondage supprimée avec succès"
+
+#: app/users/views.py:30
+msgid "Missing new_password"
+msgstr "Nouveau mot de passe manquant"
+
+#: app/users/views.py:33
+msgid "Missing confirm_password"
+msgstr "Mot de passe de confirmation manquant"
+
+#: app/users/views.py:53
+msgid "Password has been updated"
+msgstr "le mot de passe a été mis à jour"
+
+#: app/users/views.py:57
+msgid "Not authorized"
+msgstr "Pas autorisé"
+
+#: app/users/views.py:77
+msgid "The welcome email was sent to the user."
+msgstr "L'email de bienvenue a été envoyé à l'utilisateur"
+
+#: app/users/views.py:81
+msgid "You do not have permission to resend a welcome email to a user."
+msgstr ""
+"Vous n'êtes pas autorisé à renvoyer un e-mail de bienvenue à un "
+"utilisateur"
+
+#: app/users/views.py:102
+#, python-format
+msgid "Unsupported status filter : %(status)s"
+msgstr "Filtre d'état non pris en charge:  %(status)s"
+
+#: app/users/views.py:145
+msgid "Missing email"
+msgstr "E-mail manquant"
+
+#: app/users/views.py:148 app/users/views.py:248
+msgid "The email address you provided is already in use."
+msgstr "L'adresse e-mail que vous avez fournie est déjà utilisée"
+
+#: app/users/views.py:151
+msgid "Missing username"
+msgstr "Nom d'utilisateur manquant"
+
+#: app/users/views.py:154 app/users/views.py:256
+msgid "The username you provided is already in use."
+msgstr "Le nom d'utilisateur que vous avez fourni est déjà utilisé"
+
+#: app/users/views.py:160
+msgid "Role id should be a integer number."
+msgstr "L'ID de rôle doit être un nombre entier."
+
+#: app/users/views.py:163
+#, python-format
+msgid "%(role_id)s is an invalid role id."
+msgstr "%(role_id)s est un ID de rôle non valide."
+
+#: app/users/views.py:227
+msgid "You do not have permission to change someone's active flag."
+msgstr "Vous n'êtes pas autorisé à modifier le drapeau actif de quelqu'un"
+
+#: app/users/views.py:232
+msgid "Admin users cannot be disabled."
+msgstr "Les utilisateurs administrateurs ne peuvent pas être désactivés."
+
+#: app/users/views.py:237
+msgid "You must provide a user id in your put object."
+msgstr "Vous devez fournir un ID utilisateur dans votre objet put"
+
+#: app/users/views.py:240
+msgid "The user id in the URL does not match the user id in your put object."
+msgstr ""
+"L'ID utilisateur dans l'URL ne correspond pas à l'ID utilisateur dans "
+"votre objet put"
+
+#: app/users/views.py:253
+msgid "Usernames cannot be null or empty."
+msgstr "Les noms d'utilisateur ne peuvent pas être nuls ou vides"
+
+#: app/users/views.py:263
+msgid "The provided role id is not a valid role id."
+msgstr "L'ID de rôle fourni n'est pas un ID de rôle valide"
+
+#: app/users/views.py:284
+msgid "You provided an unsupported color"
+msgstr "Vous avez fourni une couleur non prise en charge"
+
+#: app/users/views.py:328
+msgid "Endpoint does not exist"
+msgstr "Le point de terminaison n'existe pas"
+
+#: app/users/views.py:369
+msgid "The user has been deleted."
+msgstr "L'utilisateur a été supprimé"
+
+#~ msgid "Create Calculation"
+#~ msgstr "Créer un calcul"
+
+#~ msgid "View Calculation"
+#~ msgstr "Afficher le calcul"
+
+#~ msgid "Change Calculation"
+#~ msgstr "Modifier le calcul"
+
+#~ msgid "Delete Calculation"
+#~ msgstr "Supprimer le calcul"
+
+#~ msgid "Create Report"
+#~ msgstr "Creer un rapport"
+
+#~ msgid "Change Report"
+#~ msgstr "Rapport de changement"
+
+#~ msgid "Delete Report"
+#~ msgstr "Supprimer le rapport"
+
+#~ msgid "Public Report"
+#~ msgstr "Rapport public"
+

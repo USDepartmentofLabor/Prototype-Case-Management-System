@@ -1,0 +1,37 @@
+{
+  "title": "Age and Country Survey",
+  "pages": [
+    {
+      "name": "page1",
+      "elements": [
+        {
+          "type": "text",
+          "name": "survey_date",
+          "title": "Today's Date",
+          "isRequired": true,
+          "inputType": "date"
+        },
+        {
+          "type": "text",
+          "name": "name",
+          "title": "Name",
+          "isRequired": true
+        },
+        {
+          "type": "text",
+          "name": "age",
+          "title": "Age",
+          "isRequired": true,
+          "inputType": "number"
+        },
+        {
+          "type": "text",
+          "name": "country",
+          "title": "Country",
+          "isRequired": true
+        }
+      ],
+      "description": "Please enter your name, age and the current country you live in."
+    }
+  ]
+}

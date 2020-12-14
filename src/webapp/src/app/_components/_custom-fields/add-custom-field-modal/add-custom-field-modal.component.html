@@ -1,0 +1,130 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">{{ headerTxt }}</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form [formGroup]="newCustomFieldForm" (ngSubmit)="addNewCustomField()" class="animated fadeIn">
+  <div class="modal-body custom-field-body">
+    <div class="row">
+      <div class="col-12 animated fadeIn">
+        <div class="mb-4">
+          <h5 class="mb-3">{{ customFieldTitle }}</h5>
+        </div>
+        <div *ngIf="errorMsg" class="alert alert-danger" role="alert">
+          {{ errorMsg }}
+        </div>
+        <div class="form-label-group">
+          <input
+            type="formName"
+            class="form-control"
+            formControlName="name"
+            [ngClass]="{ 'is-invalid': submitted && form.name.errors }"
+            placeholder="Field Name"
+            required
+            autofocus
+          />
+          <label>Field Name</label>
+          <div *ngIf="submitted && form.name.errors" class="invalid-feedback">
+            <div *ngIf="form.name.errors.required">Field Name is required</div>
+          </div>
+        </div>
+        <div class="form-label-group">
+          <input
+            type="formName"
+            class="form-control"
+            formControlName="placeholder"
+            placeholder="Placeholder"
+          />
+          <!-- <small class="optional-text ml-2">Optional</small> -->
+          <label>Placeholder Text (Optional)</label>
+        </div>
+        <div class="form-label-group">
+          <textarea
+            class="form-control"
+            formControlName="helpText"
+            name="helpText"
+            rows="2"
+            placeholder="Add help text...(Optional)"
+            autofocus
+          ></textarea>
+          <!-- <small class="optional-text ml-2">Optional</small> -->
+        </div>
+        <div class="form-label-group">
+          <select
+            (change)="onFieldTypeSelection()"
+            formControlName="fieldType"
+            class="form-control"
+            [ngClass]="{ 'is-invalid': submitted && form.fieldType.errors }"
+          >
+            <option *ngFor="let fieldType of customFieldTypes" [ngValue]="fieldType.value">
+              {{ fieldType.displayName }}
+            </option>
+          </select>
+          <div class="add-selection-container mt-2" *ngIf="showSelectOptions">
+            <div
+              *ngFor="
+                let selections of newCustomFieldForm.controls['selections'].controls;
+                let i = index
+              "
+            >
+              <div [formGroup]="selections">
+                <div class="row mt-2">
+                  <div class="col-8 pr-1">
+                    <div class="form-label-group">
+                      <input
+                        type="text"
+                        class="form-control"
+                        formControlName="value"
+                        placeholder="Add New Option"
+                      />
+                      <small class="optional-text ml-2">Add option here...</small>
+                      <label for="newOption">Option</label>
+                    </div>
+                  </div>
+                  <div class="col-4 no-padding pt-2">
+                    <button
+                      class="pull-left btn btn-outline-danger"
+                      (click)="removeOptionFromCustomField(i)"
+                    >
+                      <fa class="empty-data-icon" name="fas fa-trash"></fa> Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="btn btn-success mt-2 ml-3"
+              (click)="addOptionToCustomField()"
+            >
+              + Add Option
+            </button>
+          </div>
+          <div *ngIf="submitted && form.fieldType.errors" class="invalid-feedback">
+            <div *ngIf="form.fieldType.fieldType.required">Field Type</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="resetAddCustomFieldForm()" class="btn btn-link" type="button">
+      Cancel
+    </button>
+    <button
+      [disabled]="isSavingNewField"
+      class="btn btn-lg btn-primary btn-sm"
+      [ngClass]="{ disabled: isSavingNewField }"
+      type="submit"
+    >
+      <fa *ngIf="isSavingNewField" class="empty-data-icon" name="fas fa-spinner fa-spin"></fa>
+      {{ saveTxt }}
+    </button>
+  </div>
+</form>

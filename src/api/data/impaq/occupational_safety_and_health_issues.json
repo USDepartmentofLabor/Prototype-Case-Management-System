@@ -1,0 +1,668 @@
+{
+ "title": "Occupational Safety and Health Issues",
+ "completedHtml": "<h3> Thank you for completing this survey and providing your feedback.</h3>\n\n<h5> Your feedback will help us implement a better and safer work environment for your organization</h5> \n",
+ "pages": [
+  {
+   "name": "occupational_safety_and_health_issues",
+   "elements": [
+    {
+     "type": "radiogroup",
+     "name": "required_safety_devices_exist",
+     "title": "Do safety devices required by the law exist and are they in working order?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      },
+      {
+       "value": "na",
+       "text": "Not applicable"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "required_safety_devices_exist_justification",
+     "visible": false,
+     "visibleIf": "{required_safety_devices_exist} = 'no' or {required_safety_devices_exist} = 'na'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{required_safety_devices_exist} = 'no' or {required_safety_devices_exist} = 'na'"
+    },
+    {
+     "type": "file",
+     "name": "required_safety_devices_exist_documentation",
+     "visible": false,
+     "visibleIf": "{required_safety_devices_exist} = 'no' or {required_safety_devices_exist} = 'na'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "dangerous_machines_guarded",
+     "title": "Are dangerous machines adequately guarded?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "dangerous_machines_guarded_justification",
+     "visible": false,
+     "visibleIf": "{dangerous_machines_guarded} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{dangerous_machines_guarded} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "dangerous_machines_guarded_documentation",
+     "visible": false,
+     "visibleIf": "{dangerous_machines_guarded} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "staff_observing_safety_rules",
+     "title": "Are staff observing safety rules on machine operation and maintenance?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      },
+      {
+       "value": "na",
+       "text": "Not applicable"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "staff_observing_safety_rules_justification",
+     "visible": false,
+     "visibleIf": "{staff_observing_safety_rules} = 'no' or {staff_observing_safety_rules} = 'na'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{staff_observing_safety_rules} = 'no' or {staff_observing_safety_rules} = 'na'"
+    },
+    {
+     "type": "file",
+     "name": "staff_observing_safety_rules_documentation",
+     "visible": false,
+     "visibleIf": "{staff_observing_safety_rules} = 'no' or {staff_observing_safety_rules} = 'na'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "ppe_used",
+     "title": "Are suitable safety helmets, goggles, gloves, protective footwear, and other personal protective equipment used where required?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "ppe_used_justification",
+     "visible": false,
+     "visibleIf": "{ppe_used} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{ppe_used} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "ppe_used_documentation",
+     "visible": false,
+     "visibleIf": "{ppe_used} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "tools_secured",
+     "title": "Are tools or other objects secured in such a way that they are not in danger of falling from scaffolding, roofs or other high-level workplaces?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "tools_secured_justification",
+     "visible": false,
+     "visibleIf": "{tools_secured} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{tools_secured} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "tools_secured_documentation",
+     "visible": false,
+     "visibleIf": "{tools_secured} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "ladders_safe",
+     "title": "Are ladders safe and adequately positioned?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "ladders_safe_justification",
+     "visible": false,
+     "visibleIf": "{ladders_safe} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{ladders_safe} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "ladders_safe_documentation",
+     "visible": false,
+     "visibleIf": "{ladders_safe} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "scaffolding_safe",
+     "title": "Are scaffolding and other support structures safe and adequately positioned?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "scaffolding_safe_justification",
+     "visible": false,
+     "visibleIf": "{scaffolding_safe} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{scaffolding_safe} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "scaffolding_safe_documentation",
+     "visible": false,
+     "visibleIf": "{scaffolding_safe} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "matrix",
+     "name": "kept_clean",
+     "title": "Are the following kept clean and free of waste:",
+     "isRequired": true,
+     "columns": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ],
+     "rows": [
+      {
+       "value": "workstation",
+       "text": "a. Workstations"
+      },
+      {
+       "value": "floors",
+       "text": "b. Floors "
+      },
+      {
+       "value": "passageways",
+       "text": "c. Passageways"
+      }
+     ],
+     "isAllRowRequired": true
+    },
+    {
+     "type": "comment",
+     "name": "kept_clean_justification",
+     "visible": false,
+     "visibleIf": "{kept_clean.workstation} = 'no' or {kept_clean.floors} = 'no' or {kept_clean.passageways} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{kept_clean.floors} = 'no' or {kept_clean.passageways} = 'no' or {kept_clean.workstation} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "kept_clean_documentation",
+     "visible": false,
+     "visibleIf": "{kept_clean.floors} = 'no' or {kept_clean.passageways} = 'no' or {kept_clean.workstation} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "sufficient_exist_amd_extinguishers",
+     "title": "Are there sufficient emergency exits and fire extinguishers according to the relevant regulation?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "sufficient_exist_amd_extinguishers_justification",
+     "visible": false,
+     "visibleIf": "{sufficient_exist_amd_extinguishers} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{sufficient_exist_amd_extinguishers} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "sufficient_exist_amd_extinguishers_documentation",
+     "visible": false,
+     "visibleIf": "{sufficient_exist_amd_extinguishers} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "exits_marked_unobstructed",
+     "title": "Are exits, windows, doors, including emergency exits, free from obstruction, properly marked and unlocked?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "exits_marked_unobstructed_justification",
+     "visible": false,
+     "visibleIf": "{exits_marked_unobstructed} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{exits_marked_unobstructed} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "exits_marked_unobstructed_documentation",
+     "visible": false,
+     "visibleIf": "{exits_marked_unobstructed} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "extinguishers_marked_unobstructed",
+     "title": "Are fire extinguishers properly marked and free from obstruction?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "extinguishers_marked_unobstructed_justification",
+     "visible": false,
+     "visibleIf": "{extinguishers_marked_unobstructed} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{extinguishers_marked_unobstructed} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "extinguishers_marked_unobstructed_documentation",
+     "visible": false,
+     "visibleIf": "{extinguishers_marked_unobstructed} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "no_evidence_unsafe_work_practices",
+     "title": "Is there no other evidence of obvious, visibly unsafe work practices?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "no_evidence_unsafe_work_practices_justification",
+     "visible": false,
+     "visibleIf": "{no_evidence_unsafe_work_practices} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{no_evidence_unsafe_work_practices} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "no_evidence_unsafe_work_practices_documentation",
+     "visible": false,
+     "visibleIf": "{no_evidence_unsafe_work_practices} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "html",
+     "name": "question2",
+     "html": "After selecting an appropriate sample of workers and speaking to them individually in a confidential setting, where they cannot be overhead by their employer or other workers, inspectors will answer the following questions:"
+    },
+    {
+     "type": "radiogroup",
+     "name": "workers_familiar_with_escape_routes",
+     "title": "Are workers familiar with the escape routes from their workplace to be taken in case of a fire?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "workers_familiar_with_escape_routes_justification",
+     "visible": false,
+     "visibleIf": "{workers_familiar_with_escape_routes} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{workers_familiar_with_escape_routes} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "workers_familiar_with_escape_routes_documentation",
+     "visible": false,
+     "visibleIf": "{workers_familiar_with_escape_routes} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "routes_unobstructed",
+     "title": "Are these routes and exits kept free from obstruction?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "routes_unobstructed_justification",
+     "visible": false,
+     "visibleIf": "{routes_unobstructed} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{routes_unobstructed} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "routes_unobstructed_documentation",
+     "visible": false,
+     "visibleIf": "{routes_unobstructed} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "know_location_nearest_extinguishers",
+     "title": "Do workers know where the nearest fire extinguishers and buckets are kept?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "know_location_nearest_extinguishers_justification",
+     "visible": false,
+     "visibleIf": "{know_location_nearest_extinguishers} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{know_location_nearest_extinguishers} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "know_location_nearest_extinguishers_documentation",
+     "visible": false,
+     "visibleIf": "{know_location_nearest_extinguishers} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "supervisors_encourage_follow_safety_rules",
+     "title": "Do supervisors encourage workers to follow health & safety rules and condone violations of those rules?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "supervisors_encourage_follow_safety_rules_justification",
+     "visible": false,
+     "visibleIf": "{supervisors_encourage_follow_safety_rules} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{supervisors_encourage_follow_safety_rules} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "supervisors_encourage_follow_safety_rules_documentation",
+     "visible": false,
+     "visibleIf": "{supervisors_encourage_follow_safety_rules} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "training_provided",
+     "title": "Has the supervisor(s) or human resource department provided workers with health & safety material or training upon hiring or after, as required by law?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "training_provided_justification",
+     "visible": false,
+     "visibleIf": "{training_provided} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{training_provided} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "training_provided_documentation",
+     "visible": false,
+     "visibleIf": "{training_provided} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "checkbox",
+     "name": "health_and_safety_problems",
+     "title": "Do any of the following health and safety problems apply to workers at this worksite? (If none, please select None)",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "Repetitive strain injuries",
+       "text": "Repetitive strain injuries"
+      },
+      {
+       "value": "Stress related to pressure from supervisors",
+       "text": "Stress related to pressure from supervisors"
+      },
+      {
+       "value": "Unsafe equipment",
+       "text": "Unsafe equipment"
+      },
+      {
+       "value": "Other",
+       "text": "Other"
+      },
+      {
+       "value": "None",
+       "text": "None"
+      },
+      {
+       "value": "Current form",
+       "text": "Current form"
+      }
+     ]
+    }
+   ],
+   "description": "Inspector to fill out individually. If the answer is no or not applicable to any of the below, this must be justified with a text description and any supporting documentation [including pictures]:"
+  }
+ ],
+ "showQuestionNumbers": "onPage"
+}

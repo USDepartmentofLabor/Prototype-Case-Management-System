@@ -1,0 +1,315 @@
+{
+ "title": "Wage and Hour Issues",
+ "completedHtml": "<h3> Thank you for completing this survey and providing your feedback.</h3>\n\n<h5> Your feedback will help us implement a better and safer work environment for your organization</h5> \n",
+ "pages": [
+  {
+   "name": "work_premises",
+   "elements": [
+    {
+     "type": "radiogroup",
+     "name": "written_contracts_issued",
+     "title": "Have written contracts of employment have been issued?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "written_contract_issued_justification",
+     "visibleIf": "{written_contracts_issued} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{written_contracts_issued} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "written_contract_issued_documentation",
+     "visibleIf": "{written_contracts_issued} = 'no'",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "remuneration_paid",
+     "title": "Has basic remuneration has been paid at the rates required by the law?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "remuneration_paid_justification",
+     "visibleIf": "{remuneration_paid} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{remuneration_paid} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "remuneration_paid_documentation",
+     "visibleIf": "{remuneration_paid} = 'no'",
+     "title": "Please provide documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "paid_proper_intervals",
+     "title": "Have payments have been made at proper intervals?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "paid_proper_intervals_justification",
+     "visibleIf": "{paid_proper_intervals} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{paid_proper_intervals} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "paid_proper_intervals_documentation",
+     "visibleIf": "{paid_proper_intervals} = 'no'",
+     "title": "Please provide documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "deductions_calculated_correctly",
+     "title": "Have deductions have been correctly calculated?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "deductions_calculated_correctly_justification",
+     "visibleIf": "{deductions_calculated_correctly} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{deductions_calculated_correctly} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "deductions_calculated_correctly_documentation",
+     "visibleIf": "{deductions_calculated_correctly} = 'no'",
+     "title": "Please provide documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "benefits_paid",
+     "indent": -27,
+     "title": "Have benefits in kind have been paid and accurately calculated?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "benefits_paid_justification",
+     "visibleIf": "{benefits_paid} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{benefits_paid} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "benefits_paid_documentation",
+     "visibleIf": "{benefits_paid} = 'no'",
+     "title": "Please provide documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "allowances_paid",
+     "title": "Have all allowances been paid according to legal requirements, i.e. transport allowance, dependents’ allowance, shift allowance, housing and clothing allowances, etc.?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "allowances_paid_justification",
+     "visibleIf": "{allowances_paid} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{allowances_paid} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "allowances_paid_documentation",
+     "visibleIf": "{allowances_paid} = 'no'",
+     "title": "Please provide documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "required_breaks_complied_with",
+     "title": "Have hours of work, rest periods, and holidays required by law for particular occupations or activities been complied with?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "required_breaks_complied_with_justification",
+     "visibleIf": "{required_breaks_complied_with} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{required_breaks_complied_with} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "required_breaks_complied_with_documentation",
+     "visibleIf": "{required_breaks_complied_with} = 'no'",
+     "title": "Please provide documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "overtime_within_legal_limits",
+     "title": "Has overtime worked stayed within the legal time limits?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "overtime_within_legal_limits_justification",
+     "visibleIf": "{overtime_within_legal_limits} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{overtime_within_legal_limits} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "overtime_within_legal_limits_documentation",
+     "visibleIf": "{overtime_within_legal_limits} = 'no'",
+     "title": "Please provide documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "radiogroup",
+     "name": "work_properly_authorized",
+     "title": "Has work been properly authorized?",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "work_properly_authorized_justification",
+     "visibleIf": "{work_properly_authorized} = 'no'",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{work_properly_authorized} = 'no'"
+    },
+    {
+     "type": "file",
+     "name": "work_properly_authorized_documentation",
+     "visibleIf": "{work_properly_authorized} = 'no'",
+     "title": "Please provide documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    }
+   ],
+   "title": "Wage and Hour Issues",
+   "description": "If the answer is no to any of the below, this must be justified with a text description of the non-compliance and any supporting documentation [including pictures]:"
+  },
+  {
+   "name": "page1"
+  }
+ ],
+ "showQuestionNumbers": "onPage"
+}

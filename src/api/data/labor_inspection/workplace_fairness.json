@@ -1,0 +1,99 @@
+{
+ "title": "Workplace Fairness",
+ "pages": [
+  {
+   "name": "Workplace Fairness ",
+   "elements": [
+    {
+     "type": "expression",
+     "name": "rating_instructions",
+     "title": "On a scale from one (1) to five (5), 1 = very poor, 2 = poor, 3 = fair, 4 = good, and 5 = very good , please select the number that indicates the fairness level for you in your organization for the following issues:",
+     "hideNumber": true,
+     "commentText": "Other (describe)"
+    },
+    {
+     "type": "rating",
+     "name": "wages_rating",
+     "title": "Wages",
+     "minRateDescription": "low ",
+     "maxRateDescription": "high"
+    },
+    {
+     "type": "comment",
+     "name": "wages_comment",
+     "visibleIf": "{wages_rating} <= 2",
+     "title": "What is the primary reason for this selection?",
+     "hideNumber": true,
+     "requiredIf": "{wages_rating} <= 2"
+    },
+    {
+     "type": "rating",
+     "name": "holidays_rating",
+     "title": "Paid Holidays",
+     "minRateDescription": "low ",
+     "maxRateDescription": "high"
+    },
+    {
+     "type": "comment",
+     "name": "holiday_comment",
+     "visibleIf": "{holidays_rating} <= 2",
+     "title": "What is the primary reason for this selection?",
+     "hideNumber": true,
+     "requiredIf": "{holidays_rating} <= 2"
+    },
+    {
+     "type": "rating",
+     "name": "vacation_days",
+     "title": "Vacation Days / Paid Time Off",
+     "minRateDescription": "low ",
+     "maxRateDescription": "high"
+    },
+    {
+     "type": "comment",
+     "name": "vacation_days_comment",
+     "visibleIf": "{vacation_days} <= 3",
+     "title": "What is the primary reason for this selection?",
+     "hideNumber": true,
+     "requiredIf": "{vacation_days} <= 3"
+    },
+    {
+     "type": "rating",
+     "name": "management_assistance",
+     "title": "Upper Management Assistance ",
+     "minRateDescription": "low ",
+     "maxRateDescription": "high"
+    },
+    {
+     "type": "comment",
+     "name": "management_assistance_comment",
+     "visibleIf": "{management_assistance} <= 3",
+     "title": "What is the primary reason for this selection?",
+     "hideNumber": true,
+     "requiredIf": "{management_assistance} <= 3"
+    },
+    {
+     "type": "rating",
+     "name": "management_communication",
+     "title": "Ability to Communicate with Upper Management ",
+     "minRateDescription": "low ",
+     "maxRateDescription": "high"
+    },
+    {
+     "type": "comment",
+     "name": "management_communication_comment",
+     "visibleIf": "{management_communication} <= 3",
+     "title": "What is the primary reason for this selection?",
+     "hideNumber": true,
+     "requiredIf": "{management_communication} <= 2"
+    },
+    {
+     "type": "comment",
+     "name": "general_feedback",
+     "title": "General Feedback",
+     "description": "Please provide any feedback that you believe might be helpful into making your work environment safer and healthier for you and your colleagues.",
+     "hideNumber": true
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+table tr {
+  cursor: pointer;
+}
+.selected {
+    color: #004085;
+    background-color: #cce5ff !important;
+    border-color: #b8daff !important;
+}
+
+.form-response-full-height {
+  height: 100vh;
+  overflow-x: scroll;
+}
+
+.close-btn {
+  z-index: 2;
+  position: absolute;
+  right: 17px;
+  top: 5px;
+}
+
+.response-header{
+    font-weight: 200;
+}

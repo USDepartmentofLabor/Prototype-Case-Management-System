@@ -1,0 +1,26 @@
+<app-header></app-header>
+<div class="container-fluid eps-container">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a (click)="back()"  [routerLink]=""><fa class="empty-data-icon mr-1" name="fas fa-angle-left"></fa>Case</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ currentViewTitle }}</li>
+        </ol>
+      </nav>
+  <div class="card survey-content">
+    <div class="card-body">
+    <span *ngIf="surveyHasError" id="helpBlock" class="help-block error-msg"><strong>Error: </strong>{{ errorMsg }}</span>
+    <div class="form-label-group">
+    <input 
+    type="text"
+    class="form-control" 
+    autofocus type="text"
+    name="surveyName" 
+    [(ngModel)]="surveyName" 
+    (ngModelChange)="isSurveyNameUpdated($event)"
+    placeholder="Name for survey">
+    <label for="surveyName">Form Name</label>
+  </div>
+    <div id="surveyCreatorContainer"></div>
+  </div>
+</div>
+</div>

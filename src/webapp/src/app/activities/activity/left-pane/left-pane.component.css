@@ -1,0 +1,197 @@
+.case-key {
+  color: #7e7e7e;
+}
+
+.btn-tools-wrapper {
+  background-color: white;
+  box-shadow: 0 3px 6px rgb(187, 187, 187);
+  padding: 6px;
+  border: 1px solid #ebecf0;
+  border-radius: 0 0 3px 3px;
+}
+
+.notes-wrapper {
+  max-width: 70%;
+}
+.case-details-wrapper {
+  max-width: 90%;
+}
+.btn-tools-wrapper button {
+  margin-right: 5px;
+}
+
+.editable-view-mode {
+  padding: 8px 2px;
+  line-height: 20px;
+}
+
+.editable-view-mode:hover {
+  /* background-color: rgb(228, 228, 228); */
+  border: 1px solid rgb(228, 228, 228);
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* .editable-view-mode:hover::after { 
+    content: " - Remember this";
+  } */
+
+.case-surveys {
+  max-height: 250px;
+  /* overflow-x: scroll; */
+  /* border: 1px solid #f1f1f1; */
+}
+
+.case-activities {
+  max-height: 500px;
+  /* overflow-x: scroll; */
+  /* border: 1px solid #f1f1f1; */
+}
+
+.case-surveys-label {
+  display: block;
+  padding: 15px 5px;
+  cursor: pointer;
+  border-bottom: 1px solid #eaeaea;
+}
+.media {
+  border-bottom: 1px solid #eaeaea;
+}
+
+.media:hover {
+  background-color: #eeeeee;
+}
+
+.case-surveys-label:hover {
+  background-color: #eeeeee;
+}
+
+.case-surveys-label span.view-survey-icon {
+  display: inline-block;
+  cursor: pointer;
+}
+
+span.view-survey-icon {
+  font-size: 21px;
+  color: #b1b1b1;
+  -webkit-appearance: none;
+}
+
+span.view-survey-icon:hover {
+  font-size: 21px;
+  color: #000;
+}
+
+.edit-icon {
+  color: #b1b1b1;
+  margin-right: 5px;
+  display: none;
+}
+.edit-icon:hover {
+  color: #007bff;
+}
+
+.editable:hover .edit-icon {
+  display: block;
+}
+
+.media:hover .doc-actions {
+  display: block;
+}
+
+.doc-actions {
+  display: none;
+  margin: 20px;
+}
+
+.upload-document-icon-md,
+.delete-document-md {
+  font-size: 20px;
+  padding: 0.5em 0.6em;
+  cursor: pointer;
+}
+
+.show-survey-icon-mg,
+.show-survey-responces-icon-mg {
+  font-size: 20px;
+  padding: 0.5em 0.6em;
+  cursor: pointer;
+}
+
+.show-survey-responces-icon-mg:hover {
+  color: #007bff;
+  border-radius: 60px;
+  border: 1px solid #f1f1f1;
+  background-color: #fff;
+  /* box-shadow: 0px 0px 2px #888; */
+  padding: 0.5em 0.6em;
+}
+
+.upload-document-icon-md:hover {
+  color: #007bff;
+  border-radius: 60px;
+  border: 1px solid #f1f1f1;
+  background-color: #fff;
+  /* box-shadow: 0px 0px 2px #888; */
+  padding: 0.5em 0.6em;
+}
+
+.delete-document-md:hover {
+  color: #dc3545;
+  border-radius: 60px;
+  border: 1px solid #f1f1f1;
+  background-color: #fff;
+  /* box-shadow: 0px 0px 2px #888; */
+  padding: 0.5em 0.6em;
+}
+
+.uploaded-checkmark {
+  color: #fff;
+  font-size: 16px;
+}
+
+.media:hover .uploaded-checkmark {
+  color: #eeeeee;
+}
+.green {
+  color: #28a745 !important;
+}
+
+.black {
+  color: #676767;
+}
+.sr-badge-count {
+  width: auto;
+  height: auto;
+  margin: 0;
+  position: absolute;
+  top: 0px;
+  right: 16px;
+}
+
+.icon-wrapper {
+  position: relative;
+  float: right;
+  margin: -11px;
+}
+.empty-attachments {
+  width: 75%;
+  height: 250px;
+  border: 3px dotted #f1f1f1;
+  border-radius: 3px;
+  margin-left: 15px;
+}
+
+.attachment-text-wrapper {
+  width: 200px;
+  margin: 0 auto;
+  margin-top: 100px;
+}
+.download-file-link {
+  line-height: 0 !important;
+  padding: 0 0 0 15px !important;
+}
+
+.no-pad {
+  padding-left: 0 !important;
+}

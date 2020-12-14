@@ -1,0 +1,21 @@
+.empty-cases{
+    text-align: center;
+}
+
+.table td{
+    cursor: pointer;
+}
+
+.cases-card {
+    height: 95vh !important;
+    overflow: scroll;
+}
+
+.cases-header {
+    font-weight: 200 !important;
+    /* display: inline-block; */
+}
+.search-case {
+    display: inline-block;
+    width: 300px;
+}

@@ -1,0 +1,13 @@
+<p>{{ user.name or user.username }},</p>
+<p>The role "{{ role.name }}" was deleted from the system which had the
+    "ASSIGNABLE_TO_CASE" permission and the default role does not have
+    that permission. Therefore the cases that were assigned to users
+    that had the role were unassigned. The cases affected include:</p>
+<ul>
+{% for case in cases %}
+    <li><a href="{{ web_app_url }}/cases/{{ case.id }}">{{ case.name }}</a></li>
+{% endfor %}
+</ul>
+<p>Sincerely,</p>
+<p>The CMS Team</p>
+<p><small>Note: replies to this email address are not monitored.</small></p>

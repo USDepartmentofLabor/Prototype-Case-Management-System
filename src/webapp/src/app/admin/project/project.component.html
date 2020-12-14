@@ -1,0 +1,203 @@
+<app-header></app-header>
+<div *ngIf="isProjectLoaded; else skeleton" class="container project-container">
+  <div class="card">
+    <div class="card-body">
+      <div class="row mb-5">
+        <div class="col-6">
+        <h3>Project Details</h3>
+        </div>
+        <div class="col-6">
+          <button
+          (click)="setEditProjectMode()"
+          class="pull-right btn btn-primary btn-sm mb-2"
+        >
+          Edit Project Details
+        </button>
+        </div>
+    </div>
+      <div *ngIf="!editProjectMode">
+        <div class="profile-information-content p3">
+          <h6 class="d-block">
+            <strong>Name:</strong>
+            <span class="ml-2 profile-data">{{ project.name }}</span>
+          </h6>
+          <hr />
+          <h6 class="d-block">
+            <strong>Title:</strong>
+            <span class="ml-2 profile-data">{{ project.title }}</span>
+          </h6>
+          <hr />
+          <h6 class="d-block">
+            <strong>Organization:</strong>
+            <span class="ml-2 profile-data">{{ project.organization }}</span>
+          </h6>
+          <hr />
+          <h6 class="d-block">
+            <strong>Agreement Number:</strong>
+            <span class="ml-2 profile-data">{{ project.agreement_number }}</span>
+          </h6>
+          <hr />
+          <h6 class="d-block">
+            <strong>Start Date:</strong>
+            <span class="ml-2 profile-data">{{ formatDate(project.start_date) }}</span>
+          </h6>
+          <hr />
+          <h6 class="d-block">
+            <strong>End Date:</strong>
+            <span class="ml-2 profile-data">{{ formatDate(project.end_date) }}</span>
+          </h6>
+          <hr />
+          <h6 class="d-block">
+            <strong>Funding Amount:</strong>
+            <span class="ml-2 profile-data">{{ project.funding_amount }}</span>
+          </h6>
+          <hr />
+          <h6 class="d-block">
+            <strong>Location:</strong>
+            <span class="ml-2 profile-data">{{ project.location}}</span>
+          </h6>
+        </div>
+      </div>
+      <div *ngIf="editProjectMode">
+        <div class="add-user-content">
+          <form [formGroup]="projectForm" (submit)="save()">
+            <div class="form-label-group">
+              <input
+                type="text"
+                formControlName="name"
+                class="form-control"
+                placeholder="Name"
+                required
+                autofocus
+                [ngClass]="{ 'is-invalid': submitted && form.name.errors }"
+              />
+              <label for="name">Name</label>
+              <div *ngIf="submitted && form.name.errors" class="invalid-feedback">
+                <div *ngIf="form.name.errors.required">Name is required</div>
+              </div>
+            </div>
+            <div class="form-label-group">
+              <input
+                type="text"
+                formControlName="title"
+                class="form-control"
+                placeholder="title"
+                [ngClass]="{ 'is-invalid': submitted && form.title.errors }"
+              />
+              <label for="title">Title</label>
+              <div *ngIf="submitted && form.title.errors" class="invalid-feedback">
+                <div *ngIf="form.title.errors.required">Title is required</div>
+              </div>
+            </div>
+            <div class="form-label-group">
+              <input
+                type="text"
+                formControlName="organization"
+                class="form-control"
+                placeholder="organization"
+                [ngClass]="{ 'is-invalid': submitted && form.organization.errors }"
+              />
+              <label for="organization">Organization</label>
+              <div *ngIf="submitted && form.organization.errors" class="invalid-feedback">
+                <div *ngIf="form.organization.errors.required">Organization is required</div>
+              </div>
+            </div>
+            <div class="form-label-group">
+              <input
+                type="date"
+                formControlName="start_date"
+                class="form-control"
+                placeholder="Start Date"
+                [ngClass]="{ 'is-invalid': submitted && form.start_date.errors }"
+              />
+              <label for="start_date">Start Date</label>
+              <div *ngIf="submitted && form.start_date.errors" class="invalid-feedback">
+                <div *ngIf="form.start_date.errors.required">Start Date is required</div>
+                <div *ngIf="form.start_date.errors.dateValidator">Start Date cannot be after End Date</div>
+              </div>
+            </div>
+            <div class="form-label-group">
+              <input
+                type="date"
+                formControlName="end_date"
+                class="form-control"
+                placeholder="End Date"
+                [ngClass]="{ 'is-invalid': submitted && form.end_date.errors }"
+              />
+              <label for="end_date">End Date</label>
+              <div *ngIf="submitted && form.end_date.errors" class="invalid-feedback">
+                <div *ngIf="form.end_date.errors.required">End Date is required</div>
+              </div>
+            </div>
+            <div class="form-label-group">
+              <input
+                type="text"
+                formControlName="funding_amount"
+                class="form-control"
+                placeholder="Funding Amount"
+                [ngClass]="{ 'is-invalid': submitted && form.funding_amount.errors }"
+              />
+              <label for="funding_amount">Start Date</label>
+              <div *ngIf="submitted && form.funding_amount.errors" class="invalid-feedback">
+                <div *ngIf="form.funding_amount.errors.required">Funding Amount is required</div>
+              </div>
+            </div>
+            <div class="form-label-group">
+              <input
+                type="text"
+                formControlName="agreement_number"
+                class="form-control"
+                placeholder="organization"
+                [disabled]="true"
+                [ngClass]="{ 'is-invalid': submitted && form.agreement_number.errors }"
+              />
+              <label for="agreement_number">Agreement Number</label>
+              <div *ngIf="submitted && form.agreement_number.errors" class="invalid-feedback">
+                <div *ngIf="form.agreement_number.errors.required">Organization is required</div>
+              </div>
+            </div>
+            <div class="form-label-group">
+              <input
+                type="text"
+                formControlName="location"
+                class="form-control"
+                placeholder="location"
+              />
+              <label for="location">Location</label>
+            </div>
+            <div class="mt-4 pull-right">
+              <button
+                (click)="setEditProjectMode()"
+                [ngClass]="{ disabled: savingProjectData }"
+                class="btn btn-link btn-sm"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                *ngIf="!savingProjectData"
+                class="btn btn-lg btn-primary btn-sm"
+                type="submit"
+              >
+                Save
+              </button>
+              <button
+                *ngIf="savingProjectData"
+                (click)="saveProfile()"
+                class="btn btn-lg btn-primary btn-sm disabled"
+                type="button"
+              >
+                <fa class="empty-data-icon" name="fas fa-spinner fa-spin"></fa>
+                Saving...
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  
+  </div>
+</div>
+<ng-template #skeleton>
+  <div class="container project-container">Loading...</div>
+</ng-template>

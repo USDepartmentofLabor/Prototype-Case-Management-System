@@ -1,0 +1,115 @@
+version: '3'
+services:
+  eps:
+    build: src/api
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./src/api:/eps-api
+    environment:
+      PYTHONDONTWRITEBYTECODE: 1
+      SERVER_NAME: localhost:5000
+      FLASK_DEBUG: 1
+      FLASK_ENV: development
+      FLASK_CONFIG: development
+
+      SECRET_KEY: secret_debug_key
+      JWT_SECRET_KEY: secrey_debug_key
+      JWT_ACCESS_TOKEN_EXPIRES: 86400
+      JWT_BLACKLIST_ENABLED: 'true'
+      JWT_BLACKLIST_TOKEN_CHECKS: access,refresh
+      WEB_APP_URL: www-angular:4200
+
+      MAIL_SERVER: smtp.example.com
+      MAIL_PORT: 587
+      MAIL_USE_TLS: 'true'
+      # MAIL_USERNAME:
+      # MAIL_PASSWORD:
+      MAIL_SUBJECT_PREFIX: '[EPS LOCAL TESTING] '
+      MAIL_SENDER: 'no-reply@example.org'
+
+      METABASE_URL: http://metabase.localhost
+      METABASE_USERNAME: metabase_pg_user
+      METABASE_PASSWORD: securepassword1
+      # METABASE_AUTH_ID:
+      METABASE_DB: metabase_pg
+      # METABASE_SECRET_KEY:
+
+      # STORAGE_PROVIDER:
+      # STORAGE_KEY:
+      # STORAGE_SECRET:
+      # STORAGE_CONTAINER:
+      # STORAGE_ALLOWED_EXTENSIONS:
+
+      DATA_DB_URI: postgresql://postgres:postgres@postgres:5432/data_test_pg
+      DATA_DB: data_pg
+      TEST_DATABASE_URL: postgresql://postgres:postgres@postgres:5432/api_test_pg
+      DEV_DATABASE_URL: postgresql://postgres:postgres@postgres:5432/api_pg
+      PROD_DATABASE_URL: postgresql://postgres:postgres@postgres:5432/api_pg
+
+    depends_on:
+      - postgres
+      - metabase
+
+  postgres:
+    build:
+      context: src/postgres
+      dockerfile: Dockerfile
+      args:
+        - METABASE_USER_PASSWORD=securepassword1
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - $HOME/docker/volumes/eps/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  www-angular:
+    build: src/webapp
+
+  www-nginx:
+    build:
+      context: src/nginx
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - eps
+      - www-angular
+      - metabase
+    environment:
+      UPSTREAM_ANGULAR_URL: www-angular
+      UPSTREAM_FLASK_URL: eps:5000
+      UPSTREAM_METABASE_URL: metabase:3000
+      DOWNSTREAM_METABASE_URL: metabase.localhost
+      SERVER_URL: api.localhost
+      WEBAPP_URL: localhost
+    links:
+      - www-angular
+      - eps
+      - metabase
+
+  metabase:
+    build: src/metabase
+    depends_on:
+      - postgres
+    environment:
+      PG_USER: postgres
+      PG_PASS: postgres
+      MB_DB_DBNAME: metabase_pg
+      MB_DB_HOST: postgres
+      MB_DB_PORT: 5432
+      MB_DB_TYPE: postgres
+      MB_DB_USER: metabase_pg_user
+      MB_DB_PASS: securepassword1
+      DATA_DB_DBNAME: data_pg
+      DATA_DB_HOST: postgres
+      DATA_DB_PORT: 5432
+      DATA_DB_TYPE: postgres
+      DATA_DB_USER: metabase_pg_user
+      DATA_DB_PASS: securepassword1
+    ports:
+      - 3000:3000
+    links:
+      - postgres

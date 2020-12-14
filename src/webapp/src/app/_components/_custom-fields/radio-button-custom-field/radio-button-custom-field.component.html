@@ -1,0 +1,15 @@
+<div class="mt-4 mb-2 font-weight-bold">{{ field.name }}</div>
+<div *ngFor="let opt of field.selections" class="form-group row">
+  <input
+    type="radio"
+    value="{{ opt.id }}"
+    [name]="field.fieldName"
+    [checked]="isChecked(opt.id)"
+    (change)="onValueChange(opt.id, $event.target.checked)"
+  />
+  <span class="ml-1"> {{ opt.value }}</span>
+</div>
+<small *ngIf="field.help_text" class="form-text text-muted mb-4"
+  ><i class="fa fa-info-circle" aria-hidden="true"></i>
+  {{ field.help_text }}
+</small>

@@ -1,0 +1,130 @@
+.custom-fields-container{
+    width: 100%; 
+}
+
+.custom-fields-icon {
+  color: #b1b1b1 !important;
+}
+
+.custom-fields-icon:hover {
+  color: #0e0e0e !important;
+}
+
+.optional-text {
+  font-style: italic;
+  color: #7a7572;
+}
+
+.no-padding {
+    padding-left: 0;
+}
+
+.btn-toolbar{
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+.form-list-item{
+    padding: 10px 0 10px 0;
+}
+
+.help-text{
+    color: #969696;
+    display: inline-block;
+}
+
+.selectOptions {
+    border: 1px dotted #ddd;
+}
+ 
+  .accordion {
+    max-width: 30em;
+  }
+  
+  .toggle {
+    display: none;
+  }
+  
+  .option {
+    position: relative;
+  }
+  
+  .title,
+  .content {
+    -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+  }
+  
+  .title {
+    background: #fff;
+    padding: 1em;
+    display: block;
+    cursor: pointer;
+    border: 1px solid #f1f1f1;
+  }
+  
+  .title:after,
+  .title:before {
+    content: "";
+    position: absolute;
+    right: 1.25em;
+    top: 1.25em;
+    width: 2px;
+    height: 0.75em;
+    background-color: #7a7572;
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+  }
+
+  .title:after {
+    -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+  }
+
+  .content {
+    max-height: 0;
+    overflow: hidden;
+    border-right: 1px solid #f5f7fa;
+    border-left: 1px solid #f5f7fa;
+    border-bottom: 1px solid #f5f7fa;
+  }
+  .content:hover {
+    cursor: move;
+    border: 1px dashed #9e9e9e;
+  }
+  .content p {
+    margin: 0;
+    padding: 0.5em 1em 1em;
+    font-size: 0.9em;
+    line-height: 1.5;
+  }
+  
+  .toggle:checked + .title, .toggle:checked + .title  {
+    border: 1px solid #f1f1f1;
+  }
+
+  .toggle:checked + .title + .content {
+    max-height: 500px;
+    padding: 15px 20px 50px 20px;
+  }
+
+  .toggle:checked + .title:before {
+    -webkit-transform: rotate(90deg) !important;
+            transform: rotate(90deg) !important;
+  }
+
+  .toggle:checked + .title {
+    background-color: #f5f7fa;
+  }
+
+  .toggle +.title:hover {
+    background-color: #f5f7fa;
+  }
+
+  .option label {
+    margin-bottom: 0 !important;
+  }

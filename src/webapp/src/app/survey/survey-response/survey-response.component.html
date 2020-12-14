@@ -1,0 +1,158 @@
+<app-header></app-header>
+<div class="container-fluid animated fadeIn eps-container">
+  <!--  class="card"  class="card-body"-->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb" *ngIf="displayBreadcrumb">
+      <li
+        class="breadcrumb-item"
+        *ngIf="
+          responseSourceType === ResponseSourceType.Case ||
+          responseSourceType === ResponseSourceType.Activity
+        "
+      >
+        <a *ngIf="gotActivity"
+          [routerLink]="['/cases']"
+          [queryParams]="{case_defn_id: getCaseDefinitionId()}"
+        >
+          {{
+            responseSourceType === ResponseSourceType.Activity
+              ? activity.case.definition.name
+              : case.case_definition.name
+          }}
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+        *ngIf="
+          responseSourceType === ResponseSourceType.Case ||
+          responseSourceType === ResponseSourceType.Activity
+        "
+      >
+        <a *ngIf="gotActivity"
+          [routerLink]="[
+            '/cases',
+            responseSourceType === ResponseSourceType.Activity
+              ? activity.case.definition.id
+              : case.id
+          ]"
+        >
+          {{
+            responseSourceType === ResponseSourceType.Activity
+              ? activity.case.name
+              : case.name
+          }}
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+        aria-current="page"
+        *ngIf="responseSourceType === ResponseSourceType.Activity"
+      >
+        Activities
+      </li>
+      <li
+        class="breadcrumb-item"
+        *ngIf="responseSourceType === ResponseSourceType.Activity"
+      >
+        <a *ngIf="gotActivity" [routerLink]="['/activities', activity.id]">
+          {{ activity.name }}
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+        aria-current="page"
+        *ngIf="responseSourceType === ResponseSourceType.Unknown"
+      >
+        Data Collection Forms
+      </li>
+      <li
+        class="breadcrumb-item"
+        aria-current="page"
+        *ngIf="
+          responseSourceType === ResponseSourceType.Case ||
+          responseSourceType === ResponseSourceType.Activity
+        "
+      >
+        Forms
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        {{ survey.name }}
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Responses</li>
+    </ol>
+  </nav>
+  <div class="card form-response-full-height">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-6">
+          <div>
+            <div>
+              <div class="mb-4 row">
+                <div class="col-6">
+                  <h3 class="response-header">Responses</h3>
+                </div>
+                <div class="col-6">
+                  <span class="pull-right"
+                    ><a
+                      [href]="fileUrl"
+                      class="btn btn-outline-primary"
+                      data-container="body"
+                      placement="bottom"
+                      ngbTooltip="Download Responses"
+                      title="Download Responses"
+                      [download]="fileName"
+                    >
+                      <fa class="empty-data-icon" name="fas fa-download"></fa>
+                      Download
+                    </a>
+                  </span>
+                </div>
+              </div>
+
+              <table class="animated fadeIn table table-striped table-hover">
+                <thead class="thead-light">
+                  <th>ID</th>
+                  <th>Creation Date</th>
+                  <th>Completion Date</th>
+                  <th>Created By</th>
+                  <th>Completed By</th>
+                </thead>
+                <tbody>
+                  <tr
+                    (click)="showResponse(selection, response.id)"
+                    [class.selected]="currSelectedResponse === selection"
+                    *ngFor="
+                      let response of surveyResponse;
+                      let selection = index
+                    "
+                  >
+                    <td>{{ response.id }}</td>
+                    <td>{{ response.created_at | date:'short' }}</td>
+                    <td>{{ response.updated_at | date:'short' }}</td>
+                    <td>{{ response.created_by.name || response.created_by.username }}</td>
+                    <td>{{ response.created_by.name || response.created_by.username }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="animated fadeIn" *ngIf="showSurvey">
+            <button
+              class="close-btn pull-right btn btn-link mb-3"
+              (click)="closeResponse()"
+            >
+              Close
+            </button>
+            <survey
+              [response]="response"
+              [json]="json"
+              (submitSurvey)="updateSurveyResponse($event)"
+            ></survey>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<app-header></app-header>
+<div *ngIf="isLoading" class="animated fadeIn eps-container">
+  <app-animated-loader></app-animated-loader>
+</div>
+<div *ngIf="!isLoading" class="animated fadeIn eps-container">
+  <!-- #region Breadcrumb -->
+  <div class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ breadcrumbLabel }}
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!-- endregion -->
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card cases-card">
+        <div class="card-body">
+          <div class="row mb-4">
+            <div class="col-6">
+              <button
+                *hasPerm="'CREATE_CASE'"
+                routerLink="/cases/new"
+                type="button"
+                class="btn btn-primary"
+              >
+                + Create New Case
+              </button>
+            </div>
+          </div>
+
+          <!-- #region CaseDataTable -->
+          <table datatable [dtOptions]="dtOptions" class="row-border hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Status</th>
+                <th>Case ID</th>
+                <th>Name</th>
+                <th>Business Name</th>
+                <th>Case Type</th>
+                <th>Assignee</th>
+                <th>Last Update Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let case of caseList">
+                <td>{{ case.id }}</td>
+                <td>
+                  <app-status-badge [status]="case.status"></app-status-badge>
+                </td>
+                <td>{{ case.key }}</td>
+                <td>{{ case.name }}</td>
+                <td>{{ case.businessName }}</td>
+                <td>{{ case.caseType }}</td>
+                <td>
+                  {{ case.assignee ? case.assignee.name : "Unassigned" }}
+                </td>
+                <td>{{ formatDateFromNow(case.updatedAt) }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- endregion CaseDataTable -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

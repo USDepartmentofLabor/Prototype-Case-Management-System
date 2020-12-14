@@ -1,0 +1,101 @@
+{
+    "title": "Productivity and Quality",
+    "pages": [
+     {
+      "name": "Productivity & Quality ",
+      "elements": [
+       {
+        "type": "checkbox",
+        "name": "management_response",
+        "title": "How has management typically responded to issues you have brought to their attention?",
+        "hasComment": true,
+        "choices": [
+         {
+          "value": "item1",
+          "text": "Supervisor ignores the issues"
+         },
+         {
+          "value": "item2",
+          "text": "Acknowledges and addresses "
+         },
+         {
+          "value": "item3",
+          "text": "Acknowledges and no response"
+         },
+         {
+          "value": "item4",
+          "text": "Other"
+         }
+        ]
+       },
+       {
+        "type": "radiogroup",
+        "name": "work_area_impact",
+        "title": "Over the past year, how has the work area impacted work stress?",
+        "hasComment": true,
+        "choices": [
+         {
+          "value": "item1",
+          "text": "Negative impact"
+         },
+         {
+          "value": "item2",
+          "text": "No impact"
+         },
+         {
+          "value": "item3",
+          "text": "Positive impact"
+         },
+         {
+          "value": "item4",
+          "text": "Other "
+         }
+        ]
+       },
+       {
+        "type": "checkbox",
+        "name": "efficient_work",
+        "title": "Which of the following stands in the way of doing your job more efficiently? (Select all that apply)",
+        "hasComment": true,
+        "choices": [
+         {
+          "value": "item1",
+          "text": "Poor supervision"
+         },
+         {
+          "value": "item2",
+          "text": "Inadequate tools"
+         },
+         {
+          "value": "item3",
+          "text": "Lack of training "
+         },
+         {
+          "value": "item4",
+          "text": "Work environment "
+         },
+         {
+          "value": "item5",
+          "text": "Poor ergonomics "
+         },
+         {
+          "value": "item6",
+          "text": "Other workers "
+         },
+         {
+          "value": "item7",
+          "text": "Other"
+         }
+        ]
+       },
+       {
+        "type": "comment",
+        "name": "Feedback",
+        "title": "General Feedback",
+        "description": "Please provide any feedback that you believe might be helpful into making your work environment safer and healthier for you and your colleagues.",
+        "hideNumber": true
+       }
+      ]
+     }
+    ]
+   }

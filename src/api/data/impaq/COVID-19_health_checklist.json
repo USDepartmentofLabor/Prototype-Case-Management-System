@@ -1,0 +1,149 @@
+{
+ "title": "COVID-19 Health Checklist",
+ "description": "Adapted from Employee Health and Food Safety Checklist for Human and Animal Food Operations During the COVID-19 Pandemic https://www.fda.gov/media/141141/download ",
+ "pages": [
+  {
+   "name": "page1",
+   "elements": [
+    {
+     "type": "boolean",
+     "name": "have_assessment_and_control_plan",
+     "title": "Does the worksite have a COVID-19 assessment and control plan?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "has_employee_provided_poc",
+     "title": "Has the employer provided employees a clear point of contact to (1) report symptoms or illness and (2) consult with when an employee who has been sick with COVID-19 symptoms meets the criteria to end a home isolation period?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "has_employer_established_practices",
+     "title": "Has the employer established practices to assess employee health and minimize the spread of COVID-19 in accordance with the relevant regulations?",
+     "isRequired": true
+    },
+    {
+     "type": "checkbox",
+     "name": "practices_coverage",
+     "title": "Do these practices cover:",
+     "isRequired": true,
+     "choices": [
+      {
+       "value": "assessing employee health (e.g., assessing symptoms) prior to and/or upon arrival to work?",
+       "text": "assessing employee health (e.g., assessing symptoms) prior to and/or upon arrival to work?"
+      },
+      {
+       "value": "what to do when an employee is symptomatic (has symptoms of COVID-19) or has tested positive for the virus that causes COVID-19?",
+       "text": "what to do when an employee is symptomatic (has symptoms of COVID-19) or has tested positive for the virus that causes COVID-19?"
+      },
+      {
+       "value": "what to do when an employee has been exposed to co-workers or other people (e.g., family or friends) who have symptoms consistent with COVID-19 or who have tested positive for the virus that causes COVID-19?",
+       "text": "what to do when an employee has been exposed to co-workers or other people (e.g., family or friends) who have symptoms consistent with COVID-19 or who have tested positive for the virus that causes COVID-19?"
+      },
+      {
+       "value": "practices to protect workers at increased risk of severe illness, such as older adults and people of any age with a chronic medical condition?",
+       "text": "practices to protect workers at increased risk of severe illness, such as older adults and people of any age with a chronic medical condition?"
+      }
+     ]
+    },
+    {
+     "type": "boolean",
+     "name": "have_provided_info_and_training",
+     "title": "Have personnel (workers and supervisors) been provided basic COVID-19 infection prevention information and training in a language and at a literacy level they understand?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "has_employer_posted_flyers",
+     "title": "Has the employer posted flyers (e.g., by lockers, in break rooms) with simplified messages in multiple languages that use infographics to facilitate employee understanding of COVID-19 infection control practices?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "has_employer_posted_simple_posters",
+     "title": "Has the employer displayed simple posters in the languages that are common in the worker population that encourage staying home when sick (or after testing positive for the virus that causes COVID-19), cough and sneeze etiquette, and proper hand hygiene practices, as recommended by CDC and OSH?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "has_employer_made_available_facilities",
+     "title": "Has the employer made available enough facilities (e.g., handwashing stations), materials (e.g., soap, paper towels, hand sanitizer with at least 60 percent alcohol), and trash receptacles (preferably no-touch) so workers can implement recommended handwashing practices and, to the extent feasible, social distancing while implementing hygiene practices?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "does_employer_have_procedures_for_ppe",
+     "title": "Does the employer have procedures for when and how to wear face masks or cloth face coverings or personal protective equipment (PPE) (such as respirators and face shields) in accordance with the relevant regulations, and policies for complying with applicable religious accommodation laws?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "was_training_provided_for_ppe",
+     "title": "If practices include the use of PPE and/or masks/cloth face coverings, or changes to these uses, has the employer provided training on proper wearing, removal, and cleaning (if applicable) of PPE and face coverings, according to the relevant regulations?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "have_stay_at_home_precedures",
+     "title": "Are procedures in place that require symptomatic workers to stay home or go home if they develop symptoms during the work day?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "have_procedures_to_isloate_symptomatic_people",
+     "title": "Are procedures in place to physically isolate a symptomatic person from others, including identifying a designated isolation area, prior to the sick person being transported from the facility?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "have_procedure_for_alt_transpo",
+     "title": "Are procedures in place to provide alternate transportation in a manner that does not expose others if an employee that develops symptoms arrived via shared transportation?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "have_contract_tracing_procedures",
+     "title": "Are procedures in place to collect information about the sick person’s contacts (up to 2 days prior to symptom onset) to identify other workers who could be considered exposed (e.g., people who were in close contact with [less than 6 feet from] the symptomatic worker for at least 15 minutes)?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "have_procedures_for_exposure_notification",
+     "title": "Are procedures in place to inform fellow workers of their possible exposure to COVID-19 when a sick person is confirmed infected?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "have_workers_contact_info",
+     "title": "Do you have workers’ home contact information to facilitate contact about health status and/or sharing information about their potential contact with a symptomatic or diagnosed individual? ",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "have_procedures_to_clean_used_surfaces",
+     "title": "Do you have procedures to clean and disinfect surfaces in all areas used by a sick person?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "do_procedures_include_closing_off_areas",
+     "title": "Do these procedures include closing off areas used by the sick person (before cleaning and disinfecting) for at least 24 hours whenever feasible, and opening outside doors and windows to increase air circulation in the area?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "do_procedures_include_protecting_cleanup_crew",
+     "title": "Do these procedures include measures to protect the person doing the cleaning, such as wearing skin protection and, where needed, eye protection for potential splash hazards?",
+     "isRequired": true
+    },
+    {
+     "type": "boolean",
+     "name": "do_procedures_include_vehicle_cleanup",
+     "title": "Do the measures address cleaning and disinfecting the vehicles in which the sick person arrived at and departed from work, when feasible?",
+     "isRequired": true
+    }
+   ]
+  }
+ ]
+}

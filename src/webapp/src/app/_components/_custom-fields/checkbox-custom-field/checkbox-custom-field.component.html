@@ -1,0 +1,16 @@
+<div class="mt-4 mb-1 font-weight-bold">{{ field.name }}</div>
+<div
+  class="checkbox-group"
+  *ngFor="let option of field.selections; let i = index"
+>
+  <input
+    type="checkbox"
+    [checked]="isChecked(option.id)"
+    (change)="onValueChange(option.id, $event.target.checked)"
+  />
+  {{ option.value }}
+</div>
+<small *ngIf="field.help_text" class="form-text text-muted"
+  ><i class="fa fa-info-circle" aria-hidden="true"></i>
+  {{ field.help_text }}
+</small>

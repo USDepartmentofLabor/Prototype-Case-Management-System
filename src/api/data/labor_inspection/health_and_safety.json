@@ -1,0 +1,133 @@
+{
+    "title": "Health and Safety",
+    "pages": [
+     {
+      "name": "page1",
+      "elements": [
+       {
+        "type": "radiogroup",
+        "name": "work_environment",
+        "title": "Does your employer provide a safe and healthy work environment?",
+        "choices": [
+         {
+          "value": "always",
+          "text": "Always"
+         },
+         {
+          "value": "usually",
+          "text": "Usually"
+         },
+         {
+          "value": "sometimes",
+          "text": "Only Sometimes"
+         },
+         {
+          "value": "never",
+          "text": "Never"
+         }
+        ],
+        "colCount": 0
+       },
+       {
+        "type": "comment",
+        "name": "work_environment_comment",
+        "visibleIf": "{work_environment} anyof ['somtimes', 'never']",
+        "title": "If you selected Only Sometimes or Never, describe the conditions:",
+        "hideNumber": true,
+        "requiredIf": "{work_environment} anyof ['somtimes', 'never']"
+       },
+       {
+        "type": "radiogroup",
+        "name": "ignore_rules",
+        "title": "Do supervisors condone or encourage workers to ignore health & safety rules?",
+        "choices": [
+         {
+          "value": "always",
+          "text": "Always"
+         },
+         {
+          "value": "often",
+          "text": "Often"
+         },
+         {
+          "value": "sometimes",
+          "text": "Sometimes"
+         },
+         {
+          "value": "rarely",
+          "text": "Rarely"
+         },
+         {
+          "value": "never",
+          "text": "Never"
+         }
+        ],
+        "colCount": 0
+       },
+       {
+        "type": "comment",
+        "name": "ignore_rules_comment",
+        "visibleIf": "{ignore_rules} anyof ['always', 'often', 'sometimes', 'rarely ']",
+        "title": "Please give an example of when and, if possible, why: ",
+        "hideNumber": true,
+        "requiredIf": "{ignore_rules} anyof ['always', 'often', 'sometimes', 'rarely ']"
+       },
+       {
+        "type": "radiogroup",
+        "name": "safety_material",
+        "title": "Has your supervisor or human resource department provided you with any health & safety material or training upon hiring or after?",
+        "isRequired": true,
+        "hasComment": true,
+        "commentText": "If no, do you believe such material or training is needed?",
+        "choices": [
+         {
+          "value": "yes",
+          "text": "Yes"
+         },
+         {
+          "value": "no",
+          "text": "No"
+         }
+        ]
+       },
+       {
+        "type": "checkbox",
+        "name": "safety_problems",
+        "title": "Which of the following health and safety problems apply to you at your current job? (If none, please select None)",
+        "isRequired": true,
+        "hasComment": true,
+        "commentText": "Describe if selected Other",
+        "choices": [
+         {
+          "value": "item1",
+          "text": "Repetitive strain injuries"
+         },
+         {
+          "value": "item2",
+          "text": "Stress related to pressure from supervisors"
+         },
+         {
+          "value": "item3",
+          "text": "Unsafe equipment "
+         },
+         {
+          "value": "item5",
+          "text": "None"
+         },
+         {
+          "value": "item6",
+          "text": "Other"
+         }
+        ]
+       },
+       {
+        "type": "comment",
+        "name": "general_feedback",
+        "title": "General Feedback:",
+        "description": "Please provide any feedback you think might be necessary ",
+        "hideNumber": true
+       }
+      ]
+     }
+    ]
+   }

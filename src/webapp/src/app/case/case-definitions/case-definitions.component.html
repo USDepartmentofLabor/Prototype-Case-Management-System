@@ -1,0 +1,53 @@
+<app-header></app-header>
+<div *ngIf="isLoading" class="animated fadeIn eps-container">
+  <app-animated-loader></app-animated-loader>
+</div>
+<div *ngIf="!isLoading" class="animated fadeIn eps-container">
+  <div class="row">
+    <div class="col-12">
+      <div class="card case-definition-card">
+        <div *ngIf="isCaseDefinitonsDataEmpty()" class="card-body">
+          <div class="alert alert-warning" role="alert">
+              <p>No Case Types data available.
+                  Create a New Case Type.
+                  <button routerLink="/cases-definitions/new" type="button" class="btn btn-primary">
+                    + New Case Type
+                  </button>
+                </p>
+            </div>
+        </div>
+        <div *ngIf="!isCaseDefinitonsDataEmpty()" class="card-body">
+            <button
+              routerLink="/cases-definitions/new"
+              type="button"
+              class="btn btn-primary pull-right mb-3"
+            >
+              + New Case Type
+            </button>
+          <table class="animated fadeIn table table-hover mt-3">
+            <thead>
+              <tr>
+                <th>Created By</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Date Created</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+              title="Click to Edit"
+                *ngFor="let definition of caseDefinitions"
+                (click)="loadEditCaseDefiniton(definition.id)"
+              >
+                <td><span class="badge badge-warning">{{ definition.created_by.username }}</span></td>
+                <td>{{ definition.name }}</td>
+                <td title="{{definition.description}}" >{{generateCaseDesc(definition.description)}}</td>
+                <td>{{ formatDateFromNow(definition.created_at) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

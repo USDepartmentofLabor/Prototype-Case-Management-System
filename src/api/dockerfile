@@ -1,0 +1,18 @@
+FROM python:3.7-alpine
+ENV FLASK_APP application.py
+ENV FLASK_RUN_HOST 0.0.0.0
+RUN apk update && \
+    apk add --virtual build-deps gcc python3-dev musl-dev && \
+    apk add postgresql-dev git curl jpeg-dev zlib-dev postgis jq
+
+RUN mkdir -p /eps-api
+
+COPY requirements.txt /eps-api
+RUN pip install -r /eps-api/requirements.txt
+
+COPY . /eps-api
+WORKDIR /eps-api
+
+RUN pybabel compile -d /eps-api/translations
+
+CMD ["flask", "run"]

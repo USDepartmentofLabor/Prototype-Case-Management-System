@@ -1,0 +1,570 @@
+<app-header></app-header>
+<router-outlet></router-outlet>
+<div *ngIf="isCaseLoading">
+  <app-animated-loader></app-animated-loader>
+</div>
+<div *ngIf="route.children.length === 0" class="animated fadeIn eps-container">
+  <!-- #region Breadcrumb -->
+  <div *ngIf="!isCaseLoading" class="row">
+    <div class="col-12">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a
+              [routerLink]="['/cases']"
+              [queryParams]="{ case_defn_id: case.case_definition.id }"
+            >
+              {{ case.case_definition.name }}</a
+            >
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            {{ case.key }}
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!-- endregion -->
+
+  <div *ngIf="!isCaseLoading && !surveyViewMode" class="row">
+    <!-- #region Left Column -->
+    <div class="col-8">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 case-details-wrapper">
+              <div title="Case Key" class="case-key mb-2">
+                Case ID: {{ case.key }}
+              </div>
+
+              <!-- #region Case Name -->
+              <div class="editable">
+                <div
+                  *ngIf="!nameFieldEditMode"
+                  (click)="onChangeMode(case.name, 'name')"
+                  class="editable-view-mode"
+                  ngbTooltip="Click to edit case name"
+                >
+                  <strong>{{ case.name }}</strong>
+                  <div class="edit-icon pull-right">
+                    <fa name="fas fa-pencil"></fa>
+                  </div>
+                </div>
+                <div *ngIf="nameFieldEditMode" class="editable-edit-mode">
+                  <form
+                    [formGroup]="caseNameForm"
+                    (ngSubmit)="onCaseUpdate('name')"
+                    class="animated fadeIn form-wrapper mt4"
+                  >
+                    <div class="form-label-group">
+                      <input
+                        type="text"
+                        id="inputCaseName"
+                        class="form-control capitalize-input"
+                        formControlName="name"
+                        [ngClass]="{
+                          'is-invalid': submitted && form.name.errors
+                        }"
+                        placeholder="Case Name"
+                        (change)="
+                          caseNameForm.patchValue({
+                            name: capitalizeInput($event.target.value)
+                          })
+                        "
+                        maxlength="35"
+                        required
+                        autofocus
+                      />
+                      <label for="inputCaseName">Name</label>
+                      <div
+                        *ngIf="submitted && form.name.errors"
+                        class="invalid-feedback"
+                      >
+                        <div *ngIf="form.name.errors.required">
+                          Case Name is required
+                        </div>
+                        <div *ngIf="form.name.errors.minlength">
+                          Case Name must contain 6 characters.
+                        </div>
+                      </div>
+                      <div class="btn-tools-wrapper pull-right">
+                        <button
+                          [disabled]="
+                            isSavingName || newName || !caseNameForm.dirty
+                          "
+                          class="btn btn-primary"
+                          [ngClass]="{ disabled: isSavingName }"
+                        >
+                          <fa *ngIf="!isSavingName" name="fas fa-check"></fa>
+                          <fa
+                            *ngIf="isSavingName"
+                            class="empty-data-icon"
+                            name="fas fa-spinner fa-spin"
+                          ></fa>
+                        </button>
+                        <button
+                          class="btn btn-light"
+                          [disabled]="isSavingName || this.caseNameForm.invalid"
+                          (click)="onChangeMode(case.name, 'name')"
+                        >
+                          <fa name="fas fa-times"></fa>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- endregion -->
+            </div>
+          </div>
+
+          <div class="row" style="margin-bottom: 10px">
+            <div class="col-12">
+              <div
+                class="btn-group btn-group-sm"
+                role="group"
+                aria-label="Add Activity and Document Buttons"
+              >
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="openNewActivityDialog()"
+                >
+                  Add Activity
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="openFileUploadModal(null, 'attachment')"
+                >
+                  Add Document
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <!-- fields-->
+            <div class="col-12 case-details-wrapper">
+              <!-- CASE DESCRIPTION START -->
+              <div class="editable">
+                <div
+                  *ngIf="!descFieldEditMode"
+                  (click)="onChangeMode(case.description, 'desc')"
+                  class="editable-view-mode"
+                  ngbTooltip="Click to edit case description"
+                >
+                  {{ case.description || "Add a description..." }}
+                  <div class="edit-icon pull-right">
+                    <fa name="fas fa-pencil"></fa>
+                  </div>
+                </div>
+                <div *ngIf="descFieldEditMode" class="editable-edit-mode">
+                  <form
+                    [formGroup]="caseDescForm"
+                    (ngSubmit)="onCaseUpdate('desc')"
+                    class="animated fadeIn form-wrapper mt4"
+                  >
+                    <div class="form-label-group">
+                      <textarea
+                        id="inputCaseDescription"
+                        class="form-control"
+                        formControlName="description"
+                        autofocus
+                      ></textarea>
+                      <label for="inputCaseDescription"></label>
+                      <div class="btn-tools-wrapper pull-right">
+                        <button
+                          class="btn btn-primary"
+                          [disabled]="
+                            caseDescForm.pristine && caseDescForm.dirty
+                          "
+                          [ngClass]="{ disabled: isSavingDesc }"
+                        >
+                          <fa *ngIf="!isSavingDesc" name="fas fa-check"></fa>
+                          <fa
+                            *ngIf="isSavingDesc"
+                            class="empty-data-icon"
+                            name="fas fa-spinner fa-spin"
+                          ></fa>
+                        </button>
+                        <button
+                          class="btn btn-light"
+                          [disabled]="isSavingDesc"
+                          (click)="onChangeMode(case.description, 'desc')"
+                        >
+                          <fa name="fas fa-times"></fa>
+                        </button>
+                      </div>
+                      <small class="pl-2 form-text text-muted"> Optional</small>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- CASE DESCRIPTION END -->
+            </div>
+          </div>
+
+          <!-- ACTIVITIES-->
+          <div
+            *ngIf="case.activities && case.activities.length > 0"
+            class="mb-3"
+          >
+            <h5>Activities</h5>
+            <ul class="list-group">
+              <li
+                class="list-group-item"
+                *ngFor="let activity of case.activities"
+              >
+                <div class="d-flex w-100 justify-content-between">
+                  <h6 class="mb-1" ngbTooltip="Click to view activity">
+                    <a [routerLink]="['/activities', activity.id]" class="text-dark">{{
+                      activity.name
+                    }}</a>
+                  </h6>
+                  <span>
+                    <fa
+                      name="fas fa-check"
+                      [ngStyle]="{
+                        color: activity.is_complete ? 'green' : 'gray'
+                      }"
+                    ></fa>
+                    <a
+                      *hasPerm="'DELETE_ACTIVITY'"
+                      (click)="onDeleteActivity(activity.id)"
+                      ngbTooltip="Click to delete activity"
+                      class="text-danger"
+                    >
+                      <fa name="fas fa-trash"></fa>
+                    </a>
+                  </span>
+                </div>
+                <dl *ngIf="activity.is_complete" class="row mt-2">
+                  <dt class="col-sm-3">Completion Date</dt>
+                  <dd class="col-sm-9">
+                    {{ activity.completed_at | date: "MM/dd/yyyy" }}
+                  </dd>
+
+                  <dt class="col-sm-3">Completed By</dt>
+                  <dd class="col-sm-9">
+                    {{
+                      activity.completed_by.name ||
+                        activity.completed_by.username
+                    }}
+                  </dd>
+                </dl>
+              </li>
+            </ul>
+          </div>
+
+          <!-- #region Surveys -->
+          <div
+            class="row mt-3 mb-2"
+            *ngIf="case.surveys && case.surveys.length > 0"
+          >
+            <div class="col-12 case-details-wrapper">
+              <h4>Forms</h4>
+              <div class="case-surveys mt-3">
+                <label
+                  class="case-surveys-label mb-0"
+                  *ngFor="let survey of case.surveys; let i = index"
+                  (click)="showSurvey(survey)"
+                >
+                  <span title="Click to open Form" class="pl-2">{{
+                    survey.name
+                  }}</span>
+                  <span (click)="showResponses(survey)" class="icon-wrapper">
+                    <fa
+                      data-container="body"
+                      placement="top"
+                      ngbTooltip="Click to view responses"
+                      class="show-survey-responces-icon-mg pull-right mr-3"
+                      name="fas fa-list-alt"
+                    ></fa>
+                    <span class="sr-badge-count badge badge-warning">{{
+                      survey.responses_count || 0
+                    }}</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- endregion Surveys -->
+
+          <!-- DOCUMENTS START -->
+          <div
+            class="row mt-5 mb-2"
+            *ngIf="case.documents && case.documents.length > 0"
+          >
+            <div class="col-12 case-details-wrapper">
+              <div class="row">
+                <h4>Documents</h4>
+                <!--<div *hasPerm="'UPDATE_CASE'" class="col-6">
+                  <button
+                    *ngIf="!caseHasDocuments()"
+                    class="pull-right btn btn-primary"
+                    (click)="openFileUploadModal(null, 'attachment')"
+                  >
+                    + Add Document
+                  </button>
+                </div>-->
+              </div>
+
+              <div *ngIf="!caseHasDocuments()" class="case-surveys mt-3">
+                <div class="media" *ngFor="let doc of documents; let i = index">
+                  <div class="media-body mb-2 mt-3 ml-3">
+                    <div class="mt-0 mb-1">
+                      <fa
+                        *ngIf="doc.document_id"
+                        class="uploaded-checkmark mr-1"
+                        [ngClass]="{ green: doc.url }"
+                        name="fas fa-check-circle"
+                      ></fa>
+                      <fa
+                        *ngIf="doc.name === null"
+                        class="black"
+                        name="fas fa-paperclip"
+                      ></fa>
+                      {{ doc.name || doc.original_filename
+                      }}<small>{{
+                        generateDocumentRequiredTxt(doc.is_required)
+                      }}</small>
+                    </div>
+                    <button
+                      class="btn btn-link download-file-link ml-2"
+                      data-container="body"
+                      ngbTooltip="Download File"
+                      (click)="downloadCaseDocument(doc.id)"
+                    >
+                      <small>{{ doc.original_filename }}</small>
+                    </button>
+                  </div>
+                  <div class="doc-actions">
+                    <fa
+                      *ngIf="!doc.url"
+                      (click)="openFileUploadModal(doc.document_id, 'document')"
+                      data-container="body"
+                      ngbTooltip="Upload Document"
+                      class="upload-document-icon-md"
+                      name="fas fa-upload"
+                    ></fa>
+                    <fa
+                      *ngIf="doc.url"
+                      (click)="deleteCaseDocument(doc.id)"
+                      data-container="body"
+                      data-container="body"
+                      ngbTooltip="Delete Document"
+                      class="delete-document-md"
+                      name="fas fa-trash"
+                    ></fa>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3" *ngIf="caseHasDocuments()">
+                <div *hasPerm="'UPDATE_CASE'" class="empty-attachments">
+                  <div class="attachment-text-wrapper">
+                    <p>Attach files to case...</p>
+                    <button
+                      class="btn btn-primary"
+                      (click)="openFileUploadModal(null, 'attachment')"
+                    >
+                      + Add Attachment
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- DOCUMENTS END -->
+
+          <!-- #region Notes/History -->
+          <ul
+            class="nav nav-tabs"
+            id="notesHistoryTab"
+            role="tablist"
+            style="margin-top: 20px"
+          >
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="notes-tab"
+                data-toggle="tab"
+                href="#notes"
+                role="tab"
+                aria-controls="home"
+                aria-selected="true"
+                >Notes</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="history-tab"
+                data-toggle="tab"
+                href="#history"
+                role="tab"
+                aria-controls="profile"
+                aria-selected="false"
+                >History</a
+              >
+            </li>
+          </ul>
+          <div class="tab-content" id="notesHistoryTabContent">
+            <div
+              class="tab-pane fade show active"
+              id="notes"
+              role="tabpanel"
+              aria-labelledby="notes-tab"
+            >
+              <app-notes
+                [notes]="case.notes"
+                (noteAdded)="onCaseNoteAdded($event)"
+              ></app-notes>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="history"
+              role="tabpanel"
+              aria-labelledby="history-tab"
+            >
+              <div class="row">
+                <div class="col-12 mt-3">
+                  <app-history
+                    [history]="case.history"
+                    history-on="Case"
+                  ></app-history>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- endregion Notes/History -->
+        </div>
+      </div>
+    </div>
+    <!-- endregion Left Column -->
+
+    <!-- #region Right Column -->
+    <div class="col-4">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 pull-right">
+              <div
+                *hasPerm="'DELETE_CASE'"
+                title="Actions"
+                ngbDropdown
+                class="pull-right d-inline-block"
+              >
+                <button
+                  class="btn btn-light no-arrow"
+                  id="dropdownBasic1"
+                  ngbDropdownToggle
+                >
+                  <fa name="fas fa-ellipsis-h"></fa>
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <div>
+                    <button (click)="openDeleteDialogPrompt()" ngbDropdownItem>
+                      <fa class="empty-data-icon" name="fas fa-trash"></fa>
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-4">
+              <!-- #region Status -->
+              <strong *hasPerm="'UPDATE_CASE'">Status</strong>
+              <div *hasPerm="'UPDATE_CASE'" ngbDropdown class="mt-1">
+                <button
+                  class="btn btn-outline-primary"
+                  id="dropdownBasic1"
+                  ngbDropdownToggle
+                >
+                  {{ case.status.name }}
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <div *ngFor="let status of statuses">
+                    <button (click)="onUpdateStatus(status)" ngbDropdownItem>
+                      <!-- {{ status.name }} -->
+                      <app-status-badge [status]="status"></app-status-badge>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- endregion -->
+            </div>
+
+            <div class="col-4">
+              <!-- ASSIGNED TO START -->
+              <strong>Assignee</strong>
+              <div
+                class="mt-1"
+                (click)="onEditAssignee()"
+                *ngIf="!editingAssignee"
+              >
+                <app-eps-avatar
+                  [username]="assignedTo.username"
+                  [color]="assignedTo.color"
+                ></app-eps-avatar>
+                {{ assignedTo.name }}
+              </div>
+              <div *ngIf="editingAssignee" class="mt-1">
+                <div *hasPerm="'UPDATE_CASE'" ngbDropdown [open]="true">
+                  <button
+                    class="btn btn-outline-primary"
+                    id="assigneeDropDown"
+                    ngbDropdownToggle
+                  >
+                    {{ assignedTo.name }}
+                  </button>
+                  <div ngbDropdownMenu aria-labelledby="assigneeDropDown">
+                    <div *ngFor="let user of assignableUsers">
+                      <button (click)="onChangeAssignee(user)" ngbDropdownItem>
+                        {{ user.name || user.username }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- ASSIGNED TO END -->
+            </div>
+
+            <div class="col-4">
+              <!-- CREATOR START -->
+              <strong>Creator</strong>
+              <div class="mt-1">
+                <app-eps-avatar
+                  [username]="case.created_by.username"
+                  [color]="case.created_by.color"
+                ></app-eps-avatar>
+                {{ case.created_by.name }}
+              </div>
+              <!-- CREATOR END -->
+            </div>
+          </div>
+
+          <!-- #region Custom Fields -->
+          <div *ngIf="caseHasCustomFields()" class="row mt-3 mb-2">
+            <div class="col-12 case-details-wrapper">
+              <div>
+                <div>
+                  <render-custom-fields
+                    [customFieldsData]="customFields"
+                    [containerId]="caseId"
+                    [containerType]="customFieldContainerType"
+                  ></render-custom-fields>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- endregion Custom Fields -->
+        </div>
+      </div>
+    </div>
+    <!-- endregion Right Column -->
+  </div>
+</div>

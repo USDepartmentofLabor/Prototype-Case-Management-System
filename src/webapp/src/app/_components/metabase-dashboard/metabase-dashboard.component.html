@@ -1,0 +1,25 @@
+<app-animated-loader *ngIf="!wasDashboardRetrieved"></app-animated-loader>
+<div
+  *ngIf="wasDashboardRetrieved && isDashboardSet"
+  class="embed-responsive embed-responsive-16by9"
+>
+  <iframe
+    [src]="dashboardURL"
+    class="embed-responsive-item"
+    allowfullscreen
+    allowtransparency
+  ></iframe>
+</div>
+<div *ngIf="wasDashboardRetrieved && !isDashboardSet">
+  <div class="row">
+    <div class="col-12">
+      <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">Default Dashboard Not Set</h4>
+        <p>
+          It appears the default system dashboard is not set. Please notify your
+          project manager or system administrator.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

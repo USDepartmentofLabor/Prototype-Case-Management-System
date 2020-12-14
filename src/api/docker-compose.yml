@@ -1,0 +1,57 @@
+version: '3'
+services:
+  eps:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/eps-api
+    environment:
+      PYTHONDONTWRITEBYTECODE: 1
+      FLASK_DEBUG: 1
+      FLASK_ENV: testing
+      FLASK_CONFIG: testing
+      JWT_ACCESS_TOKEN_EXPIRES: 86400
+      JWT_BLACKLIST_ENABLED: 'true'
+      JWT_BLACKLIST_TOKEN_CHECKS: access,refresh
+      SERVER_NAME: localhost:5000
+      TEST_DATABASE_URL: postgresql://postgres:postgres@postgres:5432/api_test_pg
+      MAIL_SERVER: email-smtp.us-east-1.amazonaws.com
+      MAIL_PORT: 587
+      MAIL_USE_TLS: 'true'
+      MAIL_SUBJECT_PREFIX: '[EPS LOCAL TESTING] '
+      MAIL_SENDER: 'no-reply@dbmspilot.org'
+      AWS_REGION: us-east-1
+      WEB_APP_URL: https://eps-test.dbmspilot.org
+      DATA_DB_URI: postgresql://postgres:postgres@postgres:5432/data_test_pg
+      DATA_DB: data_pg
+      METABASE_URL: http://metabase:3000
+      METABASE_USERNAME: metabase_pg_user
+      METABASE_PASSWORD: securepassword1
+      METABASE_DB: metabase_pg
+    depends_on:
+      - postgres
+      - metabase
+  postgres:
+    image: "postgis/postgis"
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - $HOME/docker/volumes/eps/postgres:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+     POSTGRES_PASSWORD: postgres
+  metabase:
+    image: "metabase/metabase"
+    ports:
+      - "3000:3000"
+    volumes:
+      - $HOME/docker/volumes/eps/metabase:/metabase-data
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabase_pg
+      MB_DB_PORT: 5432
+      MB_DB_HOST: postgres
+      MB_DB_USER: metabase_pg_user
+      MB_DB_PASS: securepassword1

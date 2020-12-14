@@ -1,0 +1,49 @@
+<app-header></app-header>
+<div class="animated fadeIn container-fluid eps-container">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb" *ngIf="showBreadcrumb">
+      <li class="breadcrumb-item" *ngIf="sourceType === 'Case' || sourceType === 'Activity'">
+        <a
+          [routerLink]="['/cases']"
+          [queryParams]="{ case_defn_id: sourceType === 'Activity' ? activity.case.definition.id : case.case_definition.id }"
+        >
+          {{ sourceType === 'Activity' ? activity.case.definition.name : case.case_definition.name }}
+        </a>
+      </li>
+      <li class="breadcrumb-item" *ngIf="sourceType === 'Case' || sourceType === 'Activity'">
+        <a
+          [routerLink]="['/cases',sourceType === 'Activity' ? activity.case.id : case.id]"
+        >
+          {{ sourceType === 'Activity' ? activity.case.name : case.name }}
+        </a>
+      </li>
+      <li class="breadcrumb-item" aria-current="page" *ngIf="sourceType === 'Activity'">Activities</li>
+      <li class="breadcrumb-item" *ngIf="sourceType === 'Activity'">
+        <a
+          [routerLink]="['/activities', activity.id]"
+        >
+          {{ activity.name }}
+        </a>
+      </li>
+      <li class="breadcrumb-item" aria-current="page" *ngIf="sourceType === 'Case' || sourceType === 'Activity'">Forms</li>
+      <li class="breadcrumb-item" aria-current="page" *ngIf="sourceType === 'Standalone'">Data Collection Forms</li>
+      <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+    </ol>
+  </nav>
+  <div *ngIf="isSurveyLoaded; else skeleton">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <p>
+            <survey [json]="json" (submitSurvey)="sendData($event)"></survey>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6"></div>
+    <div class="row"></div>
+  </div>
+</div>
+<ng-template #skeleton>
+  <app-animated-loader></app-animated-loader>
+</ng-template>

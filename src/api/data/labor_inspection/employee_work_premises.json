@@ -1,0 +1,185 @@
+{
+ "title": "Employee Work Premises",
+ "completedHtml": "<h3> Thank you for completing this survey and providing your feedback.</h3>\n\n<h5> Your feedback will help us implement a better and safer work environment for your organization</h5> \n",
+ "pages": [
+  {
+   "name": "work_premises ",
+   "elements": [
+    {
+     "type": "expression",
+     "name": "subject_title",
+     "title": "Are the following kept clean and free of waste:",
+     "hideNumber": true,
+     "commentText": "Other (describe)"
+    },
+    {
+     "type": "radiogroup",
+     "name": "workstation_question",
+     "title": "Your workstation?",
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "workstation_comment",
+     "visibleIf": "{workstation_question} = 'no'",
+     "title": "If you meant to select No, please describe situation",
+     "hideNumber": true,
+     "isRequired": true
+    },
+    {
+     "type": "radiogroup",
+     "name": "floor_question",
+     "title": "Floors surrounding your workstation?",
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "floor_comment",
+     "visibleIf": "{floor_question} = 'no'",
+     "title": "If you meant to select No, please describe situation",
+     "hideNumber": true,
+     "isRequired": true
+    },
+    {
+     "type": "radiogroup",
+     "name": "passageways_question",
+     "title": "Passageways surrounding your workstation?",
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "passageways_comment",
+     "visibleIf": "{passageways_question} = 'no'",
+     "title": "If you meant to select No, please describe the situation ",
+     "hideNumber": true,
+     "isRequired": true
+    },
+    {
+     "type": "radiogroup",
+     "name": "exit_question",
+     "title": "Are exits, including emergency exits, free from obstruction, properly marked, and unlocked?",
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "exit_comment",
+     "visibleIf": "{exit_question} = 'no'",
+     "title": "If you meant to select No, please describe the situation ",
+     "hideNumber": true,
+     "isRequired": true
+    },
+    {
+     "type": "expression",
+     "name": "fire_precautions",
+     "title": "Fire precautions:",
+     "hideNumber": true,
+     "titleLocation": "top",
+     "commentText": "Other (describe)"
+    },
+    {
+     "type": "radiogroup",
+     "name": "fire_escape",
+     "indent": -27,
+     "title": "Are you familiar with the escape routes from your workplace to be taken in case of a fire?",
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "radiogroup",
+     "name": "fire_route_obstructions",
+     "title": "Are these routes and exits kept free from obstruction?",
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "route_comment",
+     "visibleIf": "{fire_route_obstructions} = 'no'",
+     "title": "If you meant to select No, please describe the situation ",
+     "hideNumber": true,
+     "isRequired": true
+    },
+    {
+     "type": "radiogroup",
+     "name": "fire_extinguisher",
+     "title": "Do you know where the nearest fire extinguishers and buckets are kept?",
+     "choices": [
+      {
+       "value": "yes",
+       "text": "Yes"
+      },
+      {
+       "value": "no",
+       "text": "No"
+      }
+     ]
+    },
+    {
+     "type": "comment",
+     "name": "general_feedback",
+     "title": "General Feedback",
+     "description": "Please provide any feedback that you believe might be helpful into making your work environment safer and healthier for you and your colleagues.",
+     "hideNumber": true
+    }
+   ],
+   "title": "Employee Work Premises",
+   "description": "The objective of this check-list is to gather information to improve the working conditions of men and women in various industries and therefore reduce the number of accidents and health related issues. "
+  },
+  {
+   "name": "page1"
+  }
+ ],
+ "showQuestionNumbers": "onPage"
+}

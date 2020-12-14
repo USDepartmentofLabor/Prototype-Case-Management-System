@@ -1,0 +1,211 @@
+{
+ "title": "Inspector Conclusions",
+ "description": "During the closing meeting, the mobile application should instruct the inspector to address the key issues, using data entered during the inspection, and confirm that they have done so. If the answer is no to any of the below, this must be justified with a text and any supporting documentation [including pictures]:",
+ "pages": [
+  {
+   "name": "page1",
+   "elements": [
+    {
+     "type": "boolean",
+     "name": "was_inspection_successfully_completed",
+     "title": "Has the inspection been successfully completed?",
+     "isRequired": true
+    },
+    {
+     "type": "comment",
+     "name": "was_inspection_successfully_completed_justification",
+     "visible": false,
+     "visibleIf": "{was_inspection_successfully_completed} = false",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{was_inspection_successfully_completed} = false"
+    },
+    {
+     "type": "file",
+     "name": "was_inspection_successfully_completed_documentation",
+     "visible": false,
+     "visibleIf": "{was_inspection_successfully_completed} = false",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "boolean",
+     "name": "is_worksite_in_compliance",
+     "title": "Is the worksite in compliance with the applicable legislation?",
+     "isRequired": true
+    },
+    {
+     "type": "comment",
+     "name": "is_worksite_in_compliance_justification",
+     "visible": false,
+     "visibleIf": "{is_worksite_in_compliance} = false",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{is_worksite_in_compliance} = false"
+    },
+    {
+     "type": "file",
+     "name": "is_worksite_in_compliance_documentation",
+     "visible": false,
+     "visibleIf": "{is_worksite_in_compliance} = false",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "boolean",
+     "name": "was_general_std_of_working_conditions_summarized",
+     "title": "Did you summarize the general standard of working conditions in the enterprise, including the state of housekeeping, emphasizing what is satisfactory, but clearly pointing out what needs improvement to ensure compliance with the law?",
+     "isRequired": true
+    },
+    {
+     "type": "comment",
+     "name": "was_general_std_of_working_conditions_summarized_justification",
+     "visible": false,
+     "visibleIf": "{was_general_std_of_working_conditions_summarized} = false",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{was_general_std_of_working_conditions_summarized} = false"
+    },
+    {
+     "type": "file",
+     "name": "was_general_std_of_working_conditions_summarized_documentation",
+     "visible": false,
+     "visibleIf": "{was_general_std_of_working_conditions_summarized} = false",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "boolean",
+     "name": "did_discuss_conditions",
+     "title": "Did you discuss any unsafe, unhealthy or otherwise unlawful conditions observed, outlining all apparent violations and possible legal consequences?",
+     "isRequired": true
+    },
+    {
+     "type": "comment",
+     "name": "did_discuss_conditions_justification",
+     "visible": false,
+     "visibleIf": "{did_discuss_conditions} = false",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{did_discuss_conditions} = false"
+    },
+    {
+     "type": "file",
+     "name": "did_discuss_conditions_documentation",
+     "visible": false,
+     "visibleIf": "{did_discuss_conditions} = false",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "boolean",
+     "name": "did_propose_priorities",
+     "title": "Did you propose priorities for improving working conditions and the working environment by identifying three or four important issues?",
+     "isRequired": true
+    },
+    {
+     "type": "comment",
+     "name": "did_propose_priorities_justification",
+     "visible": false,
+     "visibleIf": "{did_propose_priorities} = false",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{did_propose_priorities} = false"
+    },
+    {
+     "type": "file",
+     "name": "did_propose_priorities_documentation",
+     "visible": false,
+     "visibleIf": "{did_propose_priorities} = false",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "boolean",
+     "name": "did_state_measures_implemented",
+     "title": "Did you state those measures which have to be implemented without delay?",
+     "isRequired": true
+    },
+    {
+     "type": "comment",
+     "name": "did_state_measures_implemented_justification",
+     "visible": false,
+     "visibleIf": "{did_state_measures_implemented} = false",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{did_state_measures_implemented} = false"
+    },
+    {
+     "type": "file",
+     "name": "did_state_measures_implemented_documentation",
+     "visible": false,
+     "visibleIf": "{did_state_measures_implemented} = false",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "boolean",
+     "name": "did_inform_employer",
+     "title": "Did you inform the employer of the period allowed for implementing medium or long-term measures?",
+     "isRequired": true
+    },
+    {
+     "type": "comment",
+     "name": "did_inform_employer_justification",
+     "visible": false,
+     "visibleIf": "{did_inform_employer} = false",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{did_inform_employer} = false"
+    },
+    {
+     "type": "file",
+     "name": "did_inform_employer_documentation",
+     "visible": false,
+     "visibleIf": "{did_inform_employer} = false",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    },
+    {
+     "type": "boolean",
+     "name": "did_inform_those_present",
+     "title": "Did you inform those present of the role and purpose of labor inspection, indicating the services it can provide to the employer and the workers; and",
+     "isRequired": true
+    },
+    {
+     "type": "comment",
+     "name": "did_inform_those_present_justification",
+     "visible": false,
+     "visibleIf": "{did_inform_those_present} = false",
+     "title": "Please provide justification",
+     "hideNumber": true,
+     "requiredIf": "{did_inform_those_present} = false"
+    },
+    {
+     "type": "file",
+     "name": "did_inform_those_present_documentation",
+     "visible": false,
+     "visibleIf": "{did_inform_those_present} = false",
+     "title": "Please provide supporting documentation",
+     "hideNumber": true,
+     "allowMultiple": true,
+     "maxSize": 0
+    }
+   ]
+  }
+ ]
+}

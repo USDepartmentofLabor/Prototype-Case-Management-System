@@ -1,0 +1,180 @@
+<app-header></app-header>
+<div *ngIf="isUserListLoaded; else skeleton" class="container users-container">
+  <div class="row">
+    <div class="col-5 users-dash-user-list-container">
+      <h1 class="users-dash-header">Users</h1>
+      <span class="users-dash-header-btn-container pull-right">
+        <button type="button" class="btn btn-outline-primary" (click)="openModal()">
+          <fa class="empty-data-icon" name="fas fa-plus"></fa>
+          Add User
+        </button>
+      </span>
+      <div class="users-dash-search-container"></div>
+      <ul class="users-dash-user-list">
+        <li
+          (click)="displayUserData(selection, user.id)"
+          [class.selectedUser]="currSelectedUser === selection"
+          *ngFor="let user of users; let selection = index"
+        >
+          <div class="row">
+            <div class="col-2">
+              <span
+                class="w-40 user-inital-avatar circle"
+                data-container="body"
+                placement="top"
+                ngbTooltip="{{ generateUserStatusClass(user.is_active) }}"
+                [ngClass]="user.avatarBgColor"
+                >{{ user.firstInitial }}
+                <i
+                  [ngClass]="generateUserStatusClass(user.is_active)"
+                  class="b-white avatar-right"
+                ></i>
+              </span>
+            </div>
+            <div class="col-6">
+              <div class="line-height users-user-username-data">{{ user.username }}</div>
+              <div class="line-height users-user-email-data">{{ user.email }}</div>
+              <div class="line-height users-user-last-upate-data">
+                Last Update <strong>{{ formatLastUpdateDate(user.updated_at) }}</strong>
+              </div>
+            </div>
+            <div class="col-2">
+              <span title="role" class="badge badge-light">{{ user.role.name }}</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="col-7">
+      <div class="users-dash-no-curr-selection-container" *ngIf="!isUserDataLoaded">
+        <div class="no-data-loaded">
+        <object type="image/svg+xml" data="../../../assets/profile_illustration.svg">
+          Your browser does not support SVG
+        </object>
+        </div>
+      </div>
+      <div *ngIf="isUserDataLoaded" class="users-user-edit-mode animated fadeIn">
+        <h1 class="users-dash-header">Edit: {{ username }}</h1>
+        <div class="mt-3 users-user-edit-mode-container">
+          <form [formGroup]="userForm" (ngSubmit)="save()">
+            <div class="form-group mb-0">
+              <div class="row">
+                <div class="pt-1 col6">
+                  <span class="acc-action-txt"
+                    ><strong>{{ accActionTxt }}</strong> Account:</span
+                  >
+                </div>
+                <div class="pl-1 col-6">
+                  <label class="switch">
+                    <input type="checkbox" (change)="checkValue()" formControlName="is_active" />
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-label-group">
+              <input
+                type="email"
+                formControlName="email"
+                class="form-control"
+                placeholder="Email address"
+                required
+                autofocus
+              />
+              <label for="inputEmail">Email address</label>
+            </div>
+            <div class="form-label-group">
+              <input
+                type="text"
+                formControlName="username"
+                class="form-control"
+                placeholder="username"
+              />
+              <label for="inputEmail">Username</label>
+            </div>
+            <div class="form-label-group">
+              <input type="text" formControlName="name" class="form-control" placeholder="name" />
+              <label for="inputEmail">Name</label>
+            </div>
+            <div class="form-group">
+              <select class="form-control dropdown" formControlName="role" name="roles" required>
+                <option *ngFor="let role of roles" [ngValue]="role.name">
+                  {{ role.name }}
+                </option>
+              </select>
+            </div>
+            <div class="form-label-group">
+              <input
+                type="text"
+                formControlName="location"
+                class="form-control"
+                placeholder="name"
+              />
+              <label for="inputLocation">Location</label>
+            </div>
+            <div class="form-label-group">
+              <div class="input-group mb-3">
+                <div class="input-group-append">
+                  <button
+                    (click)="openChangePasswordDialog()"
+                    class="btn btn-link"
+                    type="button"
+                    id="button-addon1"
+                  >
+                    Change Password
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  value="********"
+                  formControlName="password"
+                  class="form-control"
+                />
+              </div>
+              <small id="emailHelp" class="pl-3 form-text text-muted"
+                ><fa class="empty-data-icon" name="fas fa-info-circle"></fa> Click the link above to
+                change the user's password.</small
+              >
+            </div>
+            <div class="form-label-group">
+              <div class="input-group mb-3">
+                <button
+                  type="button"
+                  (click)="resendWelcomeEmail()"
+                  class="btn btn-outline-primary btn-sm btn-block"
+                >
+                  <fa class="empty-data-icon" name="fas fa-envelope"></fa> Resend Welcome Email
+                </button>
+              </div>
+            </div>
+            <div class="mt-5 pull-right">
+              <button
+                [ngClass]="{ disabled: isSavingUserData }"
+                (click)="cancel()"
+                class="btn btn-link btn-sm"
+                type="button"
+              >
+                Cancel
+              </button>
+              <button
+                [ngClass]="{ disabled: isSavingUserData }"
+                class="btn btn-lg btn-primary btn-sm"
+                type="submit"
+              >
+                <fa
+                  *ngIf="isSavingUserData"
+                  class="empty-data-icon"
+                  name="fas fa-spinner fa-spin"
+                ></fa>
+                Save
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #skeleton>
+  <users-skeleton></users-skeleton>
+</ng-template>

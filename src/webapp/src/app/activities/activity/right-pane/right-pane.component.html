@@ -1,0 +1,46 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-3">
+        <strong>Complete?</strong>
+        <div class="custom-control custom-switch">
+          <input
+            type="checkbox"
+            [checked]="isComplete"
+            (change)="onValueChange($event.target.checked)"
+            class="custom-control-input"
+            id="customSwitch1"
+          />
+          <label class="custom-control-label" for="customSwitch1"></label>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <!-- CREATOR START -->
+        <strong>Creator</strong>
+        <div class="mt-1">
+          <app-eps-avatar
+            [username]="createdBy.username"
+            [color]="createdBy.color"
+          ></app-eps-avatar>
+          {{ createdBy.name }}
+        </div>
+        <!-- CREATOR END -->
+      </div>
+    </div>
+
+    <div *ngIf="customFields" class="row">
+      <div class="col-12">
+        <div>
+          <div>
+            <render-custom-fields
+              [customFieldsData]="customFields"
+              [containerId]="activityID"
+              [containerType]="customFieldContainerType"
+            ></render-custom-fields>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

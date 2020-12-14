@@ -1,0 +1,62 @@
+<div class="custom-fields-container">
+    <div *ngFor="let item of customFields">
+      <div [ngSwitch]="item.field_type">
+
+        <div *ngSwitchCase="'text'">
+          <app-text-custom-field
+            [field]="item"
+            (fieldChanged)="onFieldChanged($event)"
+          ></app-text-custom-field>
+        </div>
+
+        <div *ngSwitchCase="'number'">
+          <app-number-custom-field
+            [field]="item"
+            (fieldChanged)="onFieldChanged($event)"
+          ></app-number-custom-field>
+        </div>
+
+        <div *ngSwitchCase="'date'">
+          <app-date-custom-field
+            [field]="item"
+            (fieldChanged)="onFieldChanged($event)"
+          ></app-date-custom-field>
+        </div>
+
+        <div *ngSwitchCase="'select'">
+          <app-select-custom-field
+            [field]="item"
+            (fieldChanged)="onFieldChanged($event)"
+          ></app-select-custom-field>
+        </div>
+
+        <div *ngSwitchCase="'check_box'">
+          <app-checkbox-custom-field
+            [field]="item"
+            (fieldChanged)="onFieldChanged($event)"
+          ></app-checkbox-custom-field>
+        </div>
+
+        <div *ngSwitchCase="'rank_list'">
+          <app-rank-list-custom-field
+            [field]="item"
+            (fieldChanged)="onFieldChanged($event)"
+          ></app-rank-list-custom-field>
+        </div>
+
+        <div *ngSwitchCase="'radio_button'">
+          <app-radio-button-custom-field
+            [field]="item"
+            (fieldChanged)="onFieldChanged($event)"
+          ></app-radio-button-custom-field>
+        </div>
+
+        <div *ngSwitchCase="'textarea'">
+          <app-textarea-custom-field
+            [field]="item"
+            (fieldChanged)="onFieldChanged($event)"
+          ></app-textarea-custom-field>
+        </div>
+      </div>
+    </div>
+</div>

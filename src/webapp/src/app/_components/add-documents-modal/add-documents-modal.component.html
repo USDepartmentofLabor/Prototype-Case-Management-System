@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Add New Document</h4>
+</div>
+<form [formGroup]="newDocForm" (ngSubmit)="submit()">
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-8">
+        <div class="form-label-group">
+          <input
+            type="text"
+            class="form-control capitalize-input"
+            formControlName="name"
+            placeholder="Document Name"
+            maxlength="50"
+            [ngClass]="{ 'is-invalid': submitted && form.name.errors }"
+            required
+            autofocus
+            #inputRef
+            (change)="newDocForm.patchValue({name: capitalizeInput($event.target.value)})"
+          />
+          <label for="name">Document Name</label>
+          <div *ngIf="submitted && form.name.errors" class="invalid-feedback">
+            <div *ngIf="form.name.errors.required">Document Name is required</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-check">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            formControlName="is_required"
+          />
+          <label class="form-check-label mt-1" for="requiredDocs">Required</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button (click)="activeModal.dismiss('Cross click')" class="btn btn-link btn-sm" type="button">
+      Cancel
+    </button>
+    <button
+      [disabled]="isSavingNewDoc"
+      class="btn btn-lg btn-primary btn-sm"
+      [ngClass]="{ disabled: isSavingNewDoc }"
+    >
+      <fa *ngIf="isSavingNewDoc" class="empty-data-icon" name="fas fa-spinner fa-spin"></fa>
+      {{ generateSaveDocBtnTxt() }}
+    </button>
+  </div>
+</form>

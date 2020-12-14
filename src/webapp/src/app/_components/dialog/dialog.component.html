@@ -1,0 +1,16 @@
+<div>
+  <div class="modal-header">
+    <h4>{{ this.dialogOptions.headerText }}</h4>
+  </div>
+  <div class="modal-body">
+    {{ this.dialogOptions.bodyText }}
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-light" (click)="choice(false)">
+      {{ this.dialogOptions.cancelBtnText }}
+    </button>
+    <button type="button" class="btn" [ngClass]="generateBtnClass(this.dialogOptions.btnClass)" (click)="choice(true)">
+      {{ this.dialogOptions.primaryActionText }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,103 @@
+.no-left-pad {
+    padding-left: 0 !important;
+}
+
+.no-right-pad {
+    padding-right: 0 !important;
+}
+
+.roles-container {
+    margin-top: 100px;
+  }
+
+  .roles-header {
+    font-weight: 220;
+    display: inline-block;
+    padding-bottom: 20px;
+  }
+
+  .role-list-container {
+
+    border-radius: 3px;   
+  }
+  .role-list-container ul{
+      list-style: none;
+      padding: 0;
+  }
+
+  .role-list-container li {
+      cursor: pointer;
+      padding: 15px 15px;
+  }
+
+  .role-list-container li:hover:not(.selectedRole){
+    background-color: #dfdfdf;
+  }
+
+  .role-list-container li:hover .delete-role-icon {
+    display: block;
+}
+
+  .selectedRole {
+    background-color: #fff;
+    border-left: 5px solid #007bff;
+    color: black;
+  }
+
+  .permissions-container {
+    background-color: #fff;
+    border-right: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 3px; 
+    height: 100vh;
+    padding: 25px 50px;
+    overflow-y: scroll;
+  }
+
+  .permissions-list-container  {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .permissions-list-container .cols {
+    width: 290px;
+    height: 50px;
+    margin-right: 15px;
+  }
+
+  .permission-checkbox{
+      border: 1px solid rgba(213, 213, 213, 0.125);
+      padding: 10px; 
+  }
+
+  .permission-checkbox:hover{
+    background-color: #f1f1f1;
+}
+
+.add-new-role-container {
+    background-color: #f1f1f1;
+    padding: 10px 10px 0 0;
+    margin-bottom: 25px;
+}
+
+.addRoleBtn {
+    padding: .25rem .5rem !important;
+    margin-bottom:10px;
+}
+
+.delete-role-icon {
+    margin:-7px 25px 0 0;
+    padding: 0.5em 0.6em;
+    display: none;
+}
+
+.delete-role-icon:hover {
+    margin:-7px 25px 0 0;
+    color: #007bff;
+    border-radius: 60px;
+    border: 1px solid #f1f1f1;
+    background-color: #FFF;
+    /* box-shadow: 0px 0px 2px #888; */
+    padding: 0.5em 0.6em;
+}

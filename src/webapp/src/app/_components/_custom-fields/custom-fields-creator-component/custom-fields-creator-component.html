@@ -1,0 +1,235 @@
+<div class="row">
+  <div class="col-6 pl-0">
+    <h5>Custom Fields</h5>
+  </div>
+  <div class="col-6">
+    <button
+      type="button"
+      *ngIf="!showCustomFieldsForm"
+      (click)="openAddCustomFieldModal('new')"
+      class="btn btn-primary pull-right"
+    >
+      + New Field
+    </button>
+  </div>
+</div>
+<div *ngIf="!showCustomFieldsForm" class="row">
+  <p class="mt-4">
+    <fa name="fas fa-info-circle"></fa> Click New Field to add Customs Fields.
+    Drag and Drop to set the sort the order.
+  </p>
+  <div class="col-12 pl-0">
+    <div class="dynamic-forms mt-3">
+      <ngx-sortable
+        [items]="customFields"
+        [listStyle]="listStyle"
+        [showHeader]="false"
+        (listSorted)="listSorted($event)"
+      >
+        <div class="accordion">
+          <ng-template let-item>
+            <div class="sortable-list-item">
+              <div class="option animated fadeIn">
+                <input
+                  type="checkbox"
+                  [checked]="showDetails"
+                  id="{{ item.id }}"
+                  class="toggle"
+                />
+                <label class="title" for="{{ item.id }}"
+                  >{{ item.name }}
+                </label>
+                <div class="content">
+                  <div class="btn-toolbar">
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Third group"
+                    >
+                      <button
+                        type="button"
+                        data-container="body"
+                        placement="bottom"
+                        ngbTooltip="Remove Field"
+                        (click)="deleteCustomFieldFromList(item)"
+                        class="btn btn-light custom-fields-icon"
+                      >
+                        <fa name="fas fa-trash"></fa>
+                      </button>
+                      <button
+                        type="button"
+                        data-container="body"
+                        placement="bottom"
+                        ngbTooltip="Edit Field"
+                        (click)="editCustomFieldFromList(item)"
+                        class="btn btn-light custom-fields-icon"
+                      >
+                        <fa name="fas fa-pencil"></fa>
+                      </button>
+                    </div>
+                  </div>
+                  <form
+                    [formGroup]="customFieldFormGroup"
+                    (ngSubmit)="onSubmit()"
+                  >
+                    <div [ngSwitch]="item.field_type">
+                      <div *ngSwitchCase="'text'">
+                        <div class="form-label-group">
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="{{ item.name }}"
+                          />
+                          <small *ngIf="item.help_text" class="help-text mt-2"
+                            ><i
+                              class="fa fa-info-circle"
+                              aria-hidden="true"
+                            ></i>
+                            {{ item.help_text }}</small
+                          >
+                          <label for="inputEmail">{{ item.name }}</label>
+                        </div>
+                      </div>
+
+                      <div *ngSwitchCase="'number'">
+                        <div class="form-label-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            formControlName="{{ item.name }}"
+                          />
+                          <small *ngIf="item.help_text" class="help-text mt-2"
+                            ><i
+                              class="fa fa-info-circle"
+                              aria-hidden="true"
+                            ></i>
+                            {{ item.help_text }}</small
+                          >
+                          <label for="inputEmail">{{ item.name }}</label>
+                        </div>
+                      </div>
+
+                      <div *ngSwitchCase="'date'">
+                        <div class="form-label-group">
+                          <input
+                            type="date"
+                            class="form-control"
+                            formControlName="{{ item.name }}"
+                          />
+                          <small *ngIf="item.help_text" class="help-text mt-2"
+                            ><i
+                              class="fa fa-info-circle"
+                              aria-hidden="true"
+                            ></i>
+                            {{ item.help_text }}
+                          </small>
+                          <label for="inputEmail">{{ item.name }}</label>
+                        </div>
+                      </div>
+
+                      <div *ngSwitchCase="'select'">
+                        <div class="form-label-group">
+                          <select
+                            class="form-control"
+                            formControlName="{{ item.name }}"
+                          >
+                            <option
+                              [ngValue]="opt"
+                              *ngFor="let opt of item.selections"
+                            >
+                              {{ opt.value }}
+                            </option>
+                          </select>
+                          <small *ngIf="item.help_text" class="help-text mt-3"
+                            ><i
+                              class="fa fa-info-circle"
+                              aria-hidden="true"
+                            ></i>
+                            {{ item.help_text }}
+                          </small>
+                        </div>
+                      </div>
+
+                      <div *ngSwitchCase="'check_box'">
+                        <div class="mb-1">{{ item.name }}</div>
+                        <div
+                          class="checkbox-group"
+                          formArrayName="{{ item.name }}"
+                          *ngFor="
+                            let option of customFieldFormGroup.controls[item.name].controls;
+                            let i = index
+                          "
+                        >
+                          <input type="checkbox" formControlName="{{ [i] }}" />
+                          {{ item.selections[i].value }}
+                        </div>
+                        <small *ngIf="item.help_text" class="help-text mt-3"
+                          ><i class="fa fa-info-circle" aria-hidden="true"></i>
+                          {{ item.help_text }}
+                        </small>
+                      </div>
+                      <div *ngSwitchCase="'rank_list'">
+                        <div class="mb-1">{{ item.name }}</div>
+                        <div
+                          class="checkbox-group"
+                          formArrayName="{{ item.name }}"
+                          *ngFor="
+                            let option of customFieldFormGroup.controls[item.name].controls;
+                            let i = index
+                          "
+                        >
+                          #
+                          <input type="checkbox" formControlName="{{ [i] }}" />
+                          {{ item.selections[i].value }}
+                        </div>
+                        <small *ngIf="item.help_text" class="help-text mt-3"
+                          ><i class="fa fa-info-circle" aria-hidden="true"></i>
+                          {{ item.help_text }}
+                        </small>
+                      </div>
+                      <div *ngSwitchCase="'radio_button'">
+                        <div class="mb-2">{{ item.name }}</div>
+                        <div
+                          *ngFor="let opt of item.selections"
+                          class="form-group row"
+                        >
+                          <input
+                            formControlName="{{ item.name }}"
+                            type="radio"
+                            value="{{ opt.id }}"
+                          />
+                          <span class="ml-1"> {{ opt.value }}</span>
+                        </div>
+                        <small *ngIf="item.help_text" class="help-text mt-3"
+                          ><i class="fa fa-info-circle" aria-hidden="true"></i>
+                          {{ item.help_text }}
+                        </small>
+                      </div>
+                      <div *ngSwitchCase="'textarea'">
+                        <div class="form-label-group">
+                          <textarea
+                            class="form-control"
+                            formControlName="{{ item.name }}"
+                            rows="2"
+                            placeholder="{{ item.name }}"
+                          ></textarea>
+                          <small *ngIf="item.help_text" class="help-text mt-2"
+                            ><i
+                              class="fa fa-info-circle"
+                              aria-hidden="true"
+                            ></i>
+                            {{ item.help_text }}</small
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </ngx-sortable>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,4264 @@
+openapi: 3.0.1
+info:
+  title: EPS API
+  description: >-
+    This is the API which supports the web and mobile applications for the
+    Extended Prototype System (EPS).
+  contact:
+    email: jclements@ascend.network
+  version: 0.29.0
+tags:
+  - name: auth
+    description: Endpoints for managing accounts
+  - name: users
+    description: Operations about users
+  - name: surveys
+    description: Endpoints for surveys and responses
+  - name: case_definitions
+    description: Endpoints for managing Case Definitions
+  - name: cases
+    description: Endpoints for managing Cases
+  - name: activity_definitions
+    description: Endpoints for managing Activity Definitions
+  - name: activities
+    description: Endpoints for managing Activities
+  - name: project
+    description: |
+      Endpoints for managing Project information.
+
+      Note that only one project record can exist in the system. These
+      endpoints assume and control that.
+  - name: default
+    description: Some default routes to help with debugging
+paths:
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Logs user into the system
+      description: |
+        Use this endpoint to log into the EPS API. To log in, it accepts the
+        accounts username or email address and password. It also accepts (but
+        does not require) location data. If location data is sent, this
+        information is logged as the user last location at login.
+      operationId: loginUser
+      requestBody:
+        description: Login request object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          description: Invalid user
+          content: { }
+  /auth/logout:
+    post:
+      tags:
+        - auth
+      summary: Logs user out of the system
+      description: >-
+        This endpoint logs a user out of the system. It does this by revoking
+        their JWT.
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+  /auth/request-password-reset:
+    post:
+      tags:
+        - auth
+      summary: Submit a password reset request
+      description: |
+        This endpoint supports submitting a password reset request. It accepts
+        an email address for an account in the system and send an email to that
+        address with a link to reset the account's password. If an unknown
+        email address is submitted, the endpoint ignores the request and still
+        returns a 200. This is so clients can't attempt to mine the system for
+        valid email addresses. The email address is required and the endpoint
+        will respond with a 400 if an email address is not sent.
+      requestBody:
+        description: Password reset request object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordResetRequest'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '400':
+          description: Invalid input
+          content: { }
+  /auth/reset-password/<string:token>:
+    post:
+      tags:
+        - auth
+      summary: Perform a password reset
+      description: |
+        This endpoint supports performing a password reset. It accepts the 
+        password reset token as part of the URL. It also accepts a JSON body
+        containing the new and confirmation passwords. Both properties are
+        required and must match. Passwords must be longer than 10
+        characters and shorter than 64 characters. If the password passes 
+        validation and the reset password token is valid, the user's password
+        will be changed.
+      requestBody:
+        description: Password reset object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordReset'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '400':
+          description: Invalid input
+          content: { }
+  /users:
+    get:
+      tags:
+        - users
+      summary: Get list of users
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+          description: |
+            This query parameter can be used to filter users by their
+            `is_active` property. It is not required and if not sent, the
+            endpoint will return all active users. If used, it supports
+            three values: 'active', 'inactive', 'any'. The result of using each
+            filter values is:
+              - active - returns only active (`is_active == true`) users. This is also the default behavior is a filter is not used.
+              - inactive - returns only inactive (`is_active == false`) users.
+              - any - returns all users in the system
+        - in: query
+          name: assignable
+          schema:
+            type: string
+          description: |
+            This query parameter will filter the list of users by whether they
+            can be assigned to a case or not - users that have the
+            `ASSIGNABLE_TO_CASE` permission. The parameter accepts a value of
+            "true" and is case insensitive, i.e., "assignable=true".
+            All other values are ignored.
+      description: Returns array of users in the system
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfUsers'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+    post:
+      tags:
+        - users
+      summary: Add user to system.
+      requestBody:
+        description: |
+          This endpoint adds a new user to the system. Assuming the transaction
+          completes successfully, the user will receive an email welcoming
+          them to the system. The email includes a link to the web application
+          and their username, email and initial password.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddUserObject'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+  /users/<int:user_id>:
+    delete:
+      tags:
+        - users
+      summary: Deletes a user from the system.
+      description: |
+        This endpoint will delete a user from the system. It is only accessible
+        in the development and testing environments. In production it will 
+        return a 404. When deleting a user, the endpoint will change all
+        created by and updated by references to the admin user, unassign all
+        cases assigned to the user and then delete the user requested.
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+      security:
+        - bearerAuth: [ ]
+    get:
+      tags:
+        - users
+      summary: Get a user
+      description: |
+        This endpoint returns a user object from the system.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+      security:
+        - bearerAuth: [ ]
+    put:
+      tags:
+        - users
+      summary: Update a user
+      description: |
+        This endpoint will update a user in the system.
+      requestBody:
+        description: >
+          The endpoint accepts the following JSON object. The only required
+          property is `id` and it must match the `user_id` in the URL. If the
+          `email` and `username` properties exist in the submission, they
+          cannot be null or empty. If the `role_id` is provided, it must be a
+          valid role ID.
+
+          Only users with the `UPDATE_ACCOUNT` permission can call this
+          endpoint.
+
+          If a user's role had the `ASSIGNABLE_TO_CASE` permission and the
+          request is changing the user's role to something without the
+          permission, all the cases the user was assigned to will be
+          unassigned and all users with the admin role will be notified about
+          the affected cases.
+
+          The endpoint will also ensure that only users with the
+          `DELETE_ACCOUNT` permission has change a user's `is_active` flag.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserObject'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+      security:
+        - bearerAuth: [ ]
+  /users/<int:user_id>/change-password:
+    post:
+      tags:
+        - users
+      summary: Change a users password.
+      description: Users can change their password or admins can change all passwords.
+      requestBody:
+        description: Change password object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+  /users/<int:user_id>/resend-welcome:
+    post:
+      tags:
+        - users
+      summary: Resend the welcome email to user.
+      description: |
+        This endpoint will resend the welcome email to a valid user. It will
+        reset the user's password in the process. Their new password will be
+        in the welcome email. A 404 will be returned in 2 cases; one if a 
+        `user_id` is not in the endpoint URL and two if the `user_id` does not
+        refer to a valid user. Only Admin accounts can call this endpoint.
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+      security:
+        - bearerAuth: [ ]
+  /surveys:
+    get:
+      tags:
+        - surveys
+      summary: Get list of surveys
+      parameters:
+        - in: query
+          name: archived
+          schema:
+            type: string
+          description: |
+            This query parameter can be used to filter surveys by their
+            `is_archived` property. It is not required and if not sent, the
+            endpoint will return all non-archived surveys. If used, it supports
+            three values: all, none, any. The result of using each filter values
+            is:
+              - all - returns only archived (`is_archived == true`) surveys
+              - none - returns only non-archived (`is_archived == false`) surveys. The same behavior as not using the filter.
+              - any - returns all surveys in the system
+      description: |
+        Returns array of surveys in the system. 
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfSurveys'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+    post:
+      tags:
+        - surveys
+      summary: Add survey to system.
+      requestBody:
+        description: Add new survey object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddSurveyObject'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Survey'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+  /surveys/<int:survey_id>:
+    get:
+      tags:
+        - surveys
+      summary: Get a survey
+      description: Returns survey based on URL
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Survey'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+      security:
+        - bearerAuth: [ ]
+    put:
+      tags:
+        - surveys
+      summary: Update a survey
+      description: |
+        This endpoint will update a survey with the structure and name passed
+        in.
+      requestBody:
+        description: |
+          The endpoint accepts the following JSON object. The only
+          required property is `id`. The endpoint will also verify that it
+          matches the `survey_id` id the URL. If the `name` property is
+          present, the endpoint will verify that it is not empty or null and
+          that another survey does not have the same name.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSurveyObject'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Survey'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+      security:
+        - bearerAuth: [ ]
+    delete:
+      tags:
+        - surveys
+      summary: Delete a survey
+      description: |
+        This endpoint will delete a survey and all of its responses from the
+        system. The user submitting this request must have permission to
+        delete surveys.
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+      security:
+        - bearerAuth: [ ]
+  /surveys/<int:survey_id>/responses:
+    get:
+      tags:
+        - surveys
+      summary: Get list of responses for a survey
+      parameters:
+        - in: query
+          name: archived
+          schema:
+            type: string
+          description: >
+            This query parameter can be used to filter survey responses by their
+
+            `is_archived` property. It is not required and if not sent, the
+
+            endpoint will return all non-archived survey responses. If used, it
+            supports
+
+            three values: all, none, any. The result of using each filter values
+
+            is:
+              - all - returns only archived (`is_archived == true`) survey responses
+              - none - returns only non-archived (`is_archived == false`) survey responses. The same behavior as not using the filter.
+              - any - returns all survey responses in the system
+      description: Returns array of responses for a survey in the system
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfSurveyResponses'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+      security:
+        - bearerAuth: [ ]
+    post:
+      tags:
+        - surveys
+      summary: Add survey response
+      description: This endpoint adds a new survey response to the system.
+      requestBody:
+        description: |
+          The endpoint accepts a JSON object as defined below. The `structure`
+          is required. The `status_id` is not. If a `status_id` is not sent or
+          is empty, the status of the response will be set to the default
+          response status. The endpoint will also validate that the
+          `status_id` is valid.
+
+          This endpoint also accepts location data. If location data is sent,
+          it will be logged as the location the response was created.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddSurveyResponseObject'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyResponse'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+      security:
+        - bearerAuth: [ ]
+  /surveys/<int:survey_id>/responses/<int:response_id>:
+    get:
+      tags:
+        - surveys
+      summary: Get survey response
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyResponseWithSurvey'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+      security:
+        - bearerAuth: [ ]
+    put:
+      tags:
+        - surveys
+      summary: Update a survey response
+      description: |
+        This endpoint will update a survey response with the structure and
+        status (if any) submitted.
+      requestBody:
+        description: |
+          The endpoint accepts the following JSON object. `structure` is 
+          required. `status_id` is not. If `status_id` is not provided, it
+          will not be updated. The `status_id` is validated as a valid
+          status id number.
+
+          This endpoint also accepts location data. If location data is sent,
+          it will be logged as the location the response was last updated.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSurveyResponseObject'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyResponse'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+      security:
+        - bearerAuth: [ ]
+    delete:
+      tags:
+        - surveys
+      summary: Delete a survey response
+      description: |
+        This endpoint will delete a survey response from the system. The user
+        submitting this request must have permission to delete surveys.
+      responses:
+        '200':
+          $ref: '#/components/responses/Success'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+      security:
+        - bearerAuth: [ ]
+  /case_definitions:
+    post:
+      tags:
+        - case_definitions
+      summary: Add case definition to system.
+      description: |
+        This endpoint can be used to add new case definitions to the system. It
+        accepts objects as described in the **Request body** section below. It
+        also performs data validation on the submitted object as described in
+        the **Responses** section.
+
+        This endpoint is protected by JWT token submission in the
+        Authorization header and the account that calls this endpoint must have
+        the `CREATE_CASE_DEFINITION` permission.
+
+        If the account has permission and a valid case definition object is
+        submitted, the case definition will be added to the system and the
+        endpoint will return a full case definition object as described in the
+        **Responses** section.
+      requestBody:
+        description: |
+          The endpoint accepts the following object to create new case
+          definitions. The only property that is absolutely required is
+          `name`. However, if you submit a survey ID in the `surveys` list it
+          must be a system ID from a survey in the system. Also it you submit
+          a case management document as part of the `documents` list, it must
+          have a name.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCaseDefinitionObject'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseDefinition'
+        '400':
+          description: |
+            If invalid data is submitted by a client, a 400 status is returned
+            with a contextual message. The endpoint validates incoming data
+            for the following issues.
+            * Missing or empty case definition name
+            * Duplicate definition name
+            * An unknown survey ID
+            * Missing or empty case definition document name
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+    get:
+      tags:
+        - case_definitions
+      summary: Get list of case definitions
+      description: |
+        Returns array of all case definitions in the system. 
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCaseDefinitions'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+  /case_definitions/<int:case_definition_id>:
+    get:
+      tags:
+        - case_definitions
+      summary: Get a case definition
+      description: |
+        Returns a case definition based on the `case_definition_id` in the URL.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseDefinition'
+        '400':
+          description: Invalid input
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+      security:
+        - bearerAuth: [ ]
+    put:
+      tags:
+        - case_definitions
+      summary: Update a case definition
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCaseDefinition'
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseDefinition'
+    delete:
+      tags:
+        - case_definitions
+      summary: Delete a case definition
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+  /case_definitions/<int:case_definition_id>/custom_fields:
+    post:
+      tags:
+        - case_definitions
+      summary: Add custom field to case definition.
+      parameters:
+        - in: path
+          name: case_definition_id
+          schema:
+            type: integer
+          required: true
+          description: The case definition ID of the custom field being updated.
+          example: 16
+      description: |
+        This endpoint can be used to add a custom field to a case definition.
+
+        It will also add the custom field to all cases of the case definition.
+
+        Accounts need the UPDATE_CASE_DEFINITION permission.
+      requestBody:
+        description: |
+          The endpoint accepts the following object to create new cases.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCustomFieldObject'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+        '400':
+          description: |
+            If invalid data is submitted by a client, a 400 status is returned
+            with a contextual message. The endpoint validates incoming data
+            for the following issues.
+            * Missing or empty custom field name
+            * Missing or empty custom field field type
+            * A selection object without an id property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: A 404 is returned if an unknown case definition is used.
+      security:
+        - bearerAuth: [ ]
+    get:
+      tags:
+        - case_definitions
+      summary: Get all custom fields for case definition.
+      parameters:
+        - in: path
+          name: case_definition_id
+          schema:
+            type: integer
+          required: true
+          description: The case definition ID of the custom field being updated.
+          example: 16
+      description: |
+        This endpoint returns a list of all custom fields for a case
+        definition.
+
+        Accounts need the READ_CASE_DEFINITION permission.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCustomFields'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: A 404 is returned if an unknown case definition is used.
+      security:
+        - bearerAuth: [ ]
+  /case_definitions/<int:case_definition_id>/custom_fields/<custom_field_id>:
+    get:
+      tags:
+        - case_definitions
+      summary: Get a case definition's custom field
+      parameters:
+        - in: path
+          name: case_definition_id
+          schema:
+            type: integer
+          required: true
+          description: The case definition ID of the custom field being updated.
+          example: 16
+        - in: path
+          name: custom_field_id
+          schema:
+            type: integer
+          required: true
+          description: The custom field's ID.
+          example: 11
+      description: |
+        Returns the custom field for the case definition ID and custom field ID in the URL.
+
+        Users needs the READ_CASE_DEFINITION permission to use this endpoint.
+      responses:
+        '200':
+          description: The custom field's value was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+        '401':
+          description: Authorization information is missing or invalid.
+        '404':
+          description: A 404 is returned if a unknown case or custom field is requested.
+      security:
+        - bearerAuth: [ ]
+    put:
+      tags:
+        - case_definitions
+      summary: Update a case definition's custom field
+      parameters:
+        - in: path
+          name: case_definition_id
+          schema:
+            type: integer
+          required: true
+          description: The case definition ID of the custom field being updated.
+          example: 16
+        - in: path
+          name: custom_field_id
+          schema:
+            type: integer
+          required: true
+          description: The custom field's ID.
+          example: 11
+      description: |
+        This endpoint can be used to update a case definition's custom field.
+
+        It will also update the custom field in all cases of the case definition.
+
+        Accounts need UPDATE_CASE_DEFINITION permission
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCustomFieldObject'
+        required: true
+      responses:
+        '200':
+          description: The custom field's value was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+        '400':
+          description: |
+            If invalid data is submitted by a client, a 400 status is returned
+            with a contextual message. The endpoint validates incoming data
+            for the following issues.
+            * Missing or empty custom field name
+            * Missing or empty custom field field type
+            * A selection object without an id property
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+        '401':
+          description: Authorization information is missing or invalid.
+        '404':
+          description: |
+            404 is returned if an unknown case definition or custom field ID is
+            used in the URL.
+      security:
+        - bearerAuth: [ ]
+    delete:
+      tags:
+        - case_definitions
+      summary: Delete a case definition's custom field
+      parameters:
+        - in: path
+          name: case_definition_id
+          schema:
+            type: integer
+          required: true
+          description: The case definition ID of the custom field being updated.
+          example: 16
+        - in: path
+          name: custom_field_id
+          schema:
+            type: integer
+          required: true
+          description: The custom field's ID.
+          example: 11
+      description: |
+        Deletes the custom field for the case definition ID and custom field ID in the URL.
+
+        It will also delete the custom field from all cases of the case definition.
+
+        Users needs the UPDATE_CASE_DEFINITION permission to use this endpoint.
+      responses:
+        '200':
+          description: The custom field's was successfully deleted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+        '401':
+          description: Authorization information is missing or invalid.
+        '404':
+          description: A 404 is returned if a unknown case definition or custom field is requested.
+      security:
+        - bearerAuth: [ ]
+  /case_definitions/<int:case_definition_id>/cases:
+    post:
+      tags:
+        - case_definitions
+      summary: Add case the to system.
+      description: |
+        This endpoint can be used to add new cases to the system. It
+        accepts objects as described in the **Request body** section below. It
+        also performs data validation on the submitted object as described in
+        the **Responses** section.
+
+        This endpoint is protected by JWT token submission in the
+        Authorization header and the account that calls this endpoint must have
+        the `CREATE_CASE` permission.
+
+        If the account has permission and a valid case object is submitted,
+        the case will be added to the system and the endpoint will return a
+        full case object as described in the **Responses** section.
+
+        Also on successful submission, the system will generate a `key` for the
+        case. The `key` follows the format:
+        `<case_definition_key>-<next_sequential_case_number>` where 
+        `case_definition_key` is the `key` for the Case Definition this Case is
+        related to and `next_sequential_case_number` is next sequential number
+        for Cases related to this Case Definition. For example, if the 
+        Case Definitions key is CD and there are 10 cases associated with this
+        case definition, then the next case's key will be CD-11.
+
+        The endpoint will accept a `assigned_to_id` inwhich to use to assign a
+        user to the case. If the ID is invalid or unknown the endpoint will
+        return an error. In an assigned to is send, the endpoint will
+        record the timestamp of the assignment. The user referenced by the ID
+        must have the `ASSIGNABLE_TO_CASE` permission or the API will return
+        an error.
+
+        This endpoint also accepts location data. If location data is sent,
+        it will be logged as the location the case was created.
+
+        The endpoint accepts a list of custom fields for the case. If a
+        `custom_fields` property is found and that property is a list, the
+        endpoint will, assuming the list is valid, use that list as the list of
+        custom fields for the case. The endpoint will validate the custom
+        fields sent ensuring the following:
+
+          * That each submitted custom field matches a custom field for the case's case definition
+          * That the submitted custom fields have a unique ID
+          * That the case added to the system has all the custom fields that it's case defintion has. Any of the case's case definition's custom fields that are not submitted are added.
+
+        The endpoint will also created and updated values for each custom field.
+        If `create_at`, `created_by_id`, `updated_at`, `updated_by_id` are sent,
+        those values will be used instead of generated by the system.
+      requestBody:
+        description: |
+          The endpoint accepts the following object to create new cases. The
+          property that is required is `name`.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCaseObject'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+        '400':
+          description: |
+            If invalid data is submitted by a client, a 400 status is returned
+            with a contextual message. The endpoint validates incoming data
+            for the following issues.
+            * Missing or empty case name
+            * Duplicate case name
+            * Case names that are too short or too long.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: A 404 is returned if a unknown case definition is used.
+      security:
+        - bearerAuth: [ ]
+  /cases:
+    get:
+      tags:
+        - cases
+      summary: Get list of cases
+      description: |
+        Returns list of cases in the system. The account used to make this
+        call must have permission to read cases. The endpoint can perform
+        case searches using the `search_term` parameter defined below.
+      parameters:
+        - in: query
+          name: search_term
+          schema:
+            type: string
+          description: |
+            This query parameter can be used to search cases. The search term
+            passed in will be used to search the case's name and key. The
+            search is case insensitive. The search term is not required and if
+            not used or if it is empty (i.e. `/cases?search_term=`) the endpoint
+            will return all cases in the system.
+        - in: query
+          name: case_definition_id
+          schema:
+            type: number
+            description: |
+              Using this query parameter will return only the cases for the case
+              definition ID passed.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCases'
+        '401':
+          description: Authorization information is missing or invalid.
+      security:
+        - bearerAuth: [ ]
+  /cases/<case_id>:
+    get:
+      tags:
+        - cases
+      summary: Get a case
+      description: |
+        Returns the case object in JSON for the `<case_id>` that is part of
+        the URL.  The account used to make this call must have permission to
+        read cases.
+      responses:
+        '200':
+          description: success operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+        '401':
+          description: Authorization information is missing or invalid.
+        '404':
+          description: A 404 is returned if a unknown case is requested.
+      security:
+        - bearerAuth: [ ]
+    put:
+      tags:
+        - cases
+      summary: Update a case
+      description: |
+        This endpoint can be used to update a case.  It
+        accepts objects as described in the **Request body** section below. It
+        also performs data validation on the submitted object as described in
+        the **Responses** section.
+
+        This endpoint is protected by JWT token submission in the
+        Authorization header and the account that calls this endpoint must
+        have permission to update cases.
+
+        The endpoint will accept a `assigned_to_id` inwhich to use to assign a
+        user to the case. If the ID is invalid or unknown the endpoint will
+        return an error. In an assigned to is send, the endpoint will
+        record the timestamp of the assignment.  The user referenced by the ID
+        must have the `ASSIGNABLE_TO_CASE` permission or the API will return
+        an error.
+
+        This endpoint also accepts location data. If location data is sent,
+        it will be logged as the location the case was updated.
+      requestBody:
+        description: |
+          The endpoint accepts the following object to update cases, any other
+          properties will be ignored. Neither property is required, however
+          if a `name` property is submitted it must:
+            * Cannot be null or empty
+            * Be between 8 and 50 characters
+            * Not be the same as another case
+
+          If `status_id` is not provided, it will not be updated. The
+          `status_id` is validated as a valid status id number.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCaseObject'
+        required: true
+      responses:
+        '200':
+          description: success operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Case'
+        '400':
+          description: |
+            If invalid data is submitted by a client, a 400 status is returned
+            with a contextual message. The endpoint validates incoming data
+            for the following issues.
+              * If a name property exists:
+                * It cannot be an empty string or null
+                * It cannot be duplicate case name
+                * It must be between 8-50 characters long
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+        '401':
+          description: Authorization information is missing or invalid.
+        '404':
+          description: A 404 is returned if a unknown case is requested.
+      security:
+        - bearerAuth: [ ]
+    delete:
+      tags:
+        - cases
+      summary: Delete a case
+      description: |
+        This endpoint can be used to delete a case. It will delete the case
+        referenced by the `<case_id>` in the URL.
+
+        This endpoint is protected by JWT token submission in the
+        Authorization header and the account that calls this endpoint must
+        have permission to update cases.
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+        '401':
+          description: Authorization information is missing or invalid.
+        '404':
+          description: A 404 is returned if a unknown case is requested.
+      security:
+        - bearerAuth: [ ]
+  /cases/<case_id>/custom_fields:
+    get:
+      tags:
+        - cases
+      summary: Get all case's custom fields
+      parameters:
+        - in: path
+          name: case_id
+          schema:
+            type: integer
+          required: true
+          description: The case ID of the custom field being updated.
+          example: 16
+      description: |
+        Returns the custom fields for the case ID in the URL.
+
+        Users needs the READ_CASE permission to use this endpoint.
+      responses:
+        '200':
+          description: The custom field's value was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCaseCustomFields'
+        '401':
+          description: Authorization information is missing or invalid.
+        '404':
+          description: A 404 is returned if a unknown case is requested.
+      security:
+        - bearerAuth: [ ]
+  /cases/<case_id>/custom_fields/<custom_field_id>:
+    get:
+      tags:
+        - cases
+      summary: Get a case's custom field
+      parameters:
+        - in: path
+          name: case_id
+          schema:
+            type: integer
+          required: true
+          description: The case ID of the custom field being updated.
+          example: 16
+        - in: path
+          name: custom_field_id
+          schema:
+            type: string
+          required: true
+          description: The custom field's ID.
+          example: c7b8dcf3-c9fb-4d60-9c9f-6d7016155619
+      description: |
+        Returns the custom field for the case ID and custom field ID in the URL.
+
+        Users needs the READ_CASE permission to use this endpoint.
+      responses:
+        '200':
+          description: The custom field's value was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseCustomField'
+        '401':
+          description: Authorization information is missing or invalid.
+        '404':
+          description: A 404 is returned if a unknown case or custom field is requested.
+      security:
+        - bearerAuth: [ ]
+    put:
+      tags:
+        - cases
+      summary: Update the value of a case's custom field
+      parameters:
+        - in: path
+          name: case_id
+          schema:
+            type: integer
+          required: true
+          description: The case ID of the custom field being updated.
+          example: 16
+        - in: path
+          name: custom_field_id
+          schema:
+            type: string
+          required: true
+          description: The custom field's ID.
+          example: c7b8dcf3-c9fb-4d60-9c9f-6d7016155619
+      description: |
+        This endpoint can be used to update the value of a case's custom
+        field.
+      requestBody:
+        description: |
+          The endpoint accepts an object with a `value` property. The `value`
+          property is not required but if it is sent, the value of the custom
+          field will be updated to whatever the value of the property is. If
+          `null` or an empty string is sent, the value of the custom field
+          will be updated to that value. If the request body does not contain
+          a `value` property this endpoint will do nothing.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCustomFieldValueObject'
+        required: true
+      responses:
+        '200':
+          description: The custom field's value was successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseCustomField'
+        '401':
+          description: Authorization information is missing or invalid.
+        '404':
+          description: |
+            404 is returned if an unknown case or custom field ID is used in
+            the URL.
+      security:
+        - bearerAuth: [ ]
+  /cases/<case_id>/notes:
+    get:
+      tags:
+        - cases
+      summary: Get list of case notes
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfNotes'
+        '401':
+          description: Authorization information is missing or invalid.
+    post:
+      summary: Add a case note
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOrUpdateNote'
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+      tags:
+        - cases
+  /cases/<case_id>/notes/<case_note_id>:
+    get:
+      tags:
+        - cases
+      summary: Get a case note
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+    put:
+      tags:
+        - cases
+      summary: Update a case note
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddOrUpdateNote'
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+    delete:
+      tags:
+        - cases
+      summary: Delete a case note
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+  /cases/<case_id>/add_file:
+    post:
+      tags:
+        - cases
+      summary: Upload a file to a case
+      responses:
+        200:
+          description: Success Operation
+          content:
+            multipart/form-data:
+              schema:
+                type: object
+                properties:
+                  file:
+                    type: string
+                    format: binary
+                  document_id:
+                    type: integer
+                    description: ID of the case definition document the file is being uploaded as
+                  uploaded_location_latitude:
+                    type: number
+                    format: double
+                    description: Latitude the file was uploaded at.
+                  uploaded_location_longitude:
+                    type: number
+                    format: double
+                    description: Longitude the file was uploaded at.
+                  uploaded_location_position_accuracy:
+                    type: number
+                    format: double
+                    description: Location position accuracy the file was uploaded at.
+                  uploaded_location_altitude:
+                    type: number
+                    format: double
+                    description: Lacation altitude the file was uploaded at.
+                  uploaded_location_altitude_accuracy:
+                    type: number
+                    format: double
+                    description: Location altitude accuracy the file was uploaded at.
+                  uploaded_location_heading:
+                    type: number
+                    format: double
+                    description: Location heading the file was uploaded at.
+                  uploaded_location_speed:
+                    type: number
+                    format: double
+                    description: Location speed the file was uploaded at.
+                  taken_location_latitude:
+                    type: number
+                    format: double
+                    description: Latitude the file was taken at.
+                  taken_location_longitude:
+                    type: number
+                    format: double
+                    description: Longitude the file was taken at.
+                  taken_location_position_accuracy:
+                    type: number
+                    format: double
+                    description: Location position accuracy the file was taken at.
+                  taken_location_altitude:
+                    type: number
+                    format: double
+                    description: Lacation altitude the file was taken at.
+                  taken_location_altitude_accuracy:
+                    type: number
+                    format: double
+                    description: Location altitude accuracy the file was taken at.
+                  taken_location_heading:
+                    type: number
+                    format: double
+                    description: Location heading the file was taken at.
+                  taken_location_speed:
+                    type: number
+                    format: double
+                    description: Location speed the file was taken at.
+  /cases/files/<case_file_id>:
+    get:
+      tags:
+        - cases
+      summary: Fetch a single file
+      responses:
+        200:
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadedFile'
+    delete:
+      tags:
+        - cases
+      summary: Deletes a single file
+      responses:
+        200:
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+  /cases/files/<case_file_id>/download:
+    get:
+      tags:
+        - cases
+      summary: Download file from remote location
+      description:
+        This endpoint responds with a redirect to a pre-signed URL that allows the
+        file to be downloaded from the remote storage location. The redirect URL
+        is time-limited and is not guaranteed to be valid past the redirect
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+  /case_statuses:
+    get:
+      tags:
+        - case_statuses
+      summary: Fetch all Case Statuses
+      responses:
+        '200':
+          description: Successful Operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CaseStatus'
+    post:
+      tags:
+        - case_statuses
+      summary: Add new Case Status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCaseStatus'
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseStatus'
+    put:
+      tags:
+        - case_statuses
+      summary: Update a case status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCaseStatus'
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+    delete:
+      tags:
+        - case_statuses
+      summary: Delete a case status
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+  /case_statuses/<case_status_id>:
+    get:
+      tags:
+        - case_statuses
+      summary: Fetch all Case Statuses
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseStatus'
+
+  /activity_definitions:
+    post:
+      tags:
+        - activity_definitions
+      summary: Add new activity definitions
+      description: |
+        This endpoint can be used to add new activity definitions.
+      requestBody:
+        description: |
+          The endpoint accepts the following object to create new activity
+          definitions. The only property that is absolutely required is
+          `name`. However, if you submit a survey ID in the `surveys` list it
+          must be a system ID from a survey in the system. Also it you submit
+          a document as part of the `documents` list, it must
+          have a name.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddActivityDefinitionObject'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityDefinition'
+        '400':
+          description: |
+            If invalid data is submitted by a client, a 400 status is returned
+            with a contextual message. The endpoint validates incoming data
+            for the following issues.
+            * Missing or empty activity definition name
+            * Duplicate definition name
+            * An unknown survey ID
+            * Missing or empty activity definition document name
+          content: { }
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+    get:
+      tags:
+        - activity_definitions
+      summary: Get all activity definitions
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityDefinitionList'
+  /activity_definitions/<activity_definition_id>:
+    get:
+      tags:
+        - activity_definitions
+      summary: Get a single activity definition
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityDefinition'
+    put:
+      tags:
+        - activity_definitions
+      summary: Update an activity definition
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityDefinition'
+    delete:
+      tags:
+        - activity_definitions
+      summary: Delete an activity definition
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+  /activity_defintions/<activity_definition_id>/custom_field:
+    post:
+      tags:
+        - activity_definitions
+      summary: "Add new custom fields to an activity definition"
+      requestBody:
+        description: |
+          The endpoint accepts the following object to create new cases.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddCustomFieldObject'
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+    get:
+      tags:
+        - activity_definitions
+      summary: "Get all custom fields for an activity definition"
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCustomFields'
+  /activity_defintions/<activity_definition_id>/custom_field/<custom_field_id>:
+    get:
+      tags:
+        - activity_definitions
+      summary: "Get a single custom field for an activity definition"
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+    put:
+      tags:
+        - activity_definitions
+      summary: "Update a custom field for an activity definition"
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+    delete:
+      tags:
+        - activity_definitions
+      summary: "Delete a custom field for an activity definition"
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+  /activities:
+    post:
+      tags:
+        - activities
+      summary: Add new activity
+      requestBody:
+        description: |
+          The endpoint accepts the following object to create new activity.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddActivityObject'
+        required: true
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity'
+    get:
+      tags:
+        - activities
+      summary: Get all activities
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityList'
+  /activities/<activity_id>:
+    get:
+      tags:
+        - activities
+      summary: Get a single activity
+      parameters:
+        - in: path
+          name: activity_id
+          schema:
+            type: integer
+          required: true
+          description: The ID of the activity being requested.
+          example: 16
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity'
+    put:
+      tags:
+        - activities
+      summary: Update an activity
+      parameters:
+        - in: path
+          name: activity_id
+          schema:
+            type: integer
+          required: true
+          description: The ID of the activity that is being updated.
+          example: 16
+      requestBody:
+        description: |
+          The endpoint accepts the following object to update an activity.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateActivityObject'
+        required: true
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity'
+    delete:
+      tags:
+        - activities
+      summary: Delete an activity
+      parameters:
+        - in: path
+          name: activity_id
+          schema:
+            type: integer
+          required: true
+          description: The ID of the activity that is being deleted.
+          example: 16
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+  /activities/<activity_id>/custom_fields:
+    get:
+      tags:
+        - activities
+      summary: Get all custom fields for an activity
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCustomFields'
+  /activities/<activity_id>/custom_fields/<custom_field_id>:
+    get:
+      tags:
+        - activities
+      summary: Get a single custom field for an activity
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+    put:
+      tags:
+        - activities
+      summary: Update an activity's custom field value
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomField'
+  /activities/<activity_id>/notes:
+    post:
+      tags:
+        - activities
+      summary: Add a new note to an activity
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+    get:
+      tags:
+        - activities
+      summary: Get all notes for an activity
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfNotes'
+  /activities/<activity_id>/notes/<note_id>:
+    get:
+      tags:
+        - activities
+      summary: Get a single note for an activity
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+    put:
+      tags:
+        - activities
+      summary: Update a single note for an activity
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+    delete:
+      tags:
+        - activities
+      summary: Delete an activity's individual note
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+  /activities/<activity_id>/add_file:
+    post:
+      tags:
+        - activities
+      summary: Upload a file for an activity
+      responses:
+        200:
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  document_id:
+                    type: integer
+                    description: ID of the document the file is being uploaded as
+                  model_id:
+                    type: number
+                  model_name:
+                    type: string
+                  original_filename:
+                    type: string
+                  remote_filename:
+                    type: string
+                  extracted_location:
+                    type: object
+                    description: The location extracted from the file
+                    $ref: '#/components/schemas/Location'
+                  taken_location:
+                    type: object
+                    description: The location the user took.
+                    $ref: '#/components/schemas/Location'
+                  uploaded_location:
+                    type: object
+                    description: The location of the user uploaded the file.
+                    $ref: '#/components/schemas/Location'
+                  url:
+                    type: string
+                  created_at:
+                    type: string
+                    example: "2020-09-30T17:00:53.351933"
+                  created_by:
+                    $ref: '#/components/schemas/ActionByUser'
+  /activities/files/<file_id>:
+    get:
+      tags:
+        - activities
+      summary: Get information about an uploaded file for an activity
+      responses:
+        200:
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  document_id:
+                    type: integer
+                    description: ID of the document the file is being uploaded as
+                  model_id:
+                    type: number
+                  model_name:
+                    type: string
+                  original_filename:
+                    type: string
+                  remote_filename:
+                    type: string
+                  extracted_location:
+                    type: object
+                    description: The location extracted from the file
+                    $ref: '#/components/schemas/Location'
+                  taken_location:
+                    type: object
+                    description: The location the user took.
+                    $ref: '#/components/schemas/Location'
+                  uploaded_location:
+                    type: object
+                    description: The location of the user uploaded the file.
+                    $ref: '#/components/schemas/Location'
+                  url:
+                    type: string
+                  created_at:
+                    type: string
+                    example: "2020-09-30T17:00:53.351933"
+                  created_by:
+                    $ref: '#/components/schemas/ActionByUser'
+    delete:
+      tags:
+        - activities
+      summary: Delete an uploaded file for an activity
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+  /activities/files/<file_id>/download:
+    get:
+      tags:
+        - activities
+      summary: Get a download link for an uploaded file for an activity
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+  /project:
+    post:
+      tags:
+        - project
+      summary: Add project information to the system
+      description: |
+        This endpoint can be used to add project information to the system. It
+        will add project information to the system if a project does not
+        already exists. If a project does already exist, it will return
+        a 400 status and the message "The system already has a project setup."
+      requestBody:
+        description: |
+          The endpoint accepts the following object to create new projects. The
+          property that is required is `name`.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddProjectObject'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: |
+            A 400 status can be returned for two reasons.
+
+              1. A project already exists in the system
+              1. or a client submits invalid data
+
+            Invalid data include:
+
+              * Missing, null or empty project name
+              * Project names longer than 64 characters
+              * Organizations longer than 64 characters
+              * Agreement numbers longer than 30 characters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+    get:
+      tags:
+        - project
+      summary: Get project information from the system
+      description: |
+        This endpoint will return the project information from the system. If
+        a project has not already be setup, it will return status 400 and
+        the message "A project has not been setup.".
+      responses:
+        '200':
+          description: success operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Returns 400 if a project has not been setup
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+        '401':
+          description: Authorization information is missing or invalid.
+      security:
+        - bearerAuth: [ ]
+    put:
+      tags:
+        - project
+      summary: Update project information in the system
+      description: |
+        This endpoint can be used to update project information. If
+        a project has not already be setup, it will return status 400 and
+        the message "A project has not been setup.".
+      requestBody:
+        description: |
+          The endpoint accepts the following object update project information.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProjectObject'
+        required: true
+      responses:
+        '200':
+          description: success operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: |
+            A 400 status can be returned for two reasons.
+
+            1. A project does not exist in the system
+            1. or a client submits invalid data
+
+            Invalid data include:
+
+            * Null or empty project name
+            * Project names longer than 64 characters
+            * Organizations longer than 64 characters
+            * Agreement numbers longer than 30 characters
+
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+        '401':
+          description: Authorization information is missing or invalid.
+      security:
+        - bearerAuth: [ ]
+    delete:
+      tags:
+        - project
+      summary: Delete project information from the system
+      description: |
+        This endpoint can be used to delete project information. If
+        a project has not already be setup, it will return status 400 and
+        the message "A project has not been setup.".
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+        '401':
+          description: Authorization information is missing or invalid.
+        '400':
+          description: A 400 is returned if a project has not been setup.
+      security:
+        - bearerAuth: [ ]
+  /roles:
+    get:
+      tags:
+        - roles
+      summary: Returns all roles in the system
+      responses:
+        200:
+          description: Success operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Role'
+
+    post:
+      tags:
+        - roles
+      summary: Add role to system
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddRole'
+      responses:
+        200:
+          description: Success operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+  /roles/<int:role_id>:
+    get:
+      tags:
+        - roles
+      summary: Get an individual role
+      responses:
+        200:
+          description: Success operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+
+    put:
+      tags:
+        - roles
+      summary: Update role information
+      description: |
+        This endpoint updates a role's information.
+
+        If a role's permissions are updated such that it used to have the
+        `ASSIGNABLE_TO_CASE` permission and now will not:
+          * cases assigned to users with the role will be assigned
+          * users with the admin role's will be notified about the affected cases.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRole'
+      responses:
+        200:
+          description: Success operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+
+    delete:
+      tags:
+        - roles
+      summary: Deletes a role
+      description: |
+        This endpoint deletes a role from the system.
+
+        The system provided Admin role cannot be deleted. Attempts to delete
+        this role will result in a 400 status code.
+
+        The system must have at least one "default" role. Attempting to delete
+        the "default" role will result in a 400 status code.
+
+        Users that have the role will be moved to the default role. If the
+        role to be deleted had the `ASSIGNABLE_TO_CASE` permission and the
+        "default" does not:
+          * cases assigned to users with the role will be assigned
+          * users with the admin role's will be notified about the affected cases.
+      responses:
+        '200':
+          description: Success Operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextualMessage'
+  /:
+    get:
+      tags:
+        - default
+      summary: Default public route
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: I'm here
+  /lookups:
+    get:
+      tags:
+        - default
+      summary: Returns collection of lookup values
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LookupValues'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+  /configuration:
+    get:
+      tags:
+        - default
+      summary: Returns object of system configuration properties.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigurationProperties'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+  /dashboards:
+    get:
+      tags:
+        - default
+      summary: Returns list of dashboards in Metabase
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfDashboards'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+  /dashboards/set-default:
+    put:
+      tags:
+        - default
+      summary: Sets the system's default dashboard.
+      description: |
+        This endpoint sets the system's default dashboard. It accepts an object
+        containing the `dashboard_id` of the dashboard to set as the default. If
+        the `dashboard` does not exist, the submission is ignored and no changes
+        are made. It returns the updated list of dashboards.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetDefaultDashboardObject'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfDashboards'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+  /dashboards/get-default:
+    get:
+      tags:
+        - default
+      summary: Returns the ID end embed URL for the default dashboard.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  default_dashboard_id:
+                    type: integer
+                    description: The ID from Metabase of the dashboard.
+                    example: 1
+                  default_dashboard_url:
+                    type: string
+                    description: The URL to use to embed the dashboard
+                    example: http://localhost:3000/embed/dashboard/eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyZXNvdXJjZSI6eyJkYXNoYm9hcmQiOm51bGx9LCJwYXJhbXMiOnt9LCJleHAiOjE1OTQyMzYyMTB9.lkuuXTZVlfuxrKIX1qGdQ1sDFNoCz2536eHFYvxfKEM#bordered=true&titled=true
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+  /deleted:
+    get:
+      tags:
+        - default
+      summary: Returns lists of deleted objects.
+      description: |
+        This endpoint returns list of surveys, responses, case definitions and
+        cases that have been deleted from the system. The lists contain the ID
+        if the object deleted and the datetime it was deleted.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeletedObjects'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+  /reset-reporting:
+    post:
+      tags:
+        - default
+      summary: Resets the reporting database
+      description: |
+        This endpoint resets the reporting database. It deletes all tables in
+        the reporting database and then recreates all the tables for each
+        survey in the API database.
+      responses:
+        '204':
+          description: Successfully reset the reporting database
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+  /secure:
+    get:
+      tags:
+        - default
+      summary: JWT secured default route
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Hi ilabtoolkit@gmail.com
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+      security:
+        - bearerAuth: [ ]
+components:
+  schemas:
+    History:
+      type: object
+      properties:
+        action:
+          type: string
+          description: Type of operation performed
+        date_performed:
+          type: string
+        performed_by:
+          type: object
+          properties:
+            id:
+              type: integer
+            email:
+              type: string
+            username:
+              type: string
+            name:
+              type: string
+            color:
+              type: string
+        changes:
+          type: array
+          items:
+            type: object
+            properties:
+              property_changed:
+                type: string
+              old_value:
+                type: string
+              new_value:
+                type: string
+    AnyValue:
+      nullable: true
+      description: Can be any value, including `null`.
+    LoginRequest:
+      type: object
+      properties:
+        login:
+          type: string
+          description: User's account or email address
+        password:
+          type: string
+          description: User's password
+        latitude:
+          type: number
+          format: float
+          description: Position's latitude in decimal degrees
+        longitude:
+          type: number
+          format: float
+          description: Position's longitude in decimal degrees
+        position_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the latitude and longitude properties in meters
+        altitude:
+          type: number
+          format: float
+          description: Position's altitude in meters, relative to sea level
+        altitude_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the altitude expressed in meters
+        heading:
+          type: number
+          format: float
+          description: The direction in which the device is traveling
+        speed:
+          type: number
+          format: float
+          description: The velocity of the device in meters per second
+      required:
+        - login
+        - password
+    ChangePasswordRequest:
+      type: object
+      properties:
+        new_password:
+          type: string
+        confirm_password:
+          type: string
+      required:
+        - new_password
+        - confirm_password
+    Role:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        default:
+          type: boolean
+        permissions:
+          type: integer
+        permission_codes:
+          type: array
+          description: Array of permission codes this role has.
+          example: ["CONFIGURE_SYSTEM", "READ_ACCOUNT", "UPDATE_ACCOUNT"]
+          items:
+            type: string
+      required:
+        - id
+        - name
+        - default
+        - permissions
+    AddRole:
+      type: object
+      properties:
+        name:
+          type: string
+        default:
+          type: boolean
+        permissions:
+          type: integer
+      required:
+        - name
+    UpdateRole:
+      type: object
+      properties:
+        name:
+          type: string
+        default:
+          type: boolean
+        permissions:
+          type: integer
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        metabase_user_id:
+          type: integer
+        email:
+          type: string
+        username:
+          type: string
+        role:
+          # type: object
+          $ref: '#/components/schemas/Role'
+        name:
+          type: string
+        location:
+          type: string
+        last_seen_at:
+          type: string
+        is_active:
+          type: boolean
+        color:
+          type: string
+        last_login_location:
+          type: object
+          description: The location of the user the last time they logged in
+          $ref: '#/components/schemas/Location'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    ActionByUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        email:
+          type: string
+        username:
+          type: string
+        name:
+          type: string
+        color:
+          type: string
+    AssignedToCaseUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: The system ID of the user assigned to the case
+          example: 1
+        email:
+          type: string
+          description: The email address of the user assigned to the case
+          example: noone@example.com
+        username:
+          type: string
+          description: The username of the user assigned to the case
+          example: noone
+        name:
+          type: string
+          description: The name of the user assigned to the case
+          example: Mary Lamb
+        color:
+          type: string
+          description: The color of the user assigned to the case
+          example: light-blue
+        assigned_at:
+          type: string
+          description: The timestamp the use was assigned to the case
+          example: 2020-10-13T21:18:27.099831
+    AddUserObject:
+      type: object
+      properties:
+        email:
+          type: string
+        username:
+          type: string
+        role_id:
+          type: integer
+        name:
+          type: string
+        location:
+          type: string
+      required:
+        - email
+        - username
+    UpdateUserObject:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        email:
+          type: string
+        username:
+          type: string
+        role_id:
+          type: integer
+        name:
+          type: string
+        location:
+          type: string
+        is_active:
+          type: boolean
+        color:
+          type: string
+      required:
+        - id
+    ArrayOfUsers:
+      type: array
+      items:
+        $ref: '#/components/schemas/User'
+    Survey:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        structure:
+          type: object
+        is_archived:
+          type: boolean
+        responses:
+          type: array
+          description: Array of the system IDs for the responses for this survey.
+          items:
+            type: integer
+        case_definitions:
+          type: array
+          description: Array of the system IDs for Case Definitions that use this survey.
+          items:
+            type: integer
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        created_by:
+          #type: object
+          $ref: '#/components/schemas/ActionByUser'
+        updated_by:
+          # type: object
+          $ref: '#/components/schemas/ActionByUser'
+    AddSurveyObject:
+      type: object
+      properties:
+        name:
+          type: string
+        structure:
+          type: object
+        is_archived:
+          type: boolean
+      required:
+        - name
+        - structure
+    UpdateSurveyObject:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        structure:
+          type: object
+        is_archived:
+          type: boolean
+      required:
+        - id
+    ArrayOfSurveys:
+      type: array
+      items:
+        $ref: '#/components/schemas/Survey'
+    SurveyResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        survey:
+          type: integer
+        structure:
+          type: object
+        status:
+          # type: object
+          $ref: '#/components/schemas/SurveyResponseStatus'
+        is_archived:
+          type: boolean
+        source_type:
+          description: 'The source of the response, either Standalone or Case'
+          type: string
+        case:
+          description: |
+            The system ID of the Case this response is associated with if
+            this response is for a Case.
+          type: integer
+        created_location:
+          type: object
+          description: The location the response record was created at
+          $ref: '#/components/schemas/Location'
+        updated_location:
+          type: object
+          description: The location the response record was last updated at
+          $ref: '#/components/schemas/Location'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        created_by:
+          # type: object
+          $ref: '#/components/schemas/ActionByUser'
+        updated_by:
+          # type: object
+          $ref: '#/components/schemas/ActionByUser'
+    SurveyResponseWithSurvey:
+      type: object
+      properties:
+        id:
+          type: integer
+        survey_id:
+          type: integer
+        structure:
+          type: object
+        survey_structure:
+          type: object
+        status:
+          # type: object
+          $ref: '#/components/schemas/SurveyResponseStatus'
+        is_archived:
+          type: boolean
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        created_by:
+          type: object
+          # $ref: '#/components/schemas/ActionByUser'
+        updated_by:
+          # type: object
+          $ref: '#/components/schemas/ActionByUser'
+    SurveyResponseStatus:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        default:
+          type: boolean
+      required:
+        - id
+        - name
+    AddSurveyResponseObject:
+      type: object
+      properties:
+        survey_id:
+          type: integer
+        structure:
+          type: object
+        status_id:
+          type: integer
+        is_archived:
+          type: boolean
+        source_type:
+          description: 'The source of the response, either Standalone or Case'
+          type: string
+        latitude:
+          type: number
+          format: float
+          description: Position's latitude in decimal degrees
+        longitude:
+          type: number
+          format: float
+          description: Position's longitude in decimal degrees
+        position_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the latitude and longitude properties in meters
+        altitude:
+          type: number
+          format: float
+          description: Position's altitude in meters, relative to sea level
+        altitude_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the altitude expressed in meters
+        heading:
+          type: number
+          format: float
+          description: The direction in which the device is traveling
+        speed:
+          type: number
+          format: float
+          description: The velocity of the device in meters per second
+      required:
+        - survey_id
+        - structure
+    UpdateSurveyResponseObject:
+      type: object
+      properties:
+        id:
+          type: integer
+        survey:
+          type: integer
+        structure:
+          type: object
+        status_id:
+          type: integer
+        is_archived:
+          type: boolean
+        source_type:
+          description: 'The source of the response, either Standalone or Case'
+          type: string
+        latitude:
+          type: number
+          format: float
+          description: Position's latitude in decimal degrees
+        longitude:
+          type: number
+          format: float
+          description: Position's longitude in decimal degrees
+        position_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the latitude and longitude properties in meters
+        altitude:
+          type: number
+          format: float
+          description: Position's altitude in meters, relative to sea level
+        altitude_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the altitude expressed in meters
+        heading:
+          type: number
+          format: float
+          description: The direction in which the device is traveling
+        speed:
+          type: number
+          format: float
+          description: The velocity of the device in meters per second
+      required:
+        - structure
+    ArrayOfSurveyResponses:
+      type: array
+      items:
+        $ref: '#/components/schemas/SurveyResponse'
+    LoginResponse:
+      type: object
+      properties:
+        access_token:
+          type: string
+        profile:
+          # type: object
+          $ref: '#/components/schemas/User'
+    PasswordResetRequest:
+      type: object
+      properties:
+        email:
+          type: string
+      required:
+        - email
+    PasswordReset:
+      type: object
+      properties:
+        new_password:
+          type: string
+        confirm_password:
+          type: string
+      required:
+        - new_password
+        - confirm_password
+    AddDocumentObject:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        is_required:
+          type: boolean
+      required:
+        - name
+    DocumentObject:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        description:
+          type: string
+        is_required:
+          type: boolean
+    SurveyHighlightObject:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+    AddCaseDefinitionDocumentObject:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        is_required:
+          type: boolean
+      required:
+        - name
+    AddCaseDefinitionObject:
+      type: object
+      properties:
+        name:
+          type: string
+        key:
+          type: string
+        description:
+          type: string
+        surveys:
+          type: array
+          description: |
+            Array of the system IDs for the surveys associated with the case
+            definition.
+          items:
+            type: integer
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddCaseDefinitionDocumentObject'
+        custom_fields:
+          type: array
+          description: List of custom fields for this case definition.
+          items:
+            $ref: '#/components/schemas/AddCustomFieldObject'
+        activity_definitions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddActivityDefinitionObject'
+      required:
+        - name
+        - key
+    CaseDefinitionSurveyObject:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    UpdateCaseDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        surveys:
+          type: array
+          items:
+            $ref: '#/components/schemas/CaseDefinitionSurveyObject'
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddCaseDefinitionDocumentObject'
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpdateCustomFieldObject'
+    CaseDefinition:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        key:
+          type: string
+        description:
+          type: string
+        surveys:
+          type: array
+          items:
+            $ref: '#/components/schemas/CaseDefinitionSurveyObject'
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddCaseDefinitionDocumentObject'
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        activity_definitions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActivityDefinition'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        created_by:
+          # type: object
+          $ref: '#/components/schemas/ActionByUser'
+        updated_by:
+          # type: object
+          $ref: '#/components/schemas/ActionByUser'
+    CaseDefinitionSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        key:
+          type: string
+    CaseHighlight:
+      type: object
+      properties:
+        id:
+          type: number
+        key:
+          type: string
+        name:
+          type: string
+        definition:
+          $ref: '#/components/schemas/CaseDefinitionSummary'
+    ArrayOfCaseDefinitions:
+      type: array
+      items:
+        $ref: '#/components/schemas/CaseDefinition'
+    AddCaseCustomFieldObject:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 25c0aca5-d9b1-4e4c-8b3b-7c96d954e2fe
+          description: ID for the custom field that is unique with in the case's list of custom fields.
+        name:
+          type: string
+          description: "The name or question text of the custom field."
+        field_type:
+          type: string
+          description: The type of custom field.
+          enum: [ text, textarea, select, check_box, radio_button, number, date, rank_list ]
+        selections:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFieldSelectionObject'
+          description: Array of options for the field types that have options.
+        validation_rules:
+          type: array
+          items:
+            type: string
+          description: Reserved for future use.
+        model_type:
+          type: string
+          example: Case
+          description: This property must be set to "Case".
+        case_definition_custom_field_id:
+          type: integer
+          format: int54
+          example: 1
+          description: The ID for the case's case definition's custom field that this custom field is an instance of.
+        custom_section_id:
+          type: number
+          format: int64
+          description: Reserved for future use.
+        help_text:
+          type: string
+          example: This is for a single selection among many
+          description: Additional help text that is displayed near the custom field.
+        sort_order:
+          type: integer
+          format: int64
+          example: 1
+          description: The numerical sort order of this custom field when displayed.
+        value:
+          $ref: '#/components/schemas/AnyValue'
+        created_at:
+          type: string
+          format: date-time
+          example: 2020-06-9T15:44:05.387343
+          description: The timestamp the record was created
+        created_by_id:
+          type: integer
+          format: int64
+          example: 1
+          description: The ID of the account that created the record.
+        updated_at:
+          type: string
+          format: date-time
+          example: 2020-06-9T15:44:05.387351
+          description: The timestamp the record was last updated.
+        updated_by_id:
+          type: integer
+          format: int64
+          example: 1
+          description: The ID of the account that last updated the record.
+    AddCaseObject:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        assigned_to_id:
+          type: number
+          format: int64
+          description: A user's ID to assign the case to
+          example: 1
+        notes:
+          type: array
+          items:
+            type: string
+        latitude:
+          type: number
+          format: float
+          description: Position's latitude in decimal degrees
+        longitude:
+          type: number
+          format: float
+          description: Position's longitude in decimal degrees
+        position_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the latitude and longitude properties in meters
+        altitude:
+          type: number
+          format: float
+          description: Position's altitude in meters, relative to sea level
+        altitude_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the altitude expressed in meters
+        heading:
+          type: number
+          format: float
+          description: The direction in which the device is traveling
+        speed:
+          type: number
+          format: float
+          description: The velocity of the device in meters per second
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddCaseCustomFieldObject'
+      required:
+        - name
+    CaseAttachment:
+      type: object
+      properties:
+        id:
+          type: integer
+        document_id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        is_required:
+          type: boolean
+        original_filename:
+          type: string
+        remote_filename:
+          type: string
+        url:
+          type: string
+        created_at:
+          type: string
+        created_by:
+          # type: object
+          $ref: '#/components/schemas/ActionByUser'
+    Case:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Case system ID.
+        key:
+          type: string
+          description: Human readable string based unique identifier for the case.
+        name:
+          type: string
+          description: Unique name of the case.
+        description:
+          type: string
+          description: Long description of the case.
+        status:
+          # type: object
+          # description: The current status of the case
+          $ref: '#/components/schemas/CaseStatus'
+        case_definition:
+          # type: object
+          # description: Summary of case definition associated with this case.
+          $ref: '#/components/schemas/CaseDefinitionSummary'
+        assigned_to:
+          $ref: '#/components/schemas/AssignedToCaseUser'
+        activities:
+          type: array
+          description: Array of the activities for this case.
+          items:
+            $ref: '#/components/schemas/ActivitySummary'
+        notes:
+          type: array
+          description: All case notes that are a part of this case.
+          items:
+            $ref: '#/components/schemas/Note'
+        documents:
+          type: array
+          description: Combined case definition documents and files
+          items:
+            $ref: '#/components/schemas/CaseAttachment'
+        files:
+          type: array
+          description: A file uploads attached to this case
+          items:
+            $ref: '#/components/schemas/UploadedFile'
+        surveys:
+          type: array
+          description: Response counts of surveys associated with case
+          items:
+            $ref: '#/components/schemas/CaseSurvey'
+        custom_fields:
+          type: array
+          description: List of custom fields and their values for this case.
+          items:
+            $ref: '#/components/schemas/CaseCustomField'
+        created_at:
+          type: string
+          description: The timestamp the case was created.
+        updated_at:
+          type: string
+          description: The timestamp the case was last updated.
+        created_location:
+          type: object
+          description: The location the case record was created at
+          $ref: '#/components/schemas/Location'
+        updated_location:
+          type: object
+          description: The location the case record was last updated at
+          $ref: '#/components/schemas/Location'
+        created_by:
+          # type: object
+          # description: The user that created the case.
+          $ref: '#/components/schemas/ActionByUser'
+        updated_by:
+          # type: object
+          # description: The user that last made a change to the case.
+          $ref: '#/components/schemas/ActionByUser'
+        history:
+          type: array
+          description: History of operations performed on this item. Sorted as most recent change first
+          items:
+            $ref: '#/components/schemas/History'
+    CaseSurvey:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        responses_count:
+          type: integer
+      required:
+        - id
+        - name
+        - responses_count
+    CaseStatus:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        default:
+          type: boolean
+        is_final:
+          type: boolean
+        color:
+          type: string
+      required:
+        - id
+        - name
+    AddCaseStatus:
+      type: object
+      properties:
+        name:
+          type: string
+        default:
+          type: boolean
+        is_final:
+          type: boolean
+        color:
+          type: string
+      required:
+        - name
+    UpdateCaseStatus:
+      type: object
+      properties:
+        name:
+          type: string
+        default:
+          type: boolean
+        is_final:
+          type: boolean
+        color:
+          type: string
+    ArrayOfCases:
+      type: array
+      items:
+        $ref: '#/components/schemas/Case'
+    UpdateCaseObject:
+      type: object
+      properties:
+        name:
+          type: string
+          description: An updated name for the case.
+        description:
+          type: string
+          description: An updated description for the case.
+        status_id:
+          type: integer
+        assigned_to_id:
+          type: number
+          format: int64
+          description: A user's ID to assign the case to
+          example: 1
+        latitude:
+          type: number
+          format: float
+          description: Position's latitude in decimal degrees
+        longitude:
+          type: number
+          format: float
+          description: Position's longitude in decimal degrees
+        position_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the latitude and longitude properties in meters
+        altitude:
+          type: number
+          format: float
+          description: Position's altitude in meters, relative to sea level
+        altitude_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the altitude expressed in meters
+        heading:
+          type: number
+          format: float
+          description: The direction in which the device is traveling
+        speed:
+          type: number
+          format: float
+          description: The velocity of the device in meters per second
+    ErrorCode:
+      type: object
+      properties:
+        code:
+          type: integer
+        name:
+          type: string
+        message:
+          type: string
+    ContextualMessage:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A contextual error message.
+    LookupValues:
+      type: object
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+        survey_response_statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/SurveyResponseStatus'
+        error_codes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorCode'
+        case_statuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/CaseStatus'
+        permissions:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              name:
+                type: string
+              value:
+                type: string
+    ConfigurationProperties:
+      type: object
+      properties:
+        metabase_url:
+          type: string
+        api_version:
+          type: number
+      required:
+        - metabase_url
+        - api_version
+    DeletedObjectEntity:
+      type: object
+      properties:
+        id:
+          description: The system ID of the object deleted.
+          type: integer
+        deleted_at:
+          description: Date the object was deleted.
+          type: string
+    DeletedObjects:
+      type: object
+      properties:
+        surveys:
+          description: List of surveys deleted.
+          type: array
+          items:
+            $ref: '#/components/schemas/DeletedObjectEntity'
+        responses:
+          description: List of survey responses deleted.
+          type: array
+          items:
+            $ref: '#/components/schemas/DeletedObjectEntity'
+        case_definitions:
+          description: List of case definitions deleted.
+          type: array
+          items:
+            $ref: '#/components/schemas/DeletedObjectEntity'
+        cases:
+          description: List of cases deleted.
+          type: array
+          items:
+            $ref: '#/components/schemas/DeletedObjectEntity'
+    AddProjectObject:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the project
+          maxLength: 64
+        title:
+          type: string
+          description: The long title of the project
+        organization:
+          type: string
+          description: The organization running the project
+          maxLength: 64
+        agreement_number:
+          type: string
+          description: The contract/agreement number for the project
+          maxLength: 30
+        start_date:
+          type: string
+          description: The start date of the project
+          format: date
+        end_date:
+          type: string
+          description: The end date of the project
+          format: date
+        funding_amount:
+          type: number
+          format: float
+          description: The amount of funding received by the project
+        location:
+          type: string
+          description: Free form text describing the location of the project
+      required:
+        - name
+    UpdateProjectObject:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the project
+          maxLength: 64
+        title:
+          type: string
+          description: The long title of the project
+        organization:
+          type: string
+          description: The organization running the project
+          maxLength: 64
+        agreement_number:
+          type: string
+          description: The contract/agreement number for the project
+          maxLength: 30
+        start_date:
+          type: string
+          description: The start date of the project
+          format: date
+        end_date:
+          type: string
+          description: The end date of the project
+          format: date
+        funding_amount:
+          type: number
+          format: float
+          description: The amount of funding received by the project
+        location:
+          type: string
+          description: Free form text describing the location of the project
+    Project:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the project
+          maxLength: 64
+        title:
+          type: string
+          description: The long title of the project
+        organization:
+          type: string
+          description: The organization running the project
+          maxLength: 64
+        agreement_number:
+          type: string
+          description: The contract/agreement number for the project
+          maxLength: 30
+        start_date:
+          type: string
+          description: The start date of the project
+          format: date
+        end_date:
+          type: string
+          description: The end date of the project
+          format: date
+        funding_amount:
+          type: number
+          format: float
+          description: The amount of funding received by the project
+        location:
+          type: string
+          description: Free form text describing the location of the project
+        created_at:
+          type: string
+          description: The timestamp the case was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The timestamp the case was last updated.
+          format: date-time
+        created_by:
+          # type: object
+          # description: The user that created the case.
+          $ref: '#/components/schemas/ActionByUser'
+        updated_by:
+          # type: object
+          # description: The user that last made a change to the case.
+          $ref: '#/components/schemas/ActionByUser'
+      required:
+        - name
+    Location:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: float
+          description: Position's latitude in decimal degrees
+        longitude:
+          type: number
+          format: float
+          description: Position's longitude in decimal degrees
+        position_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the latitude and longitude properties in meters
+        altitude:
+          type: number
+          format: float
+          description: Position's altitude in meters, relative to sea level
+        altitude_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the altitude expressed in meters
+        heading:
+          type: number
+          format: float
+          description: The direction in which the device is traveling
+        speed:
+          type: number
+          format: float
+          description: The velocity of the device in meters per second
+        location_recorded_dt:
+          type: string
+          format: date-time
+          description: The timestamp the location was recorded
+    CustomFieldSelectionObject:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier within the custom field type for the selection.
+          example: 1
+        value:
+          type: string
+          description: The value of the selection.
+          example: Household Selection Option A
+      required:
+        - id
+    AddCustomFieldObject:
+      type: object
+      properties:
+        name:
+          type: string
+          description: "The name or question text of the custom field."
+        field_type:
+          type: string
+          description: The type of custom field.
+          enum: [ text, textarea, select, check_box, radio_button, number, date, rank_list ]
+        selections:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFieldSelectionObject'
+          description: Array of options for the field types that have options.
+        validation_rules:
+          type: array
+          items:
+            type: string
+          description: Reserved for future use.
+        custom_section_id:
+          type: number
+          format: int64
+          description: Reserved for future use.
+        help_text:
+          type: string
+          description: Additional help text that is displayed near the custom field.
+        sort_order:
+          type: integer
+          description: The numerical sort order of this custom field when displayed.
+      required:
+        - name
+        - field_type
+    UpdateCustomFieldObject:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+          description: |
+            Unique ID for this custom field. Required for updating existing
+            custom fields. Empty for new custom fields.
+        name:
+          type: string
+          description: "The name or question text of the custom field."
+        field_type:
+          type: string
+          description: The type of custom field.
+          enum: [ text, textarea, select, check_box, radio_button, number, date, rank_list ]
+        selections:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFieldSelectionObject'
+          description: Array of options for the field types that have options.
+        validation_rules:
+          type: array
+          items:
+            type: string
+          description: Reserved for future use.
+        model_type:
+          type: string
+        custom_section_id:
+          type: number
+          format: int64
+          description: Reserved for future use.
+        help_text:
+          type: string
+          description: Additional help text that is displayed near the custom field.
+        sort_order:
+          type: integer
+          description: The numerical sort order of this custom field when displayed.
+      required:
+        - id
+    CustomField:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+          description: Unique ID for this custom field.
+        name:
+          type: string
+          description: "The name or question text of the custom field."
+        field_type:
+          type: string
+          description: The type of custom field.
+          enum: [ text, textarea, select, check_box, radio_button, number, date, rank_list ]
+        selections:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFieldSelectionObject'
+          description: Array of options for the field types that have options.
+        validation_rules:
+          type: array
+          items:
+            type: string
+          description: Reserved for future use.
+        model_type:
+          type: string
+          description: The model this custom field is associated with.
+        model_id:
+          type: number
+          format: int64
+          description: The unique ID of the model record this custom field is associated with.
+        custom_section_id:
+          type: number
+          format: integer
+          description: Reserved for future use.
+        help_text:
+          type: string
+          description: Additional help text that is displayed near the custom field.
+        sort_order:
+          type: integer
+          description: The numerical sort order of this custom field when displayed.
+        created_at:
+          type: string
+          description: The timestamp the case was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The timestamp the case was last updated.
+          format: date-time
+        created_by:
+          $ref: '#/components/schemas/ActionByUser'
+        updated_by:
+          $ref: '#/components/schemas/ActionByUser'
+      required:
+        - id
+        - name
+        - field_type
+        - model_type
+    UpdateCustomFieldValueObject:
+      type: object
+      properties:
+        value:
+          type: string
+          description: The value to update the value of the custom field to.
+      example:
+        value: "Feel specific now without general meet."
+    CaseCustomField:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique ID for this custom field.
+        name:
+          type: string
+          description: "The name or question text of the custom field."
+        value:
+          type: string
+          description: The value entered by the user for this custom field.
+        field_type:
+          type: string
+          description: The type of custom field.
+          enum: [ text, textarea, select, check_box, radio_button, number, date, rank_list, hidden ]
+        selections:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFieldSelectionObject'
+          description: Array of options for the field types that have options.
+        validation_rules:
+          type: array
+          items:
+            type: string
+          description: Reserved for future use.
+        model_type:
+          type: string
+          description: The model this custom field is associated with.
+        case_definition_custom_field_id:
+          type: number
+          format: int64
+          description: The custom field ID from the list of custom fields for this case's case definition.
+        custom_section_id:
+          type: number
+          format: integer
+          description: Reserved for future use.
+        help_text:
+          type: string
+          description: Additional help text that is displayed near the custom field.
+        sort_order:
+          type: integer
+          description: The numerical sort order of this custom field when displayed.
+        created_at:
+          type: string
+          description: The timestamp the case was created.
+          format: date-time
+        updated_at:
+          type: string
+          description: The timestamp the case was last updated.
+          format: date-time
+        created_by:
+          $ref: '#/components/schemas/ActionByUser'
+        updated_by:
+          $ref: '#/components/schemas/ActionByUser'
+      required:
+        - id
+        - name
+        - field_type
+        - model_type
+    ArrayOfCaseCustomFields:
+      type: array
+      items:
+        $ref: '#/components/schemas/CaseCustomField'
+    ArrayOfCustomFields:
+      type: array
+      items:
+        $ref: '#/components/schemas/CustomField'
+    Dashboard:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+          example: 1
+          description: Unique ID for the dashboard. Comes from Metabase
+        name:
+          type: string
+          example: System Dashboard
+          description: The name of the dashboard from Metabase.
+        description:
+          type: string
+          example: This is default system dashboard
+          description: The description of the dashboard from Metabase.
+        is_default_dashboard:
+          type: boolean
+          example: true
+          description: Is this dashboard set to the system's default dashboard.
+    ArrayOfDashboards:
+      type: array
+      items:
+        $ref: '#/components/schemas/Dashboard'
+    SetDefaultDashboardObject:
+      type: object
+      properties:
+        dashboard_id:
+          type: number
+          format: int64
+          example: 1
+          description: The ID of the dashboard to set as the system's default dashboard.
+      required:
+        - dashboard_id
+    UploadedFile:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        model_name:
+          type: string
+          example: Activity
+        model_id:
+          type: number
+          example: 4
+        document_id:
+          type: number
+        original_filename:
+          type: string
+          example: IMG_0925.jpg
+        remote_filename:
+          type: string
+          example: img-0925__c0a7bc3db7e24074bc299e4f521b9475.jpg
+        uploaded_location:
+          $ref: '#/components/schemas/Location'
+        taken_location:
+          $ref: '#/components/schemas/Location'
+        extracted_location:
+          $ref: '#/components/schemas/Location'
+        created_at:
+          type: string
+        created_by:
+          $ref: '#/components/schemas/ActionByUser'
+    AddActivityDefinitionObject:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        case_definition_id:
+          type: number
+        surveys:
+          type: array
+          description: |
+            Array of the system IDs for the surveys associated with the case
+            definition.
+          items:
+            type: integer
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddDocumentObject'
+        custom_fields:
+          type: array
+          description: List of custom fields for this activity definition.
+          items:
+            $ref: '#/components/schemas/AddCustomFieldObject'
+    AddActivityObject:
+      type: object
+      properties:
+        case_id:
+          type: integer
+          description: The ID of the case this activity is a part of.
+          example: 1
+        activity_definition_id:
+          type: integer
+          description: The ID of the activity definition that this activity is an instance of.
+          example: 1
+        name:
+          type: string
+          description: A unique name of this activity.
+          example: Initial Inspection
+        description:
+          type: string
+          description: A longer description of the activity
+          example: This is the initial inspection of the construction site.
+        is_complete:
+          type: boolean
+          description: Whether the activity is complete or note.
+          example: true
+        notes:
+          type: array
+          items:
+            type: string
+            example: The inspection started on time.
+        latitude:
+          type: number
+          format: float
+          description: Position's latitude in decimal degrees
+        longitude:
+          type: number
+          format: float
+          description: Position's longitude in decimal degrees
+        position_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the latitude and longitude properties in meters
+        altitude:
+          type: number
+          format: float
+          description: Position's altitude in meters, relative to sea level
+        altitude_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the altitude expressed in meters
+        heading:
+          type: number
+          format: float
+          description: The direction in which the device is traveling
+        speed:
+          type: number
+          format: float
+          description: The velocity of the device in meters per second
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddCaseCustomFieldObject'
+      required:
+        - case_id
+        - activity_definition_id
+        - name
+    ActivityDefinition:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        case_definition:
+          $ref: '#/components/schemas/CaseDefinitionSummary'
+        surveys:
+          type: array
+          items:
+            $ref: '#/components/schemas/SurveyHighlightObject'
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentObject'
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        created_by:
+          # type: object
+          $ref: '#/components/schemas/ActionByUser'
+        updated_by:
+          # type: object
+          $ref: '#/components/schemas/ActionByUser'
+    ActivityDefinitionList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ActivityDefinition'
+    ActivityDefinitionHighlight:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+    Note:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+          example: 1
+        model_id:
+          type: number
+          format: int64
+          example: 62
+        model_name:
+          type: string
+          example: Activity
+        note:
+          type: string
+          example: Here's a activity note
+        created_at:
+          type: string
+          example: "2020-09-30T18:27:00.048847"
+        created_by:
+          $ref: '#/components/schemas/ActionByUser'
+        updated_at:
+          type: string
+          example: "2020-09-30T18:27:00.048854"
+        updated_by:
+          $ref: '#/components/schemas/ActionByUser'
+    AddOrUpdateNote:
+      type: object
+      properties:
+        note:
+          type: string
+    ArrayOfNotes:
+      type: array
+      items:
+        $ref: '#/components/schemas/Note'
+    ActivitySummary:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+          example: 62
+          description: The system ID of the activity.
+        name:
+          type: string
+          example: "Initial Inspection"
+          description: The name of the activity.
+        is_complete:
+          type: boolean
+          example: true
+          description: Is this activity complete or not
+        completed_at:
+          type: string
+          format: date-time
+          example: "2020-09-30T15:37:15.197332"
+          description: Timestamp this activity was set to completed.
+        completed_by:
+          $ref: '#/components/schemas/ActionByUser'
+          description: The user that set the activity to completed.
+        created_at:
+          type: string
+          format: date-time
+          example: "2020-09-30T15:37:15.197332"
+          description: Timestamp when the activity was created.
+        updated_at:
+          type: string
+          format: date-time
+          example: "2020-09-30T15:38:31.097910"
+          description: Timestamp when the activity was last updated.
+    Activity:
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+          example: 62
+        name:
+          type: string
+        description:
+          type: string
+        is_complete:
+          type: boolean
+          example: true
+          description: Is this activity complete or not
+        completed_at:
+          type: string
+          example: "2020-09-30T15:37:15.197332"
+          description: Timestamp this activity was set to completed.
+        completed_by:
+          $ref: '#/components/schemas/ActionByUser'
+          description: The user that set the activity to completed.
+        activity_definition:
+          $ref: '#/components/schemas/ActivityDefinitionHighlight'
+        case:
+          $ref: '#/components/schemas/CaseHighlight'
+        custom_fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentObject'
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/UploadedFile'
+        surveys:
+          type: array
+          items:
+            $ref: '#/components/schemas/SurveyHighlightObject'
+        created_at:
+          type: string
+          example: "2020-09-30T15:37:15.197332"
+        created_by:
+          $ref: '#/components/schemas/ActionByUser'
+        created_location:
+          $ref: '#/components/schemas/Location'
+        updated_at:
+          type: string
+          example: "2020-09-30T15:38:31.097910"
+        updated_by:
+          $ref: '#/components/schemas/ActionByUser'
+        updated_location:
+          $ref: '#/components/schemas/Location'
+        history:
+          type: array
+          description: History of operations performed on this item. Sorted as most recent change first
+          items:
+            $ref: '#/components/schemas/History'
+    UpdateActivityObject:
+      type: object
+      properties:
+        name:
+          type: string
+          description: A unique name of this activity.
+          example: Initial Inspection
+        description:
+          type: string
+          description: A longer description of the activity
+          example: This is the initial inspection of the construction site.
+        is_complete:
+          type: boolean
+          description: Whether the activity is complete or note.
+          example: true
+        latitude:
+          type: number
+          format: float
+          description: Position's latitude in decimal degrees
+        longitude:
+          type: number
+          format: float
+          description: Position's longitude in decimal degrees
+        position_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the latitude and longitude properties in meters
+        altitude:
+          type: number
+          format: float
+          description: Position's altitude in meters, relative to sea level
+        altitude_accuracy:
+          type: number
+          format: float
+          description: Accuracy of the altitude expressed in meters
+        heading:
+          type: number
+          format: float
+          description: The direction in which the device is traveling
+        speed:
+          type: number
+          format: float
+          description: The velocity of the device in meters per second
+    ActivityList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Activity'
+  responses:
+    Success:
+      description: Success
+    UnauthorizedError:
+      description: Unauthorized
+    NotFoundError:
+      description: NotFound
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

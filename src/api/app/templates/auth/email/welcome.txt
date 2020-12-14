@@ -1,0 +1,19 @@
+Dear {{ user.username }},
+
+Welcome to the Case Management System (CMS).
+
+To access CMS please click on the following link:
+
+{{ web_app_url }}
+
+Your username is {{ user.username }}
+Your email is {{ user.email }}
+Your password is {{ password }}
+
+You will be able to change your password once you log in for the first time.
+
+Sincerely,
+
+The CMS Team
+
+Note: replies to this email address are not monitored.

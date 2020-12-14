@@ -1,0 +1,15 @@
+<div *ngIf="isLoading" class="animated fadeIn eps-container">
+    <app-animated-loader></app-animated-loader>
+</div>
+<div *ngIf="!isLoading" class="animated fadeIn eps-container">
+    <app-header></app-header>
+    <div class="row">
+        <div class="col-12">
+            <div class="card cases-card">
+                <div class="card-body">
+                    <app-metabase-dashboard></app-metabase-dashboard>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

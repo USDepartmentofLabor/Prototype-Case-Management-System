@@ -1,0 +1,22 @@
+<div class="mt-4 mb-1 font-weight-bold">{{ field.name }}</div>
+<small *ngIf="field.help_text" class="help-text mt-3">
+  Drag and Drop to rank the selections.</small>
+<ngx-sortable
+  [items]="selections"
+  [listStyle]="listStyle"
+  [name]="'Rank List Items'"
+  (listSorted)="onListSorted($event)"
+  [showHeader]="false"
+>
+  <ul class="list-group">
+    <ng-template let-item>
+      <div class="sortable-list-item">
+        <li class="list-group-item list-group-item-action">{{ item.value }}</li>
+      </div>
+    </ng-template>
+  </ul>
+</ngx-sortable>
+<small *ngIf="field.help_text" class="help-text mt-3"
+  ><i class="fa fa-info-circle" aria-hidden="true"></i>
+  {{ field.help_text }}
+</small>

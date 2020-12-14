@@ -1,0 +1,11 @@
+.dash-link-container {
+    text-align: center;
+}
+.dash-icon {
+    font-size: 8rem;
+    cursor: pointer;
+}
+
+.dash-icon:hover {
+    color: #666;
+}

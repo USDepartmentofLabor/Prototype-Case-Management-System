@@ -1,0 +1,198 @@
+{
+    "title": "Working Conditions",
+    "pages": [
+     {
+      "name": "Working Conditions ",
+      "elements": [
+       {
+        "type": "expression",
+        "name": "working_conditions ",
+        "title": "In general, how have working conditions changed over the past 1.5 years (or since you have been hired)?",
+        "hideNumber": true,
+        "commentText": "Other (describe)"
+       },
+       {
+        "type": "radiogroup",
+        "name": "physical_conditions",
+        "title": "Physical Conditions:",
+        "choices": [
+         {
+          "value": "item1",
+          "text": "Better "
+         },
+         {
+          "value": "item2",
+          "text": "The same"
+         },
+         {
+          "value": "item3",
+          "text": "Worse"
+         }
+        ]
+       },
+       {
+        "type": "comment",
+        "name": "physical_condition_comment",
+        "visibleIf": "{physical_conditions} contains 'item3'",
+        "title": "If worse, describe how",
+        "hideNumber": true,
+        "isRequired": true,
+        "requiredIf": "{physical_conditions} contains 'item3'"
+       },
+       {
+        "type": "radiogroup",
+        "name": "work_intensity",
+        "title": "Work Intensity",
+        "choices": [
+         {
+          "value": "item1",
+          "text": "Harder "
+         },
+         {
+          "value": "item2",
+          "text": "No change"
+         },
+         {
+          "value": "item3",
+          "text": "Easier"
+         }
+        ]
+       },
+       {
+        "type": "comment",
+        "name": "work_intensity_comment",
+        "visibleIf": "{work_intensity} = 'item1'",
+        "title": "If harder, describe why",
+        "hideNumber": true,
+        "isRequired": true,
+        "requiredIf": "{work_intensity} = 'item1'"
+       },
+       {
+        "type": "radiogroup",
+        "name": "supervisor_treatment",
+        "title": "Supervisors treatment towards you",
+        "choices": [
+         {
+          "value": "item1",
+          "text": "Better"
+         },
+         {
+          "value": "item2",
+          "text": "The same"
+         },
+         {
+          "value": "item3",
+          "text": "Worse"
+         }
+        ]
+       },
+       {
+        "type": "comment",
+        "name": "supervisor_treatment_comment",
+        "visibleIf": "{supervisor_treatment} = 'item3'",
+        "title": "If worse, describe why",
+        "hideNumber": true,
+        "isRequired": true,
+        "requiredIf": "{supervisor_treatment} = 'item3'"
+       },
+       {
+        "type": "radiogroup",
+        "name": "job_injury",
+        "title": "Have you been injured on job?",
+        "choices": [
+         {
+          "value": "item1",
+          "text": "Recently"
+         },
+         {
+          "value": "item2",
+          "text": "In the past"
+         },
+         {
+          "value": "item3",
+          "text": "Never"
+         }
+        ]
+       },
+       {
+        "type": "comment",
+        "name": "job_injury_comment",
+        "visibleIf": "{job_injury} anyof ['item1', 'item2']",
+        "title": "If recently or in the past, how?",
+        "hideNumber": true,
+        "isRequired": true,
+        "requiredIf": "{job_injury} anyof ['item1', 'item2']"
+       },
+       {
+        "type": "checkbox",
+        "name": "work_load",
+        "title": "Select how you feel about your current workload:",
+        "choices": [
+         {
+          "value": "item1",
+          "text": "Heavy"
+         },
+         {
+          "value": "item2",
+          "text": "Sterssful"
+         },
+         {
+          "value": "item3",
+          "text": "Can't sustain "
+         },
+         {
+          "value": "item4",
+          "text": "Properly balanced"
+         }
+        ]
+       },
+       {
+        "type": "dropdown",
+        "name": "intensity_continues",
+        "title": "If the current workload intensity continues:",
+        "choices": [
+         {
+          "value": "item1",
+          "text": "I can stay healthy and make it to retirement "
+         },
+         {
+          "value": "item2",
+          "text": "I will likely be injured or worn out before I retire "
+         }
+        ]
+       },
+       {
+        "type": "radiogroup",
+        "name": "equal_treatment",
+        "title": "Do you believe you're being treated fairly and equal to other employees?",
+        "choices": [
+         {
+          "value": "yes",
+          "text": "Yes"
+         },
+         {
+          "value": "no",
+          "text": "No"
+         }
+        ]
+       },
+       {
+        "type": "comment",
+        "name": "equal_treatment_comment",
+        "visibleIf": "{equal_treatment} = 'no'",
+        "title": "Since you selected No, please explain why you feel this way:",
+        "hideNumber": true,
+        "isRequired": true,
+        "requiredIf": "{equal_treatment} = 'no'"
+       },
+       {
+        "type": "comment",
+        "name": "general_feedback",
+        "title": "General Feedback",
+        "description": "Please provide any feedback that you believe might be helpful into making your job safer and healthier for you and your colleagues.",
+        "hideNumber": true
+       }
+      ]
+     }
+    ]
+   }

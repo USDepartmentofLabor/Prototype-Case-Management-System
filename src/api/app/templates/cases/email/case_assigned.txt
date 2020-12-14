@@ -1,0 +1,13 @@
+Hi {{ user.name or user.username}},
+
+You have been assigned to the "{{ case.name }}" case.
+
+You can access the case at the following link.
+
+{{ web_app_url }}/cases/{{ case.id }}
+
+Sincerely,
+
+The CMS Team
+
+Note: replies to this email address are not monitored.

@@ -1,0 +1,17 @@
+<div class="form-group">
+  <label for="{{ fieldName }}" class="font-weight-bold">{{ field.name }}</label>
+  <input
+    type="text"
+    class="form-control"
+    title="{{ field.help_text }}"
+    name="{{ fieldName }}"
+    [(ngModel)]="field.value"
+    (change)="onChange()"
+    id="{{ fieldName }}"
+  />
+  <small *ngIf="field.help_text" class="form-text text-muted">
+    <i class="fa fa-info-circle" aria-hidden="true"></i>
+    {{ field.help_text }}
+  </small>
+  
+</div>

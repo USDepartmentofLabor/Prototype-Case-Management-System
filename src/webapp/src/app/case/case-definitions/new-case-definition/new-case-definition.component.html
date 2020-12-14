@@ -1,0 +1,284 @@
+<app-header></app-header>
+<!-- <app-side-bar></app-side-bar> -->
+<div class="container-fluid animated fadeIn eps-container mb-6">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a (click)="back()" [routerLink]=""
+          ><fa class="empty-data-icon mr-1" name="fas fa-angle-left"></fa>Case
+          Types</a
+        >
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+    </ol>
+  </nav>
+  <div class="row">
+    <div class="col-6">
+      <div class="card">
+        <div *ngIf="isLoading">
+          <app-animated-loader></app-animated-loader>
+        </div>
+        <div *ngIf="!isLoading" class="card-body">
+          <div class="row">
+            <div class="col-8">
+              <!-- <h4>{{ title }}</h4> -->
+            </div>
+            <div class="col-4">
+              <div
+                *ngIf="isEditMode"
+                title="Actions"
+                ngbDropdown
+                class="pull-right d-inline-block"
+              >
+                <button
+                  class="btn btn-light no-arrow"
+                  id="dropdownBasic1"
+                  ngbDropdownToggle
+                >
+                  <fa name="fas fa-ellipsis-h"></fa>
+                </button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                  <div>
+                    <button (click)="openDeleteDialogPrompt()" ngbDropdownItem>
+                      <fa class="empty-data-icon" name="fas fa-trash"></fa>
+                      Delete Type
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="errorMsg" class="alert alert-danger" role="alert">
+            {{ errorMsg }}
+          </div>
+          <form
+            [formGroup]="newCaseDefinitonForm"
+            (ngSubmit)="onCreateNewCaseDefinition()"
+            class="animated fadeIn form-wrapper mt-4"
+          >
+            <div class="form-label-group">
+              <input
+                type="text"
+                id="inputCaseName"
+                class="form-control capitalize-input"
+                formControlName="name"
+                [ngClass]="{ 'is-invalid': submitted && form.name.errors }"
+                placeholder="Case Definition Name"
+                (change)="
+                  newCaseDefinitonForm.patchValue({
+                    name: capitalizeInput($event.target.value)
+                  })
+                "
+                maxlength="35"
+                required
+                autofocus
+              />
+              <label for="inputCaseName">Name</label>
+              <div
+                *ngIf="submitted && form.name.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="form.name.errors.required">
+                  Case Definition Name is required
+                </div>
+                <div *ngIf="form.name.errors.minlength">
+                  Case Definition Name must contain 6 characters.
+                </div>
+              </div>
+            </div>
+            <div class="form-label-group">
+              <input
+                type="text"
+                id="inputCaseKey"
+                class="form-control uppercase-input"
+                formControlName="caseKey"
+                [ngClass]="{ 'is-invalid': submitted && form.caseKey.errors }"
+                placeholder="Case Definition Key"
+                (change)="
+                  newCaseDefinitonForm.patchValue({
+                    caseKey: upperCaseInput($event.target.value)
+                  })
+                "
+                required
+              />
+              <label for="inputCaseName">Key</label>
+              <div
+                *ngIf="submitted && form.caseKey.errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="form.caseKey.errors.required">
+                  Case Definition Key is required
+                </div>
+                <div *ngIf="form.caseKey.errors.minlength">
+                  Case Definition Key must contain 2 characters.
+                </div>
+              </div>
+            </div>
+            <div class="form-label-group">
+              <input
+                type="text"
+                id="inputCaseDescription"
+                class="form-control"
+                formControlName="description"
+                placeholder="Case Definition Description"
+              />
+              <label for="inputCaseDescription">Description</label>
+              <small class="pl-2 form-text text-muted"> Optional</small>
+            </div>
+
+            <!-- #region Activity Definition -->
+            <div class="row mt-5 mb-4">
+              <div class="col-6 pl-0">
+                <h5>Activity Types</h5>
+              </div>
+              <div class="col-6">
+                <button
+                  (click)="onNewActivityDefinition()"
+                  [disabled]="isSavingNewCaseDef"
+                  [ngClass]="{ disabled: isSavingNewCaseDef }"
+                  type="button"
+                  class="btn btn-primary pull-right"
+                >
+                  + New Activity
+                </button>
+              </div>
+            </div>
+            <div class="list-group">
+              <button
+                type="button"
+                class="list-group-item list-group-item-action"
+                *ngFor="let activityDefinition of activityDefinitions"
+                ngbTooltip="Click to open activity definition"
+                (click)="onActivityDefinitionSelected(activityDefinition)"
+              >
+                {{ activityDefinition.name }}
+              </button>
+            </div>
+            <!-- endregion -->
+
+            <!-- CUSTOM FIELDS START -->
+            <div class="mt-5">
+              <custom-fields-creator
+                [customFieldsData]="customFields"
+              ></custom-fields-creator>
+            </div>
+            <!-- CUSTOM FIELDS END -->
+
+            <!-- #region Surveys -->
+            <div>
+              <div class="row mt-5 mb-2">
+                <div class="col-6 pl-0">
+                  <h5>Forms</h5>
+                </div>
+                <div class="col-6">
+                  <!-- <button type="button" class="btn btn-primary pull-right">+ Create New Survey</button> -->
+                </div>
+              </div>
+            </div>
+            <p *ngIf="!isSurveysLoading">
+              <fa name="fas fa-info-circle"></fa> Select one or more pre-created
+              forms to add to your Case Type.
+            </p>
+            <div *ngIf="!isSurveysLoading" class="form-survey-group mt-3">
+              <label
+                class="survey-label mb-0"
+                formArrayName="surveyOptionsCheckBoxes"
+                *ngFor="
+                  let survey of newCaseDefinitonForm.controls
+                    .surveyOptionsCheckBoxes.controls;
+                  let i = index
+                "
+              >
+                <input type="checkbox" [formControlName]="i" />
+                {{ surveyOptions[i].name }}
+              </label>
+            </div>
+            <div *ngIf="isSurveysLoading">
+              <fa class="empty-data-icon" name="fas fa-spinner fa-spin"></fa>
+              Loading surveys...
+            </div>
+            <!-- endregion -->
+
+            <!-- DOCUMENTS START -->
+            <div>
+              <div class="row mt-5 mb-4">
+                <div class="col-6 pl-0">
+                  <h5>Documents</h5>
+                </div>
+                <div class="col-6">
+                  <button
+                    (click)="openAddDocumentsModal()"
+                    [disabled]="isSavingNewCaseDef"
+                    [ngClass]="{ disabled: isSavingNewCaseDef }"
+                    type="button"
+                    class="btn btn-primary pull-right"
+                  >
+                    + New Document
+                  </button>
+                </div>
+              </div>
+            </div>
+            <p>
+              <fa name="fas fa-info-circle"></fa> Click New Documents to add
+              Documents to your Case Type.
+            </p>
+            <div *ngIf="!documentsAdded()" class="form-survey-group mt-3">
+              <label
+                class="documents-label mb-0"
+                *ngFor="let survey of documents; let i = index"
+              >
+                {{ documents[i].name }}
+                <small>{{
+                  generateDocumentRequiredTxt(documents[i].is_required)
+                }}</small>
+                <span
+                  (click)="removeDocumentFromDocumentsList(documents[i])"
+                  type="button"
+                  data-container="body"
+                  placement="bottom"
+                  ngbTooltip="Remove Document"
+                  class="remove-doc-icon pull-right mr-2"
+                >
+                  <fa name="fas fa-trash"></fa>
+                </span>
+              </label>
+            </div>
+            <!-- DOCUMENTS END -->
+
+            <div class="button-wrapper pull-right mt-5">
+              <button (click)="onCancel()" class="btn btn-link" type="button">
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [ngClass]="{ disabled: isSavingNewCaseDef }"
+              >
+                <fa
+                  *ngIf="isSavingNewCaseDef"
+                  class="empty-data-icon"
+                  name="fas fa-spinner fa-spin"
+                ></fa>
+                {{ generateSaveNewCaseDefinitionBtnTxt() }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="card" *ngIf="isEditingActivityDefinition">
+        <div class="card-body">
+          <app-activity-definition-form
+            *ngIf="selectedActivityDefinition"
+            [activityDefinition]="selectedActivityDefinition"
+            [surveyOptions]="surveyOptions"
+            [mode]="activityDefinitionFormMode"
+            (activityDefinitionChanged)="onActivityDefinitionChanged($event)"
+            (changeCancelled)="onCancelActivityDefinitionChange($event)"
+          ></app-activity-definition-form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

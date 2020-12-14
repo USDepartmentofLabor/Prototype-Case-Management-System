@@ -1,0 +1,109 @@
+<app-header></app-header>
+<div class="animated fadeIn container-fluid eps-container">
+  <div *ngIf="isSurveysLoaded; else skeleton" class="survey-content mt-5">
+    <div class="row align-items-start mb-3">
+      <div class="col remove-left-padding">
+        <h1 class="list-survey-header">{{ title }}</h1>
+        <span class="list-survey-header-btn-container pull-right">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button
+              *ngIf="!viewArchivedSurveysMode"
+              (click)="loadSurveyData('archived')"
+              class="btn  btn-light"
+            >
+              <fa class="empty-data-icon mr-1" name="fas fa-archive"> </fa>View Archived Forms
+            </button>
+            <button
+              *ngIf="viewArchivedSurveysMode"
+              (click)="loadSurveyData('all')"
+              class="btn  btn-light"
+            >
+              All Forms
+            </button>
+            <button *hasPerm="'CREATE_SURVEY'" type="button" class="btn btn-primary btn-sm" routerLink="/create-form">
+              <fa class="empty-data-icon" name="fas fa-plus"></fa>
+              Add New Form
+            </button>
+          </div>
+        </span>
+      </div>
+    </div>
+    <table *ngIf="isSurveysDataEmpty()" class="animated fadeIn table table-hover">
+      <thead>
+        <th>Name</th>
+        <th *ngIf="!viewArchivedSurveysMode">Created</th>
+        <th *ngIf="viewArchivedSurveysMode">Archived</th>
+        <th>Actions</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let survey of sortedSurveys">
+          <td class="view-survey">
+            {{ survey.name }}
+          </td>
+          <td *ngIf="!viewArchivedSurveysMode">{{ formatDateFromNow(survey.created_at) }}</td>
+          <td *ngIf="viewArchivedSurveysMode">{{ formatDateFromNow(survey.updated_at) }}</td>
+          <td>
+            <div title="Actions" ngbDropdown class="d-inline-block">
+              <button class="btn btn-link no-arrow actions-btn" id="dropdownBasic1" ngbDropdownToggle>
+                <fa name="fas fa-ellipsis-h"></fa>
+              </button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                <div>
+                  <button *hasPerm="'READ_SURVEY'"  (click)="loadView(survey.id, 'Run')" ngbDropdownItem>
+                    View Form
+                  </button>
+                  <button *hasPerm="'UPDATE_SURVEY'"  (click)="loadView(survey.id, 'Edit')" ngbDropdownItem>
+                    Edit Form
+                  </button>
+                  <button 
+                    (click)="loadView(survey.id, 'Results')"
+                    *hasPerm="'READ_SURVEY'"
+                    ngbDropdownItem
+                  >
+                    View Responses
+                  </button>
+                  <div *hasPerm="'DELETE_SURVEY'">
+                  <h6  class="dropdown-header">More Actions</h6>
+                  <div class="dropdown-divider"></div>
+                </div>
+                  <button *hasPerm="'DELETE_SURVEY'" (click)="showDeleteDialog(survey)" ngbDropdownItem>
+                    <fa class="empty-data-icon" name="fas fa-trash"></fa> Delete Form
+                  </button>
+                  <div *hasPerm="'ARCHIVE_SURVEY'">
+                  <button
+                    *ngIf="!viewArchivedSurveysMode"
+                    (click)="handleArchive(survey)"
+                    ngbDropdownItem
+                  >
+                    <fa class="empty-data-icon" name="fas fa-archive"></fa> Archive Form
+                  </button>
+                </div>
+                <div *hasPerm="'ARCHIVE_SURVEY'">
+                  <button
+                    *ngIf="viewArchivedSurveysMode"
+                    (click)="handleArchive(survey)"
+                    ngbDropdownItem
+                  >
+                    <fa class="empty-data-icon" name="fas fa-archive"></fa> Unarchive Form
+                  </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!isSurveysDataEmpty()">
+      <div class="alert alert-warning" role="alert">
+        Currently no Forms to display.
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #skeleton>
+  <!-- TODO re-design skeleton loading 
+    <list-surveys-skeleton></list-surveys-skeleton> 
+  -->
+  <app-animated-loader></app-animated-loader>
+</ng-template>

@@ -1,0 +1,4851 @@
+{
+	"info": {
+		"_postman_id": "10e5b486-4890-4900-a804-1cbf8704b7a7",
+		"name": "eps-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Auth - Login (POST /auth/login)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "16da0d38-5698-47cc-9018-6c28dc6ff6f1",
+								"exec": [
+									"var data = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"jwt\", \"Bearer \" + data.access_token);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "683b13e0-f11a-440d-85f4-bb27e1a57b91",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"login\": \"admin\",\n    \"password\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/auth/login",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth - Logout (POST /auth/logout)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "eaedbeb4-7e6a-4fbd-9919-292d6f9a6ac8",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "266c894e-1908-4856-bb4a-43c6421b1678",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/auth/logout",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth - Request Password Reset (POST /auth/request-password-reset)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5199fced-8ef2-410a-bff0-44621d9c029f",
+								"exec": [
+									"pm.variables.get(\"api_url\");"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "00991d36-013f-4aea-9cf8-30690862f3f2",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"admin@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/auth/request-password-reset",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"auth",
+								"request-password-reset"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth - Reset Password (POST /auth/reset-password)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a81aa991-2d7c-44a3-8f76-163bfbc7f828",
+								"exec": [
+									"pm.variables.get(\"api_url\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"new_password\": \"newpassword1234\",\n\t\"confirm_password\": \"newpassword1234\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/auth/reset-password/eyJhbGciOiJIUzUxMiIsImlhdCI6MTYwMTkyMDYyMSwiZXhwIjoxNjAxOTI0MjIxfQ.eyJyZXNldCI6Mn0.JuxL56AamneG_XKdKInlmJrxS4UPqMHJ6Cw6CfM0SrebOxUJkNlbfHOWGdVEGdfgAH0fjUlNgPwbyncETmb3Jw",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"auth",
+								"reset-password",
+								"eyJhbGciOiJIUzUxMiIsImlhdCI6MTYwMTkyMDYyMSwiZXhwIjoxNjAxOTI0MjIxfQ.eyJyZXNldCI6Mn0.JuxL56AamneG_XKdKInlmJrxS4UPqMHJ6Cw6CfM0SrebOxUJkNlbfHOWGdVEGdfgAH0fjUlNgPwbyncETmb3Jw"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Activities",
+			"item": [
+				{
+					"name": "Activities - Add  (POST /activities",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2e8ffdb1-0a0d-49ea-b5ff-efa3b52d27be",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"activity_definition_id\": 5,\n    \"case_id\": 1,\n    \"name\": \"Test Activity 4\",\n    \"description\": \"Test Desc\",\n    \"notes\": [\n        \"Test note\",\n        \"note2\"\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/activities",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - All (GET /activities)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7de32ff6-5937-47ea-b941-7fef24d21bc7",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/activities",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - One (GET /activities/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a84b17ef-5285-45a5-bc28-9c7ccd431cda",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/activities/103",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"103"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - Update (GET /activities/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "321fdab7-66da-4ae5-8605-a0cd8a476eb5",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test case 3 - updated\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/activities/3",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - Delete Single (DELETE /activities/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "12c0e22b-1763-4cc4-baa3-c3715fa8b6a4",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/activities/3",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - All Custom Fields (GET /activities/<id>/custom_fields)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0fa65410-cf8b-49b1-ae91-8db559e8f5c1",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/activities/4/custom_fields",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"4",
+								"custom_fields"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - Single Custom Field (GET /activities/<id>/custom_fields/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f6781811-8a67-4622-babe-5a79e36ff115",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/activities/4/custom_fields/05dc9d7e-d288-4b90-839c-e9bf62c4a466",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"4",
+								"custom_fields",
+								"05dc9d7e-d288-4b90-839c-e9bf62c4a466"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - Update Custom Field Value (PUT /activities/<id>/custom_fields/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c7c583dc-0c20-4022-ae1c-28474dc8b03a",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"value\": \"Updated custom field value\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/activities/4/custom_fields/05dc9d7e-d288-4b90-839c-e9bf62c4a466",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"4",
+								"custom_fields",
+								"05dc9d7e-d288-4b90-839c-e9bf62c4a466"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - Add Note (POST /activities/<id>/notes)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "12637317-8a05-4f0b-a734-31f6e1e12b9b",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"note\": \"Here's another activity note\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/activities/103/notes",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"103",
+								"notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - All Notes (GET /activities/<id>/notes)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "be7c408a-dc2e-47af-9ff1-d78000600750",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/activities/4/notes",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"4",
+								"notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - Single Note (GET /activities/<id>/notes/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "bec0935f-090f-44c5-aa66-7d4ab2736687",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/activities/4/notes/5",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"4",
+								"notes",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - Update Note (PUT /activities/<id>/notes/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "752e1a14-b66c-4b1b-8fe1-5037b0bfcf3c",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"note\": \"Updated note text\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/activities/4/notes/5",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"4",
+								"notes",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - Delete Note (DELETE /activities/<id>/notes/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "603e0ae2-e141-4f03-bb14-75ff03fa1c2a",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/activities/4/notes/5",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"4",
+								"notes",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - Add file (POST /activities/<id>/add_file)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d9c2c9e5-82d4-4951-aaa6-fd857e9b9977",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "multipart/form-data"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/jclements/Documents/DOL/2436 - ILAB-Toolkit/Docs/Test/IMG_0925.jpg"
+								},
+								{
+									"key": "uploaded_location_latitude",
+									"value": "-4.558063",
+									"type": "text"
+								},
+								{
+									"key": "uploaded_location_longitude",
+									"value": "-67.628438",
+									"type": "text"
+								},
+								{
+									"key": "taken_location_latitude",
+									"value": "11.7367235",
+									"type": "text"
+								},
+								{
+									"key": "taken_location_longitude",
+									"value": "-29.851283",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}/activities/103/add_file",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"103",
+								"add_file"
+							]
+						},
+						"description": "Uploads a file and attaches it to a case speficied by `id`"
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - Fetch single file (GET /activities/files/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "92431e4f-99f0-4c1c-b1d5-9f1021fd589d",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/activities/files/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"files",
+								"1"
+							]
+						},
+						"description": "Uploads a file and attaches it to a case speficied by `id`"
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - Delete single file (GET /activities/files/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d330e5a5-12ab-4d39-9d56-33bc780481cc",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/activities/files/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"files",
+								"1"
+							]
+						},
+						"description": "Uploads a file and attaches it to a case speficied by `id`"
+					},
+					"response": []
+				},
+				{
+					"name": "Activities - Download single file (GET /activities/files/<id>/download)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "04f224e8-9ee6-4c9f-ad4d-d4ed17841d1f",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/activities/files/1/download",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activities",
+								"files",
+								"1",
+								"download"
+							]
+						},
+						"description": "Uploads a file and attaches it to a case speficied by `id`"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Activity Definitions",
+			"item": [
+				{
+					"name": "Activity Definitions - Add (POST /activity_definitions)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4b882b9b-7cb8-4075-9b37-00ee164484c1",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test Activity Definition 9\",\n    \"description\": \"Test Activity Definition 9 Description\",\n    \"case_definition_id\": 1,\n    \"surveys\": [\n        1,\n        2\n    ],\n    \"documents\": [\n        {\n            \"name\": \"Activity Document 1\",\n            \"description\": \"Activity Document 1 Description\",\n            \"is_required\": true\n        },\n        {\n            \"name\": \"Activity Document 2\",\n            \"description\": \"Activity Document 2 Description\",\n            \"is_required\": false\n        }\n    ],\n    \"custom_fields\": [\n        {\n            \"name\": \"Household Short Text\",\n            \"field_type\": \"text\",\n            \"selections\": null,\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"sort_order\": 1,\n            \"help_text\": \"This is for short answers\"\n        },\n        {\n            \"name\": \"Household Long Text\",\n            \"field_type\": \"textarea\",\n            \"selections\": null,\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"help_text\": \"This is for longer answers\",\n            \"sort_order\": 2\n        },\n        {\n            \"name\": \"Household Check Box\",\n            \"field_type\": \"check_box\",\n            \"selections\": [\n                {\n                    \"id\": 1,\n                    \"value\": \"Household Check Box Option A\"\n                },\n                {\n                    \"id\": 2,\n                    \"value\": \"Household Check Box Option B\"\n                },\n                {\n                    \"id\": 3,\n                    \"value\": \"Household Check Box Option C\"\n                }\n            ],\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"help_text\": \"This allows for multiple selection of choices among many\",\n            \"sort_order\": 3\n        },\n        {\n            \"name\": \"Household Radio Button\",\n            \"field_type\": \"radio_button\",\n            \"selections\": [\n                {\n                    \"id\": 1,\n                    \"value\": \"Household Radio Option A\"\n                },\n                {\n                    \"id\": 2,\n                    \"value\": \"Household Radio Option B\"\n                },\n                {\n                    \"id\": 3,\n                    \"value\": \"Household Radio Option C\"\n                }\n            ],\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"help_text\": \"This is for a single selection among many\",\n            \"sort_order\": 4\n        },\n        {\n            \"name\": \"Household Selection Field\",\n            \"field_type\": \"select\",\n            \"selections\": [\n                {\n                    \"id\": \"1\",\n                    \"value\": \"Household Selection Option A\"\n                },\n                {\n                    \"id\": \"2\",\n                    \"value\": \"Household Selection Option B\"\n                },\n                {\n                    \"id\": \"3\",\n                    \"value\": \"Household Selection Option C\"\n                }\n            ],\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"help_text\": \"This is for a single selection among many\",\n            \"sort_order\": 5\n        },\n        {\n            \"name\": \"Household Numeric Field\",\n            \"field_type\": \"number\",\n            \"selections\": null,\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"help_text\": \"This is for numbers\",\n            \"sort_order\": 6\n        },\n        {\n            \"name\": \"Household Date Field\",\n            \"field_type\": \"date\",\n            \"selections\": null,\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"help_text\": \"This is for a date\",\n            \"sort_order\": 7\n        },\n        {\n            \"name\": \"Household Rank List\",\n            \"field_type\": \"rank_list\",\n            \"selections\": [\n                {\n                    \"id\": 1,\n                    \"value\": \"Household Rank Option A\"\n                },\n                {\n                    \"id\": 2,\n                    \"value\": \"Household Rank Option B\"\n                },\n                {\n                    \"id\": 3,\n                    \"value\": \"Household Rank Option C\"\n                }\n            ],\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"help_text\": \"This is for ranking a list of options\",\n            \"sort_order\": 8\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/activity_definitions",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activity_definitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activity Definitions - All (GET /activity_definitions)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4ff32539-bc1d-45ac-a893-e8e003a6f7dd",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/activity_definitions",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activity_definitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activity Definitions - Single (GET /activity_definitions/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "162f484a-2e01-4d56-88ef-bafcd30da31a",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/activity_definitions/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activity_definitions",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activity Definitions - Update (PUT /activity_definitions/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c9e2f56a-0c25-4646-9a26-55d31656cc90",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test Activity Defn 5 update\",\n    \"description\": \"Test Activity Desc 5 update\",\n    \"documents\": [\n        {\n            \"description\": \"Activity Document 1 Description\",\n            \"id\": 3,\n            \"is_required\": true,\n            \"name\": \"Activity Document 1\"\n        },\n        {\n            \"description\": \"Activity Document 3 Description\",\n            \"id\": 4,\n            \"is_required\": false,\n            \"name\": \"Activity Document 3\"\n        }\n    ],\n    \"surveys\": [\n        1,\n        2,\n        3\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/activity_definitions/5",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activity_definitions",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activity Definitions - Single (Delete /activity_definitions/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "48b0e891-b51c-4c71-a6b6-4bfe499856ea",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/activity_definitions/4",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activity_definitions",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activity Definitions - Add Custom_Field (GET /activity_definitions/<id>/custom_fields/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e33507c5-f776-445e-b06a-29ec362052f8",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"custom_section_id\": null,\n    \"field_type\": \"radio_button\",\n    \"help_text\": \"This is for a single selection among many\",\n    \"name\": \"Test Add Radio Button\",\n    \"parent_id\": null,\n    \"selections\": [\n        {\n            \"id\": 1,\n            \"value\": \"Household Radio Option A\"\n        },\n        {\n            \"id\": 2,\n            \"value\": \"Household Radio Option B\"\n        },\n        {\n            \"id\": 3,\n            \"value\": \"Household Radio Option C\"\n        }\n    ],\n    \"sort_order\": 4,\n    \"validation_rules\": null\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/activity_definitions/15/custom_fields",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activity_definitions",
+								"15",
+								"custom_fields"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activity Definitions - All Custom Fields (GET /activity_definitions<id>/custom_fields)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9d464408-1685-4201-b4a8-e615d13ecbd7",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/activity_definitions/5/custom_fields",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activity_definitions",
+								"5",
+								"custom_fields"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activity Definitions - Single Custom_Field (GET /activity_definitions/<id>/custom_fields/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8eea07fb-7d7c-4a1a-b23f-56dc3aa205d9",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/activity_definitions/5/custom_fields/8458335e-415c-4d35-9fec-4b0396e1c1db",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activity_definitions",
+								"5",
+								"custom_fields",
+								"8458335e-415c-4d35-9fec-4b0396e1c1db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activity Definitions - Update Custom_Field (GET /activity_definitions/<id>/custom_fields/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "215a4eae-9446-4834-b852-98d5e109c052",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"custom_section_id\": null,\n    \"field_type\": \"text\",\n    \"help_text\": \"This is for short answers\",\n    \"id\": \"8458335e-415c-4d35-9fec-4b0396e1c1db\",\n    \"model_type\": \"Case\",\n    \"name\": \"Household Short Text Updated Name\",\n    \"selections\": null,\n    \"sort_order\": 1,\n    \"validation_rules\": null,\n    \"value\": null\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/activity_definitions/5/custom_fields/8458335e-415c-4d35-9fec-4b0396e1c1db",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activity_definitions",
+								"5",
+								"custom_fields",
+								"8458335e-415c-4d35-9fec-4b0396e1c1db"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Activity Definitions - Delete Custom_Field (GET /activity_definitions/<id>/custom_fields/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "46ef3b5a-fbf2-4182-a07a-caba9054714a",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/activity_definitions/15/custom_fields/0767bd23-28b8-449f-b43a-c7fecf01661a",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"activity_definitions",
+								"15",
+								"custom_fields",
+								"0767bd23-28b8-449f-b43a-c7fecf01661a"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Cases",
+			"item": [
+				{
+					"name": "Cases - All (GET /cases)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4d759f80-77da-4963-8fdf-fb5fcc8af365",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/cases",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"cases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cases - Single (GET /cases/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ff35ac09-5e92-4530-a715-fb09008da2a2",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/cases/5",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"cases",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cases - Replace (PUT /cases/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e45a9b15-b41b-4b41-b371-432c04f8b7e3",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test Case CF\",\n    \"description\": \"Test Desc\",\n    \"assigned_to_id\": 2,\n    \"custom_fields\": [\n        {\n            \"id\": \"cca1a73e-1b21-4f37-9ccd-37ee2fae966b\",\n            \"value\": \"Necessary west talk full catch.\"\n        },\n        {\n            \"id\": \"2f6bfb4f-85ea-41d8-8863-0e5d864ec12c\",\n            \"value\": \"Household Selection Option B\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/cases/11",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"cases",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cases - Replace Custom Field(PUT /cases/<case_id>/custom_fields/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c549acfd-70f4-4d03-8d9a-37c7cc02aa89",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"value\": \"Feel specific now without general meet.\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/cases/16/custom_fields/c7b8dcf3-c9fb-4d60-9c9f-6d7016155619",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"cases",
+								"16",
+								"custom_fields",
+								"c7b8dcf3-c9fb-4d60-9c9f-6d7016155619"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cases - Fetch Single Custom Field(PUT /cases/<case_id>/custom_fields/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5da5b306-c8ed-48f3-af8b-964782316f31",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"value\": \"Feel specific now without general meet.\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/cases/16/custom_fields",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"cases",
+								"16",
+								"custom_fields"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cases - Fetch All Custom Field(PUT /cases/<case_id>/custom_fields)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "da5b8999-4bf9-4713-bdc3-eb1e657b2af0",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"value\": \"Feel specific now without general meet.\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/cases/16/custom_fields/c7b8dcf3-c9fb-4d60-9c9f-6d7016155619",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"cases",
+								"16",
+								"custom_fields",
+								"c7b8dcf3-c9fb-4d60-9c9f-6d7016155619"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cases - Remove (DELETE /cases/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a744c762-3bd5-4614-af45-e2d0c72debab",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/cases/21",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"cases",
+								"21"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cases - Add file to case (POST /cases/<id>/add_file)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3bdd1a62-a548-429f-867e-d901f67247b8",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "multipart/form-data"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/jclements/Documents/DOL/2436 - ILAB-Toolkit/Docs/Test/IMG_0925.jpg"
+								},
+								{
+									"key": "uploaded_location_latitude",
+									"value": "-4.558063",
+									"type": "text"
+								},
+								{
+									"key": "uploaded_location_longitude",
+									"value": "-67.628438",
+									"type": "text"
+								},
+								{
+									"key": "taken_location_latitude",
+									"value": "11.7367235",
+									"type": "text"
+								},
+								{
+									"key": "taken_location_longitude",
+									"value": "-29.851283",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}/cases/1/add_file",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"cases",
+								"1",
+								"add_file"
+							]
+						},
+						"description": "Uploads a file and attaches it to a case speficied by `id`"
+					},
+					"response": []
+				},
+				{
+					"name": "Cases - Fetch single file (GET /cases/files/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6de8dfed-298e-427c-95df-d800ed8fc711",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/cases/files/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"cases",
+								"files",
+								"1"
+							]
+						},
+						"description": "Uploads a file and attaches it to a case speficied by `id`"
+					},
+					"response": []
+				},
+				{
+					"name": "Cases - Download single file (GET /cases/files/<id>/download)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a26dac81-2ae3-435f-bc02-25b32d9dbd36",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/cases/files/1/download",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"cases",
+								"files",
+								"1",
+								"download"
+							]
+						},
+						"description": "Uploads a file and attaches it to a case speficied by `id`"
+					},
+					"response": []
+				},
+				{
+					"name": "Cases - Delete single file (DELETE /cases/files/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "92f85683-6675-4872-aec8-c7198fb79f33",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/cases/files/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"cases",
+								"files",
+								"1"
+							]
+						},
+						"description": "Uploads a file and attaches it to a case speficied by `id`"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Case Definitions",
+			"item": [
+				{
+					"name": "Case Definitions - All (GET /case_definitions)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "256cce4c-5790-4493-a7b6-a0ab94f6f021",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Definitions - Add (POST /case_definitions)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d675ff6d-825d-42f9-b52b-01e2791ccc27",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"key\": \"test_key_4\",\n    \"name\": \"Test Case Defn 4\",\n    \"description\": \"Test Desc\",\n    \"surveys\": [\n        1\n    ],\n    \"documents\": [\n        {\n            \"name\": \"doc1\",\n            \"description\": \"doc1 desc\",\n            \"is_required\": true\n        },\n        {\n            \"name\": \"doc2\",\n            \"description\": \"doc2 desc\",\n            \"is_required\": false\n        }\n    ],\n    \"custom_fields\": [\n        {\n            \"name\": \"Household Short Text\",\n            \"field_type\": \"text\",\n            \"selections\": null,\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"sort_order\": 1,\n            \"help_text\": \"This is for short answers\"\n        },\n        {\n            \"name\": \"Household Long Text\",\n            \"field_type\": \"textarea\",\n            \"selections\": null,\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"help_text\": \"This is for longer answers\",\n            \"sort_order\": 2\n        },\n        {\n            \"name\": \"Household Check Box\",\n            \"field_type\": \"check_box\",\n            \"selections\": [\n                {\n                    \"id\": 1,\n                    \"value\": \"Household Check Box Option A\"\n                },\n                {\n                    \"id\": 2,\n                    \"value\": \"Household Check Box Option B\"\n                },\n                {\n                    \"id\": 3,\n                    \"value\": \"Household Check Box Option C\"\n                }\n            ],\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"help_text\": \"This allows for multiple selection of choices among many\",\n            \"sort_order\": 3\n        },\n        {\n            \"name\": \"Household Radio Button\",\n            \"field_type\": \"radio_button\",\n            \"selections\": [\n                {\n                    \"id\": 1,\n                    \"value\": \"Household Radio Option A\"\n                },\n                {\n                    \"id\": 2,\n                    \"value\": \"Household Radio Option B\"\n                },\n                {\n                    \"id\": 3,\n                    \"value\": \"Household Radio Option C\"\n                }\n            ],\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"help_text\": \"This is for a single selection among many\",\n            \"sort_order\": 4\n        },\n        {\n            \"name\": \"Household Selection Field\",\n            \"field_type\": \"select\",\n            \"selections\": [\n                {\n                    \"id\": \"1\",\n                    \"value\": \"Household Selection Option A\"\n                },\n                {\n                    \"id\": \"2\",\n                    \"value\": \"Household Selection Option B\"\n                },\n                {\n                    \"id\": \"3\",\n                    \"value\": \"Household Selection Option C\"\n                }\n            ],\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"help_text\": \"This is for a single selection among many\",\n            \"sort_order\": 5\n        },\n        {\n            \"name\": \"Household Numeric Field\",\n            \"field_type\": \"number\",\n            \"selections\": null,\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"help_text\": \"This is for numbers\",\n            \"sort_order\": 6\n        },\n        {\n            \"name\": \"Household Date Field\",\n            \"field_type\": \"date\",\n            \"selections\": null,\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"help_text\": \"This is for a date\",\n            \"sort_order\": 7\n        },\n        {\n            \"name\": \"Household Rank List\",\n            \"field_type\": \"rank_list\",\n            \"selections\": [\n                {\n                    \"id\": 1,\n                    \"value\": \"Household Rank Option A\"\n                },\n                {\n                    \"id\": 2,\n                    \"value\": \"Household Rank Option B\"\n                },\n                {\n                    \"id\": 3,\n                    \"value\": \"Household Rank Option C\"\n                }\n            ],\n            \"validation_rules\": null,\n            \"custom_section_id\": null,\n            \"help_text\": \"This is for ranking a list of options\",\n            \"sort_order\": 8\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Definitions - Update (PUT /case_definitions)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6d28e36b-52f3-4a2c-82c1-121a47dea5d8",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Test Case Defn update\",\n\t\"description\": \"Test Desc update\",\n\t\"custom_fields\": [\n\t]\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Definitions - Add document (POST /case_definitions/<id>/documents)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4731d100-7525-49fb-9ad1-4fa4f22f4a03",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"doc1\",\n\t\"description\": \"doc1 desc\",\n\t\"is_required\": true\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions/1/documents",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions",
+								"1",
+								"documents"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Definitions - Remove document (DELETE /case_definitions/<id>/documents/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ffa4f4fd-b075-436e-805f-0f29f779714c",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions/1/documents/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions",
+								"1",
+								"documents",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Definitions - Add survey (POST /case_definitions/<id>/surveys/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e1b352d0-7b65-4828-ae6e-7008e94d68e4",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions/1/surveys/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions",
+								"1",
+								"surveys",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Definitions - Remove survey (DELETE /case_definitions/<id>/surveys/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f47b86c7-72dd-40d4-b91c-6c75eb6fc90e",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions/1/surveys/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions",
+								"1",
+								"surveys",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Definitions - Single (GET /case_definitions/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "146ad382-ed1b-4ecb-9e71-8667496533d8",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions/12",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions",
+								"12"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Definitions - Remove (DELETE /case_definitions/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "05d4dfb6-67c8-4091-8502-2ef6f65b127c",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions/11",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Definitions - Add Case (GET /case_definitions/<id>/cases)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3b552a0a-787b-499a-8633-800c0e8d31a3",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test case 27\",\n    \"description\": \"Test Desc\",\n    \"assigned_to_id\": 2,\n    \"notes\": [\n        \"Test note\",\n        \"note2\"\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions/1/cases",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions",
+								"1",
+								"cases"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Definitions - Add Custom Field (GET /case_definitions/<id>/custom_fields)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "46147df5-2306-4788-82d9-6dea610b7be3",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Household Numeric Field\",\n    \"field_type\": \"number\",\n    \"selections\": null,\n    \"validation_rules\": null,\n    \"custom_section_id\": null,\n    \"help_text\": \"This is for numbers\",\n    \"sort_order\": 3\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions/12/custom_fields",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions",
+								"12",
+								"custom_fields"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Definitions - Update Custom Field (PUT /case_definitions/<id>/custom_fields/<custom_field_id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b46fd303-4ac8-4670-a87b-30b93dc85132",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 46,\n    \"name\": \"Household Rank List\",\n    \"field_type\": \"rank_list\",\n    \"selections\": [\n        {\n            \"id\": 1,\n            \"value\": \"Household Rank Option A\"\n        },\n        {\n            \"id\": 2,\n            \"value\": \"Household Rank Option B\"\n        },\n        {\n            \"id\": 3,\n            \"value\": \"Household Rank Option C\"\n        }\n    ],\n    \"validation_rules\": null,\n    \"custom_section_id\": null,\n    \"help_text\": \"This is for ranking a list of options\",\n    \"sort_order\": 8\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions/12/custom_fields/50",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions",
+								"12",
+								"custom_fields",
+								"50"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Definitions - All Custom Field (GET /case_definitions/<id>/custom_fields)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e7a6fc8d-7d6f-4e67-9514-664e84a90f26",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Household Numeric Field\",\n    \"field_type\": \"number\",\n    \"selections\": null,\n    \"validation_rules\": null,\n    \"custom_section_id\": null,\n    \"help_text\": \"This is for numbers\",\n    \"sort_order\": 3\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions/12/custom_fields/36",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions",
+								"12",
+								"custom_fields",
+								"36"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Definitions - Remove Custom Field (GET /case_definitions/<id>/custom_fields)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "95af63dd-1c15-4a30-a7ee-400a0813b336",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Household Numeric Field\",\n    \"field_type\": \"number\",\n    \"selections\": null,\n    \"validation_rules\": null,\n    \"custom_section_id\": null,\n    \"help_text\": \"This is for numbers\",\n    \"sort_order\": 3\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions/12/custom_fields/50",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions",
+								"12",
+								"custom_fields",
+								"50"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Definitions - Single Custom Field (GET /case_definitions/<id>/custom_fields/<custom_field_id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e108d8b9-b430-49f2-b864-52cdab4215ef",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Household Numeric Field\",\n    \"field_type\": \"number\",\n    \"selections\": null,\n    \"validation_rules\": null,\n    \"custom_section_id\": null,\n    \"help_text\": \"This is for numbers\",\n    \"sort_order\": 3\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/case_definitions/12/custom_fields",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_definitions",
+								"12",
+								"custom_fields"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Case Statuses",
+			"item": [
+				{
+					"name": "Cases Statuses - (POST /case_statuses)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c16a097b-05f1-4e43-b5b8-6e8217ebaec5",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "multipart/form-data"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"NewStatus\",\n    \"default\": false,\n    \"is_final\": false,\n    \"color\": \"#FF00FF\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/case_statuses",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_statuses"
+							]
+						},
+						"description": "Uploads a file and attaches it to a case speficied by `id`"
+					},
+					"response": []
+				},
+				{
+					"name": "Cases Statuses - All (GET /case_statuses)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7264dd0b-575d-488a-8724-4838c76c8ce4",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/case_statuses",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_statuses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cases Statuses - Single (GET /case_statuses/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3c77398c-e63a-4670-940a-3db74b29a412",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/case_statuses/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"case_statuses",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cases Statuses - Replace (PUT /case_statuses/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "15460d43-162e-41f7-897c-1f59ecc78d95",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"UpdateStatus\",\n    \"default\": false,\n    \"is_final\": false,\n    \"color\": \"#FFFFFF\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/cases/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"cases",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Case Statuses - Remove (DELETE /case_statuses/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "8bc097f4-eecf-46ef-8e2a-979fef76d06a",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/cases/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"cases",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "Project - Add  (POST /project)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "39dc936f-9681-4a9c-9759-2670d95911f2",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"ADVANCE Brazil\",\n    \"title\": \"Brazilian ADVANCE Project Eliminating Exploitive Child Labor through Education and Livelihoods\",\n    \"organization\": \"IMPAQ International\",\n    \"agreement_number\": \"IL-23979-13-75-K\",\n    \"start_date\": \"2018-01-01\",\n    \"end_date\": \"2022-12-31\",\n    \"funding_amount\": 10000000,\n    \"location\": \"Brasília, Brazil\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/project",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Project - Change  (PUT /project)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0335c82c-8260-43ec-b3e0-d37c56963622",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Ghana MOCA\",\n    \"title\": \"Mobilizing Community Action and Promoting Opportunities for Youth in Ghana’s Cocoa Growing Communities\",\n    \"organization\": \"Winrock International\",\n    \"agreement_number\": \"IL-28095-15-75-K-5\",\n    \"start_date\": \"2015-11-06\",\n    \"end_date\": \"2019-11-05\",\n    \"funding_amount\": 4500000,\n    \"location\": \"Accra, Ghana\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/project",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Project - Remove (DELETE /project)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "dac1f8a7-88ba-4673-baa0-e78c9515fc58",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/project",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Project (GET /project)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ac73f694-cfec-4d03-9550-99753e0e73ee",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/project",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"project"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Roles - Add role (POST /roles)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "07c31c98-92bc-4345-a7b2-996daedc49b6",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Test Role\",\n\t\"default\": false,\n\t\"permissions\": 0\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/roles",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"roles"
+							]
+						},
+						"description": "Uploads a file and attaches it to a case speficied by `id`"
+					},
+					"response": []
+				},
+				{
+					"name": "Roles - All (GET /roles)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ac891af7-155c-4caa-b03e-89dc06529d2b",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/roles",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles - Single (GET /roles/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d0d96a09-4694-4f6b-b648-a9fce973bf6b",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/roles/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"roles",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles - Replace (PUT /roles/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d518a328-4ef2-431d-aa63-d663376af253",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Test Role Update\",\n\t\"default\": false,\n\t\"permissions\": 0\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/roles/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"roles",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles - Remove (DELETE /roles/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f52fccf1-a6db-4815-8fe7-cb24d79688cd",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/roles/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"roles",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Surveys",
+			"item": [
+				{
+					"name": "Surveys - All (GET /surveys)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9a89d4d3-a240-41e6-a9b3-3551ab0bc295",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/surveys?archived=none",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"surveys"
+							],
+							"query": [
+								{
+									"key": "archived",
+									"value": "none"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Surveys - Add (POST /surveys)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fd0c2332-cdab-455b-937d-eb5e01db479c",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"test survey 1\",\n\t\"structure\": {\n\t \"pages\": [\n\t  {\n\t   \"name\": \"page1\",\n\t   \"elements\": [\n\t    {\n\t     \"type\": \"text\",\n\t     \"name\": \"question1\"\n\t    }\n\t   ]\n\t  }\n\t ]\n\t}\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/surveys/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"surveys",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Surveys - Get Survey (GET /surveys/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "6354c2ac-1d1e-4610-aa36-23a2af240995",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/surveys/2",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"surveys",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Surveys - Replace (PUT /surveys/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3920cb9f-501f-45d4-8711-9c07a3a44ff7",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 1,\n\t\"name\": \"test survey 1\",\n\t\"structure\": {\n\t \"pages\": [\n\t  {\n\t   \"name\": \"page1\",\n\t   \"elements\": [\n\t    {\n\t     \"type\": \"text\",\n\t     \"name\": \"question1\"\n\t    }\n\t   ]\n\t  }\n\t ]\n\t},\n\t\"is_archived\": false\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/surveys/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"surveys",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Surveys - Delete Survey (DELETE /surveys/<id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "da17a163-bf06-4e54-8701-7c11e2622bd9",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/surveys/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"surveys",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Surveys - Get Survey Responses (GET /surveys/<id>/responses)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c422a81e-7491-44e9-a050-0fd124e9deb4",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/surveys/1/responses?archived=none",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"surveys",
+								"1",
+								"responses"
+							],
+							"query": [
+								{
+									"key": "archived",
+									"value": "none"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Surveys - Add a Survey Response (POST /surveys/<id>/responses)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "ace26ac1-0f22-4e50-9d5e-19e2ed7e0d38",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"status_id\": 1,\n\t\"structure\": {\n\t    \"question1\": \"a\"\n\t},\n\t\"latitude\": 46.2889975,\n\t\"longitude\": 176.834414\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/surveys/11/responses",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"surveys",
+								"11",
+								"responses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Surveys - Get a Survey Response (GET /surveys/<id>/responses/<response_id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "970817f3-91ba-4ead-bbf7-37064d83d2c7",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/surveys/1/responses/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"surveys",
+								"1",
+								"responses",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Surveys - Update a Survey Response (PUT /surveys/<id>/responses/<response_id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c7f0ee6d-0aa4-484d-be25-d6faf82e377c",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"structure\": {\n\t    \"question1\": \"b\"\n\t},\n\t\"status_id\": 1,\n\t\"is_archived\": false\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/surveys/1/responses/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"surveys",
+								"1",
+								"responses",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Surveys - Delete a Survey Response (DELETE /surveys/<id>/responses/<response_id>)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2052d34b-d07f-40d7-9a65-7e09f3997340",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/surveys/1/responses/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"surveys",
+								"1",
+								"responses",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Users - All (GET /users)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "647a6157-069e-4595-a76b-f3f4a12e5892",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/users",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "assignable",
+									"value": "true",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "active",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users - Single User (GET /users)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e73e701a-5924-4026-97d8-3dd222f0e909",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/users/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users - Remove (DELETE /users",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "2a8ae9f9-9c87-4e66-a940-3ce77cac5b11",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api_url}}/users/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users - Add (POST /users)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0f44c253-06f9-4399-a94c-c02f404a4016",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"noone@example.com\",\n\t\"username\": \"nschoebtest1\",\n\t\"role_id\": 5,\n\t\"name\": \"test name\",\n\t\"location\": \"test location\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/users/",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users - Update (PUT /users)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c4c176ff-6692-4b35-a84b-18cc3373a590",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"is_active\": true,\n\t\"id\": 1,\n\t\"email\": \"nschoeb+test@ascend.network\",\n\t\"username\": \"nschoebtest1\",\n\t\"role_id\": 6,\n\t\"name\": \"test name\",\n\t\"location\": \"test location\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/users/5",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"users",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users - Change Password (POST /users/change-password)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "dfa079c0-6205-467c-9fe5-a77140611b7c",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3858ba27-926d-4bf8-ba8f-a60e7fc41810",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{jwt}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"new_password\": \"admin123456\",\n\t\"confirm_password\": \"admin123456\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/users/1/change-password",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users - Resend Welcome (POST /users/resend-welcome)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "443d19eb-d9fa-4a6b-ba53-323a8f78538c",
+								"exec": [
+									"pm.variables.get(\"api_url\");",
+									"pm.variables.get(\"jwt\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/users/1/resend-welcome",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"resend-welcome"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Default - Public Route (GET /)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "74339772-6d3e-4efe-a500-c01a1a1a7da1",
+						"exec": [
+							"pm.variables.get(\"api_url\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_url}}/",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Default - Lookups (GET /lookups)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "47a82e4c-f924-43a9-9da5-e97db62a819b",
+						"exec": [
+							"pm.variables.get(\"api_url\");",
+							"pm.variables.get(\"jwt\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{jwt}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_url}}/lookups",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"lookups"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Default - Secure (GET /secure)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0c288fc7-0340-4987-9c50-86169824b7b6",
+						"exec": [
+							"pm.variables.get(\"api_url\");",
+							"pm.variables.get(\"jwt\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{jwt}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_url}}/secure",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"secure"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Default - Configuration (GET /configuration)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e95bb2f2-8e5b-4067-a96b-d830af685ff5",
+						"exec": [
+							"pm.variables.get(\"api_url\");",
+							"pm.variables.get(\"jwt\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_url}}/configuration",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"configuration"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Default - Dashboards (GET /dashboards)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "39453538-f0db-4238-98d8-7283147b5ebc",
+						"exec": [
+							"pm.variables.get(\"api_url\");",
+							"pm.variables.get(\"jwt\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_url}}/dashboards",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"dashboards"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Default - Dashboards (GET /dashboards/get-default)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "bf682d98-b641-439f-86c2-b6dc243388fa",
+						"exec": [
+							"pm.variables.get(\"api_url\");",
+							"pm.variables.get(\"jwt\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_url}}/dashboards/get-default",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"dashboards",
+						"get-default"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Default - Dashboards (PUT /dashboards/set-default)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6570e528-dee8-4037-ade9-eb1e82590320",
+						"exec": [
+							"pm.variables.get(\"api_url\");",
+							"pm.variables.get(\"jwt\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"dashboard_id\": 1\n}"
+				},
+				"url": {
+					"raw": "{{api_url}}/dashboards/set-default",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"dashboards",
+						"set-default"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Default - Deleted (GET /deleted)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "dcaeb13e-006c-4ec7-9749-492946706eb1",
+						"exec": [
+							"pm.variables.get(\"api_url\");",
+							"pm.variables.get(\"jwt\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_url}}/deleted",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"deleted"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Default - Reset Reporting DB (POST /reset-reporting)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "acdf900e-5bf9-41fa-a4cc-42785e938c16",
+						"exec": [
+							"pm.variables.get(\"api_url\");",
+							"pm.variables.get(\"jwt\");",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "{{jwt}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{api_url}}/reset-reporting",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"reset-reporting"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

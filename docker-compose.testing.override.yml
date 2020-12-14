@@ -1,0 +1,7 @@
+version: '3'
+services:
+  eps:
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_ENV: testing
+      FLASK_CONFIG: testing

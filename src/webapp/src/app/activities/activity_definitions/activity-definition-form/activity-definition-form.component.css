@@ -1,0 +1,43 @@
+.survey-label {
+    display: block;
+    padding: 15px 5px;
+    cursor: pointer;
+}
+
+.documents-label {
+    display: block;
+    padding: 15px 5px;
+}
+
+
+.survey-label:nth-child(odd), 
+.documents-label:nth-child(odd) {
+    background-color: #f5f7fa;
+}
+
+  .survey-label:hover {
+    background-color: #f2f2f2;
+}
+
+
+.form-survey-group {
+    max-height: 250px;
+    overflow-x: scroll;
+    border: 1px solid #f1f1f1;
+}
+
+.documents-label span.remove-doc-icon {
+    display: inline-block;
+    cursor: pointer;
+}
+
+span.remove-doc-icon{
+    font-size: 21px;
+    color: #b1b1b1;
+    -webkit-appearance: none;
+}
+
+span.remove-doc-icon:hover{
+    font-size: 21px;
+    color: #000;
+}

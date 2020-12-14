@@ -1,0 +1,128 @@
+<form
+  [formGroup]="newActivityForm"
+  (ngSubmit)="onCreateNewActivity()"
+  class="animated fadeIn form-wrapper mt4"
+>
+  <div class="modal-header">
+    <h4>Add New Activity</h4>
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="model-body">
+    <div class="card">
+      <div class="card-body">
+        <div *ngIf="errorMsg" class="alert alert-danger" role="alert">
+          {{ errorMsg }}
+        </div>
+
+        <!-- #region Actual Form -->
+
+        <!-- #region Activity Definition -->
+        <div style="margin-bottom: 20px">
+          <div class="mt-5 mb-4">
+            <p>Select the kind of activity you want to create.</p>
+          </div>
+          <div
+            class="form-error-msg"
+            *ngIf="submitted && !form.activityDefinitionRadioGroup.valid"
+          >
+            Must select an activity type.
+          </div>
+          <div *ngIf="isActivityDefinitionsLoading">
+            <fa class="empty-data-icon" name="fas fa-spinner fa-spin"></fa>
+            Loading Activity Types...
+          </div>
+          <div
+            *ngIf="!isActivityDefinitionsLoading"
+            class="form-activity-definition-select-container mt-3"
+          >
+            <label
+              *ngFor="let actDef of activityDefinitions"
+              class="activity-def-label mb-0"
+            >
+              <input
+                formControlName="activityDefinitionRadioGroup"
+                type="radio"
+                [value]="actDef.id"
+              />
+              {{ actDef.name }}
+            </label>
+          </div>
+        </div>
+        <!-- endregion -->
+
+        <!-- NAME START -->
+        <div class="form-label-group">
+          <input
+            type="text"
+            id="name"
+            class="form-control"
+            formControlName="name"
+            [ngClass]="{ 'is-invalid': submitted && form.name.errors }"
+            placeholder="Name"
+            maxlength="35"
+            required
+            autofocus
+          />
+          <label for="name">Name</label>
+          <div *ngIf="submitted && form.name.errors" class="invalid-feedback">
+            <div *ngIf="form.name.errors.required">Name is required</div>
+            <div *ngIf="form.name.errors.minlength">
+              Name must contain 6 characters.
+            </div>
+          </div>
+        </div>
+        <!-- NAME END -->
+
+        <!-- DESCRIPTION START -->
+        <div class="form-label-group">
+          <input
+            type="text"
+            id="description"
+            class="form-control"
+            formControlName="description"
+            placeholder="Description"
+          />
+          <label for="description">Description</label>
+          <small class="pl-2 form-text text-muted"> Optional</small>
+        </div>
+        <!-- DESCRIPTION END -->
+
+        <!-- NOTES START -->
+        <div class="form-label-group">
+          <textarea
+            class="form-control"
+            name="note"
+            id="note"
+            formControlName="note"
+            rows="6"
+            placeholder="Add initial notes."
+          ></textarea>
+          <small class="pl-2 form-text text-muted"> Optional</small>
+        </div>
+        <!-- NOTES END -->
+
+        <!-- endregion -->
+
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="activeModal.dismiss('cancel click')"
+    >
+      Cancel
+    </button>
+    <button type="submit" class="btn btn-primary">
+      Save
+    </button>
+  </div>
+</form>

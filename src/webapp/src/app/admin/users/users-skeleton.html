@@ -1,0 +1,41 @@
+<div class="container users-container">
+    <div class="row">
+      <div
+        class="col-5 users-dash-user-list-container users-dash-user-list-skeleton">
+        <h2 class="users-dash-header">Users</h2>
+        <span class="users-dash-header-btn-container pull-right">
+          <!-- <div class="empty-button"></div> -->
+          <button
+          type="button"
+          class="btn btn-primary btn-sm disabled">
+          <fa class="empty-data-icon" name="fas fa-plus"></fa>
+          Add User
+        </button>
+        </span>
+        <!-- <div class="empty"></div> -->
+        <div *ngFor="let item of skeletonItems; let i=index" class="row">
+          <div class="col-2">
+            <div id="item{{i}}" class="empty-user-profile-image"></div>
+          </div>
+          <div class="col-6">
+            <div class="empty"></div>
+            <div class="empty-list-item"></div>
+            <div class="empty-list-item"></div>
+          </div>
+          <div class="col-4">
+            <!-- <div class="empty"></div> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-7">
+          <div class="users-dash-no-curr-selection-container">
+            <div class="no-data-loaded">
+              <object type="image/svg+xml" data="../../../assets/profile_illustration.svg">
+                Your browser does not support SVG
+              </object>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  

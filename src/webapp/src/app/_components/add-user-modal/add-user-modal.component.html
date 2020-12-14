@@ -1,0 +1,91 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Add New User</h4>
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<form [formGroup]="newUserForm" (ngSubmit)="submit()">
+  <div class="modal-body">
+    <div class="add-user-content">
+      <div class="form-label-group">
+        <input
+          type="email"
+          class="form-control"
+          formControlName="email"
+          placeholder="Email address"
+          [ngClass]="{ 'is-invalid': submitted && form.email.errors }"
+          required
+          autofocus
+        />
+        <label for="inputEmail">Email address</label>
+        <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
+          <div *ngIf="form.email.errors.required">Email is required</div>
+          <div *ngIf="form.email.errors.email">
+            Email must be a valid email address
+          </div>
+        </div>
+      </div>
+      <div class="form-label-group">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="username"
+          placeholder="username"
+          [ngClass]="{ 'is-invalid': submitted && form.username.errors }"
+        />
+        <label for="inputUsername">Username</label>
+        <div *ngIf="submitted && form.username.errors" class="invalid-feedback">
+          <div *ngIf="form.username.errors.required">Username is required</div>
+        </div>
+      </div>
+      <div class="form-label-group">
+        <input
+          type="text"
+          class="form-control"
+          formControlName="name"
+          placeholder="name"
+          [ngClass]="{ 'is-invalid': submitted && form.name.errors }"
+        />
+        <label for="inputName">Name</label>
+        <div *ngIf="submitted && form.name.errors" class="invalid-feedback">
+          <div *ngIf="form.name.errors.required">Name is required</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="roleSelection">Role</label>
+        <select
+          class="form-control dropdown"
+          formControlName="role"
+          name="roles"
+          [ngClass]="{ 'is-invalid': submitted && form.role.errors }"
+        >
+          <option *ngFor="let role of roles" [ngValue]="role.id">
+            {{ role.name }}
+          </option>
+        </select>
+        <div *ngIf="submitted && form.role.errors" class="invalid-feedback">
+          <div *ngIf="form.role.errors.required">Role is required</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      (click)="activeModal.dismiss('Cross click')"
+      class="btn btn-link btn-sm"
+      [ngClass]="{ disabled: isSavingUserData }"
+      type="button"
+    >
+      Cancel
+    </button>
+    <button class="btn btn-lg btn-primary btn-sm" [ngClass]="{ disabled: isSavingUserData }">
+      <fa *ngIf="isSavingUserData" class="empty-data-icon" name="fas fa-spinner fa-spin"></fa>
+      {{ generateAddUserBtnTxt() }}
+    </button>
+  </div>
+</form>
