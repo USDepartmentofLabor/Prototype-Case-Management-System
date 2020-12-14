@@ -1,6 +1,6 @@
-# DPMS Extended Prototype
+# Prototype Case Management System
 
-Direct Participant Monitoring System Extended Prototype
+Prototype Case Management System
 
 ## Development Environment Set Up
 
