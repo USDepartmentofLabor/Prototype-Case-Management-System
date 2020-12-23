@@ -2,6 +2,12 @@
 
 Prototype Case Management System
 
+This document provides instructions on getting up and running with the CMS.
+Additional, more detailed, documentation can be found:
+
+* [Programmer's Guide](docs/programmers_guide/cms_programmers_guide.md)
+* [User Manual](docs/user_manual/cms_user_manual.md)
+
 ## Development Environment Set Up
 
 A development environment needs to provide the following:
@@ -125,7 +131,7 @@ Doing so will allow for live reloading of the webapp upon changes to the source 
 
 ### POSTGRES
 
-Environment variables inherited from postgres docker image: https://hub.docker.com/_/postgres
+Environment variables inherited from postgres docker image: [https://hub.docker.com/_/postgres](https://hub.docker.com/_/postgres)
 
 ### WWW-NGINX
 
@@ -138,9 +144,8 @@ Environment variables inherited from postgres docker image: https://hub.docker.c
 | SERVER_URL | None | External URL for the api |
 | WEBAPP_URL | None | External URL for the webapp |
 
-Image based on nginx image: https://hub.docker.com/_/nginx
+Image based on nginx image: [https://hub.docker.com/_/nginx](https://hub.docker.com/_/nginx)
 
 ### METABASE
 
-Environment variables inherited from metabase docker image:
-https://www.metabase.com/docs/latest/operations-guide/environment-variables.html
+Environment variables inherited from metabase docker image: [Metabase Documentation:v0.37.4 / Operations Guide / Environment Variables](https://www.metabase.com/docs/latest/operations-guide/environment-variables.html)

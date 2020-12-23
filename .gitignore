@@ -24,3 +24,4 @@
 *.crt
 
 docker-compose.override.yml
+docs/.markdownlint.json
